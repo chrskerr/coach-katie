@@ -1,54 +1,46 @@
 
 // deps
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
 import _ from "lodash";
+import { useApolloClient } from "@apollo/react-hooks";
 
 // app
 import { Auth } from "./services";
+import { Queries } from "../index";
 
 //
-// Pantry / Views / App / Firebase
+// Adultletics Admin / Views / App / Firebase
 //
 
+console.log( Queries );
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
 	databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
 	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-	appId: process.env.REACT_APP_FIREBASE_APP_ID,
-	measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 firebase.initializeApp( firebaseConfig );
 
-export default function Firebase ( props ) {
-	const { children } = props;
-	const [ auth, setAuth ] = useState({
-		authUser: {},
-		token: "",
-		isAuthenticating: false,
-		isAuthenticated: false,
-		isAdmin: false,
-		updateAuth: payload => setAuth( auth => ({ ...auth, ...payload })),
-	});
+export default function Firebase ({ children }) {
+	const apolloClient = useApolloClient();
+	const { updateAuth, authUser, isAuthenticating } = useContext( Auth );
     
-	const { updateAuth, authUser } = auth;
-
 	useEffect(() => firebase.auth().onAuthStateChanged( async user => {
 		updateAuth({ isAuthenticating: true });
 		if ( user ) {
 			const token = await user.getIdToken();
 			const idTokenResult = await user.getIdTokenResult();
+			const uid = user.uid;
 			const hasuraClaim = idTokenResult.claims[ "https://hasura.io/jwt/claims" ];
 			if ( hasuraClaim ) {
 				updateAuth({ token });
-				// get User profile, update authUser with this
+				const userRes = await apolloClient( Queries.auth.getUser, { variables: { uid }});
+				console.log( userRes );
 			}
 		} else { 
 			updateAuth({ authUser: {}}); 
@@ -58,19 +50,25 @@ export default function Firebase ( props ) {
 
 	useEffect(() => { 
 		if ( _.isEmpty( authUser )) {
-			updateAuth({ isAuthenticated: false, isAdmin: false });
+			updateAuth({ isAuthenticated: false });
 		} else {
 			updateAuth({ isAuthenticated: true });
-			// check for Admin here
 		} 
 	}, [ authUser ]);
+    
+	useEffect(() => {
+		updateAuth({ 
+			signIn: async ( email, password ) => await firebase.auth().signInWithEmailAndPassword( email, password ), 
+			signOut: () => firebase.auth().signOut(),
+		});
+	}, [ firebase ]);
 
-	console.log( auth.isAuthenticating );
+	console.log( "isAuthenticating", isAuthenticating );
 
 	return (
-		<Auth.Provider value={ auth }>
+		<>
 			{ children && children }
-		</Auth.Provider>
+		</>
 	);
 }
 Firebase.propTypes = {

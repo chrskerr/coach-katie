@@ -7,7 +7,7 @@ import { UI } from "./services";
 import { Panel } from "../index";
 
 //
-// Pantry / Views / App / App
+// Adultletics Admin / Views / App / App
 //
 
 
@@ -24,7 +24,7 @@ export default function Router () {
 		<>
 			<UI.Provider value={ ui }>
 				<Panel />
-				<button onClick={ () => ui.openPanel({ panel: "test", props: { id: "123" }}) }>Open</button>
+				<button onClick={ () => ui.openPanel({ panel: "auth/sign-in", props: { id: "123" }}) }>Open</button>
 			</UI.Provider>
 		</>
 	);

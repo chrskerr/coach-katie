@@ -3,7 +3,7 @@
 import { createContext } from "react";
 
 //
-// Pantry / Views / App / Services
+// Adultletics Admin / Views / App / Services
 //
 
 
@@ -12,8 +12,9 @@ export const Auth = createContext({
 	token: "",
 	isAuthenticating: false,
 	isAuthenticated: false,
-	isAdmin: false,
 	updateAuth: () => {},
+	signIn: () => {},
+	signOut: () => {},
 });
 
 export const UI = createContext({
@@ -23,3 +24,8 @@ export const UI = createContext({
 	notifications: [{}],
 	addNotification: () => {},
 });
+
+export default { 
+	Auth,
+	UI,
+};

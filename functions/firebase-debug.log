@@ -1,0 +1,14 @@
+[debug] [2020-04-23T22:08:07.096Z] ----------------------------------------------------------------------
+[debug] [2020-04-23T22:08:07.099Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2020-04-23T22:08:07.100Z] CLI Version:   8.1.1
+[debug] [2020-04-23T22:08:07.100Z] Platform:      darwin
+[debug] [2020-04-23T22:08:07.100Z] Node Version:  v10.13.0
+[debug] [2020-04-23T22:08:07.101Z] Time:          Fri Apr 24 2020 08:08:07 GMT+1000 (Australian Eastern Standard Time)
+[debug] [2020-04-23T22:08:07.101Z] ----------------------------------------------------------------------
+[debug] [2020-04-23T22:08:07.101Z] 
+[debug] [2020-04-23T22:08:07.123Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-04-23T22:08:07.154Z] Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+    at GoogleAuth.getApplicationDefaultAsync (/Users/chris/.config/yarn/global/node_modules/google-auth-library/build/src/auth/googleauth.js:160:19)
+    at process._tickCallback (internal/process/next_tick.js:68:7)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -5,16 +5,18 @@ import { SideSheet } from "evergreen-ui";
 import _ from "lodash";
 
 // app
-import { UI } from "../app/services";
+import { Services } from "../index";
+import panelMap from "./panels";
 
 //
-// Pantry / Views / Panel / Panel
+// Adultletics Admin / Views / Panel / Panel
 //
 
 
 export default function Panel () {
-	const { panel, closePanel } = useContext( UI );
+	const { panel, closePanel } = useContext( Services.UI );
 	const _isOpen = !_.isEmpty( panel );
+	const ShownPanel = panelMap[ panel.panel ];
 
 	return (
 		<>
@@ -23,6 +25,7 @@ export default function Panel () {
 				onCloseComplete={ closePanel }
 			>
 				<div className="v-panel">
+					{ ( _isOpen && ShownPanel ) && <ShownPanel /> }
 				</div>
 			</SideSheet>
 		</>
