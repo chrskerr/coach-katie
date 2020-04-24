@@ -23,7 +23,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "react-snap"
+    "postbuild": "react-snap",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,6 +44,7 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "gh-pages": "^2.2.0",
     "proptypes": "^1.1.0",
     "react-snap": "^1.23.0"
   }
