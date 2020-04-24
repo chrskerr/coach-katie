@@ -8,14 +8,12 @@ import _ from "lodash";
 import { useApolloClient } from "@apollo/react-hooks";
 
 // app
-import { Auth } from "./services";
-import { Queries } from "../index";
+import { Queries, Services } from "../index";
 
 //
 // Adultletics Admin / Views / App / Firebase
 //
 
-console.log( Queries );
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -28,40 +26,42 @@ firebase.initializeApp( firebaseConfig );
 
 export default function Firebase ({ children }) {
 	const apolloClient = useApolloClient();
-	const { updateAuth, authUser, isAuthenticating } = useContext( Auth );
-    
-	useEffect(() => firebase.auth().onAuthStateChanged( async user => {
-		updateAuth({ isAuthenticating: true });
-		if ( user ) {
-			const token = await user.getIdToken();
-			const idTokenResult = await user.getIdTokenResult();
-			const uid = user.uid;
-			const hasuraClaim = idTokenResult.claims[ "https://hasura.io/jwt/claims" ];
-			if ( hasuraClaim ) {
-				updateAuth({ token });
-				const userRes = await apolloClient( Queries.auth.getUser, { variables: { uid }});
-				console.log( userRes );
-			}
-		} else { 
-			updateAuth({ authUser: {}}); 
-		}
-		updateAuth({ isAuthenticating: false });
-	}), []);
+	const { updateAuth, authUser, isAuthenticating, isAuthenticated } = useContext( Services.Auth );
 
-	useEffect(() => { 
-		if ( _.isEmpty( authUser )) {
-			updateAuth({ isAuthenticated: false });
-		} else {
-			updateAuth({ isAuthenticated: true });
-		} 
-	}, [ authUser ]);
-    
 	useEffect(() => {
 		updateAuth({ 
 			signIn: async ( email, password ) => await firebase.auth().signInWithEmailAndPassword( email, password ), 
 			signOut: () => firebase.auth().signOut(),
 		});
-	}, [ firebase ]);
+        
+		firebase.auth().onAuthStateChanged( async user => {
+			updateAuth({ isAuthenticating: true });
+			if ( user ) {
+				const token = await user.getIdToken();
+				if ( token ) await updateAuth({ token });
+				const idTokenResult = await user.getIdTokenResult();
+				const hasuraClaim = idTokenResult.claims[ "https://hasura.io/jwt/claims" ];
+				if ( hasuraClaim ) {
+					setTimeout( async () => {
+						const userRes = await apolloClient.query({ query: Queries.auth.getUser, variables: { uid: user.uid }});
+						console.log( userRes );
+						const authUser = _.get( userRes, "data.users_by_pk" );
+						updateAuth({ isAuthenticated: true, authUser });
+					}, 1000 );
+				} else {
+					updateAuth({ token: {}});
+				}
+			} else { 
+				updateAuth({ authUser: {}}); 
+			}
+			updateAuth({ isAuthenticating: false });
+		});
+	}, []);
+
+	useEffect(() => { 
+		if ( _.isEmpty( authUser ) && isAuthenticated !== false ) updateAuth({ isAuthenticated: false });
+		if ( !_.isEmpty( authUser ) && isAuthenticated !== true ) updateAuth({ isAuthenticated: true });
+	}, [ authUser ]);
 
 	console.log( "isAuthenticating", isAuthenticating );
 

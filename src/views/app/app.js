@@ -16,7 +16,7 @@ import { Auth } from "./services";
 export default function App () {
 	const [ auth, setAuth ] = useState({
 		authUser: {},
-		token: "",
+		token: {},
 		isAuthenticating: false,
 		isAuthenticated: false,
 		updateAuth: payload => setAuth( auth => ({ ...auth, ...payload })),

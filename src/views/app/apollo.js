@@ -13,15 +13,16 @@ import { Auth } from "./services";
 //
 
 export default function Apollo ({ children }) {
-	const { token, isAuthenticated } = useContext( Auth );
+	const { token } = useContext( Auth );
+	console.log( token );
 
 	const client = new ApolloClient({
 		uri: "https://adultletics-hasura.herokuapp.com/v1/graphql",
-		headers: isAuthenticated 
-			? { Authorization: `Bearer ${ token }` } 
-			: {},
+		headers: { 
+			Authorization: token ? `Bearer ${ token }` : "", 
+		}, 
 	});
-
+    
 	return (
 		<ApolloProvider client={ client }>
 			{ children }

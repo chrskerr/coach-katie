@@ -23,7 +23,7 @@ export default function SignInPanel () {
 				console.log( res );
 			}}
 		>{
-				({ values, handleChange }) => {
+				({ values, handleChange, handleSubmit }) => {
 					return (
 						<form>
 							<TextInputField
@@ -38,7 +38,7 @@ export default function SignInPanel () {
 								name="password"
 								onChange={ handleChange }
 							/>
-							<Button isLoading={ isAuthenticating } disabled={ !values.email || !values.password }>Log In</Button>
+							<Button isLoading={ isAuthenticating } disabled={ !values.email || !values.password } onClick={ handleSubmit }>Log In</Button>
 						</form> );
 				}}
 		</Formik>
