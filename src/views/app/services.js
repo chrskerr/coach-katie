@@ -10,6 +10,7 @@ import { createContext } from "react";
 export const Auth = createContext({
 	authUser: {},
 	token: "",
+	uid: "",
 	isAuthenticating: false,
 	isAuthenticated: false,
 	updateAuth: () => {},

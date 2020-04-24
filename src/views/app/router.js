@@ -1,10 +1,9 @@
 
 // deps
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // app
-import { UI } from "./services";
-import { Panel } from "../index";
+import { Services, Panel } from "../index";
 
 //
 // Adultletics Admin / Views / App / App
@@ -12,6 +11,7 @@ import { Panel } from "../index";
 
 
 export default function Router () {
+	const { UI, Auth } = Services;
 	const [ ui, setUI ] = useState({
 		panel: {},
 		openPanel: payload => setUI( ui => ({ ...ui, panel: payload })),
@@ -19,12 +19,18 @@ export default function Router () {
 		notifications: [{}],
 		addNotification: () => {},
 	});
+	const { isAuthenticated, authUser, signOut } = useContext( Auth );
 
 	return (
 		<>
 			<UI.Provider value={ ui }>
 				<Panel />
-				<button onClick={ () => ui.openPanel({ panel: "auth/sign-in", props: { id: "123" }}) }>Open</button>
+				{ isAuthenticated ? 
+					<>
+						<p>Hello { authUser.first_name }</p>
+						<button onClick={ signOut }>Log Out</button>
+					</>
+					: <button onClick={ () => ui.openPanel({ panel: "auth/sign-in", props: { id: "123" }}) }>Log In</button> }
 			</UI.Provider>
 		</>
 	);

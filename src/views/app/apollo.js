@@ -6,21 +6,18 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
 
 // app
-import { Auth } from "./services";
+import { Services } from "../index";
 
 //
 // Adultletics Admin / Views / App / Apollo Provider
 //
 
 export default function Apollo ({ children }) {
-	const { token } = useContext( Auth );
-	console.log( token );
-
+	const { token } = useContext( Services.Auth );
+    
 	const client = new ApolloClient({
 		uri: "https://adultletics-hasura.herokuapp.com/v1/graphql",
-		headers: { 
-			Authorization: token ? `Bearer ${ token }` : "", 
-		}, 
+		headers: token ? { Authorization: `Bearer ${ token }` } : {},
 	});
     
 	return (

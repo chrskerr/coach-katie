@@ -6,17 +6,19 @@ import React, { useState } from "react";
 import FirebaseProvider from "./firebase";
 import Router from "./router";
 import ApolloProvider from "./apollo";
-import { Auth } from "./services";
-
+import { Services } from "../index";
+ 
 //
 // Adultletics Admin / Views / App / App
 //
 
 
 export default function App () {
+	const { Auth } = Services;
 	const [ auth, setAuth ] = useState({
 		authUser: {},
-		token: {},
+		token: "",
+		uid: "",
 		isAuthenticating: false,
 		isAuthenticated: false,
 		updateAuth: payload => setAuth( auth => ({ ...auth, ...payload })),

@@ -1,6 +1,6 @@
 
 // deps
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { TextInputField, Button } from "evergreen-ui";
 import { Formik } from "formik";
 
@@ -14,13 +14,21 @@ import { Services } from "../../../index";
 
 export default function SignInPanel () {
 	const { isAuthenticating, signIn } = useContext( Services.Auth );
+	const { closePanel } = useContext( Services.UI );
+	const [ errors, setErrors ] = useState( null );
 
 	return (
 		<Formik
 			initialValues={{}}
 			onSubmit={ async ({ email, password }) => {
-				const res = await signIn( email, password );
-				console.log( res );
+				setErrors( null );
+				try {
+					await signIn( email, password );
+					closePanel();
+				} catch ( error ) {
+					console.error( error );
+					setErrors( error.message );
+				}
 			}}
 		>{
 				({ values, handleChange, handleSubmit }) => {
@@ -39,6 +47,7 @@ export default function SignInPanel () {
 								onChange={ handleChange }
 							/>
 							<Button isLoading={ isAuthenticating } disabled={ !values.email || !values.password } onClick={ handleSubmit }>Log In</Button>
+							{ errors && <p>{ errors }</p>}
 						</form> );
 				}}
 		</Formik>

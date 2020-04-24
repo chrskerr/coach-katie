@@ -26,7 +26,17 @@ firebase.initializeApp( firebaseConfig );
 
 export default function Firebase ({ children }) {
 	const apolloClient = useApolloClient();
-	const { updateAuth, authUser, isAuthenticating, isAuthenticated } = useContext( Services.Auth );
+	const { updateAuth, authUser, uid, isAuthenticated } = useContext( Services.Auth );
+
+	useEffect(() => {
+		if ( uid && uid !== _.get( authUser, "uid", "" )) {
+			( async () => {
+				const userRes = await apolloClient.query({ query: Queries.auth.getUser, variables: { uid }});
+				const authUser = _.get( userRes, "data.users_by_pk" );
+				updateAuth({ authUser });
+			})();
+		}
+	}, [ uid ]);
 
 	useEffect(() => {
 		updateAuth({ 
@@ -38,21 +48,11 @@ export default function Firebase ({ children }) {
 			updateAuth({ isAuthenticating: true });
 			if ( user ) {
 				const token = await user.getIdToken();
-				if ( token ) await updateAuth({ token });
 				const idTokenResult = await user.getIdTokenResult();
 				const hasuraClaim = idTokenResult.claims[ "https://hasura.io/jwt/claims" ];
-				if ( hasuraClaim ) {
-					setTimeout( async () => {
-						const userRes = await apolloClient.query({ query: Queries.auth.getUser, variables: { uid: user.uid }});
-						console.log( userRes );
-						const authUser = _.get( userRes, "data.users_by_pk" );
-						updateAuth({ isAuthenticated: true, authUser });
-					}, 1000 );
-				} else {
-					updateAuth({ token: {}});
-				}
+				if ( hasuraClaim ) updateAuth({ token, uid: user.uid });
 			} else { 
-				updateAuth({ authUser: {}}); 
+				updateAuth({ authUser: {}, token: null, uid: "" }); 
 			}
 			updateAuth({ isAuthenticating: false });
 		});
@@ -62,8 +62,6 @@ export default function Firebase ({ children }) {
 		if ( _.isEmpty( authUser ) && isAuthenticated !== false ) updateAuth({ isAuthenticated: false });
 		if ( !_.isEmpty( authUser ) && isAuthenticated !== true ) updateAuth({ isAuthenticated: true });
 	}, [ authUser ]);
-
-	console.log( "isAuthenticating", isAuthenticating );
 
 	return (
 		<>
