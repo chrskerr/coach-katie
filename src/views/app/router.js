@@ -1,10 +1,9 @@
 
 // deps
 import React, { useState } from "react";
-import { Pane } from "evergreen-ui";
 
 // app
-import { Services, Panel, TopNav, Dashboard, Workouts } from "../index";
+import { Services, Panel, TopNav, Dashboard, Workout, Workouts, Programme, Programmes } from "../index";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 //
@@ -30,8 +29,10 @@ export default function Router () {
 					<TopNav />
 					<div className="v-router">
 						<Switch>
-							{/* <Route path="/workouts/:id"><Workout /></Route> */}
+							<Route path="/workouts/:id"><Workout /></Route>
 							<Route path="/workouts"><Workouts /></Route>
+							<Route path="/programmes/:id"><Programme /></Route>
+							<Route path="/programmes"><Programmes /></Route>
 							<Route path="/"><Dashboard /></Route>
 						</Switch>
 					</div>

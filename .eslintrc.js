@@ -2,7 +2,7 @@ module.exports = {
 	"env": {
 		"browser": true,
 		"es6": true,
-        "node": true
+		"node": true
 	},
 	"extends": [
 		"eslint:recommended",
@@ -20,7 +20,8 @@ module.exports = {
 		"sourceType": "module"
 	},
 	"plugins": [
-		"react"
+		"react",
+		"react-hooks"
 	],
 	"rules": {
 		"indent": [ "error", "tab" ],
@@ -31,11 +32,12 @@ module.exports = {
 		"object-curly-spacing": [ "error", "always", { "objectsInObjects": false, "arraysInObjects": false }],
 		"space-in-parens": ["error", "always", { "exceptions": ["{}", "()", "[]"] }],
 		"computed-property-spacing": [ "error", "always" ],
-        "comma-dangle": [ "error", "always-multiline" ],
-        "prefer-const": "error",
+		"comma-dangle": [ "error", "always-multiline" ],
+		"prefer-const": "error",
 		"prefer-spread": "error",
-        "func-call-spacing": [ "error", "never" ],
+		"func-call-spacing": [ "error", "never" ],
 		"no-loop-func": "error",
-        "no-undef": "error"
+		"no-undef": "error",
+		"react-hooks/rules-of-hooks": "error"
 	}
 };

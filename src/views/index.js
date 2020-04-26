@@ -13,3 +13,6 @@ export { default as Services } from "./app/services";
 
 export { default as Dashboard } from "./dashboard/dashboard";
 export { default as Workouts } from "./workouts/workouts";
+export { default as Workout } from "./workouts/workout";
+export { default as Programmes } from "./programmes/programmes";
+export { default as Programme } from "./programmes/programme";

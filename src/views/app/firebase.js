@@ -36,14 +36,15 @@ export default function Firebase ({ children }) {
 				updateAuth({ authUser });
 			})();
 		}
+	// eslint-disable-next-line
 	}, [ uid ]);
-
+		
 	useEffect(() => {
 		updateAuth({ 
 			signIn: async ( email, password ) => await firebase.auth().signInWithEmailAndPassword( email, password ), 
 			signOut: () => firebase.auth().signOut(),
 		});
-        
+		
 		firebase.auth().onAuthStateChanged( async user => {
 			updateAuth({ isAuthenticating: true });
 			if ( user ) {
@@ -56,11 +57,13 @@ export default function Firebase ({ children }) {
 			}
 			updateAuth({ isAuthenticating: false });
 		});
+	// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => { 
 		if ( _.isEmpty( authUser ) && isAuthenticated !== false ) updateAuth({ isAuthenticated: false });
 		if ( !_.isEmpty( authUser ) && isAuthenticated !== true ) updateAuth({ isAuthenticated: true });
+	// eslint-disable-next-line
 	}, [ authUser ]);
 
 	return (

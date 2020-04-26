@@ -1,6 +1,7 @@
 
 // deps
 import React from "react";
+import { useParams } from "react-router-dom";
 
 // app
 import { Pane, Heading } from "evergreen-ui";
@@ -11,8 +12,9 @@ import { Pane, Heading } from "evergreen-ui";
 
 
 export default function Workouts () {
+	const { id: workoutId } = useParams();
+	console.log( workoutId );
 
-    
 	return (
 		<>
 			<Pane>

@@ -28,13 +28,17 @@ export default function TopNav () {
 			name: "Workouts",
 			route: "/workouts",
 		},
+		{
+			name: "Programmes",
+			route: "/programmes",
+		},
 	];
 
 	return (
 		<div className="c-top-nav">
 			<Pane display="flex" height={ 78 } alignItems="center">
 				<Pane alignItems="center" justifyContent="center" marginLeft={ 24 }>
-					<Heading size={ 400 } >Adultletics Admin Panel</Heading>
+					<Heading size={ 200  } >Adultletics Admin Panel</Heading>
 				</Pane>
 				<Pane display="flex" flex={ 1 } justifyContent="space-between" paddingLeft={ 16 }>
 					<Pane alignItems="center">

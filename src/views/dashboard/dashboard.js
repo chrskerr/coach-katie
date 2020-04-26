@@ -1,6 +1,6 @@
 
 // deps
-import React, { useState } from "react";
+import React from "react";
 
 // app
 import { Pane, Heading } from "evergreen-ui";
