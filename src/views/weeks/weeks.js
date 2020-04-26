@@ -6,17 +6,17 @@ import React from "react";
 import { Pane, Text } from "evergreen-ui";
 
 //
-// Adultletics Admin / Views / Workouts / Workouts
+// Adultletics Admin / Views / Weeks / Weeks
 //
 
 
-export default function Workouts () {
+export default function Weeks () {
 
     
 	return (
 		<>
 			<Pane>
-				<Text>All Workouts</Text>
+				<Text>All Weeks</Text>
 			</Pane>
 		</>
 	);

@@ -7,11 +7,11 @@ import PropTypes from "prop-types";
 import { Pane, Text } from "evergreen-ui";
 
 //
-// Adultletics Admin / Views / Workout / Workout
+// Adultletics Admin / Views / Week / Week
 //
 
 
-export default function Workout ( props ) {
+export default function Week ( props ) {
 	const { id } = props;
 
 	return (
@@ -22,6 +22,6 @@ export default function Workout ( props ) {
 		</>
 	);
 }
-Workout.propTypes = {
+Week.propTypes = {
 	id: PropTypes.string,
 };

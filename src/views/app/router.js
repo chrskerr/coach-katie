@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 // app
-import { Services, Panel, TopNav, Dashboard, Workout, Workouts, Programme, Programmes } from "../index";
+import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex } from "../index";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 //
@@ -29,10 +29,8 @@ export default function Router () {
 					<TopNav />
 					<div className="v-router">
 						<Switch>
-							<Route path="/workouts/:id"><Workout /></Route>
-							<Route path="/workouts"><Workouts /></Route>
-							<Route path="/programmes/:id"><Programme /></Route>
-							<Route path="/programmes"><Programmes /></Route>
+							<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
+							<Route path="/weeks/:id?"><WeeksIndex /></Route>
 							<Route path="/"><Dashboard /></Route>
 						</Switch>
 					</div>

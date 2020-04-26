@@ -29,8 +29,8 @@ export default function TopNav () {
 			route: "/workouts",
 		},
 		{
-			name: "Programmes",
-			route: "/programmes",
+			name: "Weeks",
+			route: "/weeks",
 		},
 	];
 
@@ -58,7 +58,7 @@ export default function TopNav () {
 						</Tablist>
 					</Pane>
 					<Pane display="flex" alignItems="center" paddingRight={ 16 }>
-						{ isAuthenticated ? <Button marginRight={ 16 } onClick={ signOut }>Log Out</Button> : <Button marginRight={ 16 } onClick={ () => openPanel({ panel: "auth/sign-in", props: { id: "123" }}) }>Log In</Button> }
+						{ isAuthenticated ? <Button marginRight={ 16 } onClick={ signOut }>Log Out</Button> : <Button marginRight={ 16 } onClick={ () => openPanel({ panel: "auth/sign-in" }) }>Log In</Button> }
 						<Avatar name={ authUser.first_name } size={ 40 } />
 					</Pane>
 				</Pane>

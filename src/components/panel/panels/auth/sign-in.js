@@ -39,6 +39,7 @@ export default function SignInPanel () {
 								type="email"
 								name="email"
 								onChange={ handleChange }
+								autoFocus
 							/>
 							<TextInputField
 								label="Password"
@@ -53,8 +54,3 @@ export default function SignInPanel () {
 		</Formik>
 	);
 }
-
-
-
-
-// 		await ;
