@@ -5,7 +5,7 @@ import { TextInputField, Button } from "evergreen-ui";
 import { Formik } from "formik";
 
 // app
-import { Services } from "../../../index";
+import { Services } from "../index";
 
 //
 // Adultletics Admin / Views / Panel / Panels / Auth / Sign In
@@ -31,7 +31,7 @@ export default function SignInPanel () {
 				}
 			}}
 		>{
-				({ values, handleChange, handleSubmit }) => {
+				({ values, handleChange, handleSubmit, isSubmitting }) => {
 					return (
 						<form>
 							<TextInputField
@@ -46,7 +46,7 @@ export default function SignInPanel () {
 								name="password"
 								onChange={ handleChange }
 							/>
-							<Button isLoading={ isAuthenticating } disabled={ !values.email || !values.password } onClick={ handleSubmit }>Log In</Button>
+							<Button isLoading={ isAuthenticating || isSubmitting } disabled={ !values.email || !values.password } onClick={ handleSubmit }>Log In</Button>
 							{ errors && <p>{ errors }</p>}
 						</form> );
 				}}

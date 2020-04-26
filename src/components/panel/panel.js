@@ -5,7 +5,7 @@ import { SideSheet } from "evergreen-ui";
 import _ from "lodash";
 
 // app
-import { Services } from "../index";
+import { Services } from "../../views/index";
 import panelMap from "./panels";
 
 //

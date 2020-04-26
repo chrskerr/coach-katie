@@ -1,9 +1,11 @@
 
 // deps
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { Pane } from "evergreen-ui";
 
 // app
-import { Services, Panel } from "../index";
+import { Services, Panel, TopNav, Dashboard, Workouts } from "../index";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 //
 // Adultletics Admin / Views / App / App
@@ -11,7 +13,7 @@ import { Services, Panel } from "../index";
 
 
 export default function Router () {
-	const { UI, Auth } = Services;
+	const { UI } = Services;
 	const [ ui, setUI ] = useState({
 		panel: {},
 		openPanel: payload => setUI( ui => ({ ...ui, panel: payload })),
@@ -19,18 +21,21 @@ export default function Router () {
 		notifications: [{}],
 		addNotification: () => {},
 	});
-	const { isAuthenticated, authUser, signOut } = useContext( Auth );
-
+    
 	return (
 		<>
 			<UI.Provider value={ ui }>
 				<Panel />
-				{ isAuthenticated ? 
-					<>
-						<p>Hello { authUser.first_name }</p>
-						<button onClick={ signOut }>Log Out</button>
-					</>
-					: <button onClick={ () => ui.openPanel({ panel: "auth/sign-in", props: { id: "123" }}) }>Log In</button> }
+				<BrowserRouter>
+					<TopNav />
+					<div className="v-router">
+						<Switch>
+							{/* <Route path="/workouts/:id"><Workout /></Route> */}
+							<Route path="/workouts"><Workouts /></Route>
+							<Route path="/"><Dashboard /></Route>
+						</Switch>
+					</div>
+				</BrowserRouter>
 			</UI.Provider>
 		</>
 	);

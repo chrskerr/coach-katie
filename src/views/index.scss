@@ -1,6 +1,11 @@
 
-* {
+html, body {
     box-sizing: border-box;
+    padding: 0; margin: 0;
 }
 
-@import "./panel/panel"
+@import "../components/panel/panel";
+@import "../components/top-nav/top-nav";
+@import "./dashboard/dashboard";
+@import "./workouts/workouts";
+@import "./app/app";
