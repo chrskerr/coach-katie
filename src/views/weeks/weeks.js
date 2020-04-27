@@ -17,17 +17,17 @@ import { Services, Queries, Loading } from "../index";
 export default function Weeks () {
 	const { openPanel } = useContext( Services.UI );
 	const { data, loading } = useQuery( Queries.drills.getAll );
-	const workouts = _.get( data, "drills" );
+	const workouts = _.get( data, "drillsd" );
 
 	if ( loading ) return <Loading />;
 
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
-				<Button iconBefore="plus" onClick={ () => openPanel({ panel: "drills/add" })}>Add</Button>
+				<Button iconBefore="plus" onClick={ () => openPanel({ panel: "weeks/add" })}>Add</Button>
 			</Pane>
 			<Pane marginBottom={ 16 }>
-				<Heading>All Workouts:</Heading>
+				<Heading>All Weeks:</Heading>
 			</Pane>
 			<Pane>
 				{ workouts && _.map( workouts, workout => {

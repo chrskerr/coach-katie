@@ -37,7 +37,7 @@ export default function EditWorkoutVersionPanel ({ props }) {
 			<Heading size={ 600 }>Editing Drills for Version { _.get( version, "version_num" ) } of workout: { _.get( version, "workout.title", "" ) }</Heading>
 		</Pane>
 		<Pane display="flex" flexDirection="row">
-			<Pane width={ "50%" }>
+			<Pane width="50%">
 				<Formik
 					initialValues={{}}
 					onSubmit={ async ({ drill }) => {
@@ -57,13 +57,11 @@ export default function EditWorkoutVersionPanel ({ props }) {
 										<Pane marginBottom={ 16 }>
 											<Heading>Add Drills to Workout:</Heading>
 										</Pane>
-										<Pane marginBottom={ 8 }>
-											<Select name="drill" value={ values.drill } onChange={ handleChange } >
+										<Pane marginBottom={ 8 } display="flex" justifyContent="space-between">
+											<Select name="drill" value={ values.drill } onChange={ handleChange } height={ 32 } >
 												<option key="empty" value="">Please select an option...</option>
 												{ unselectedDrills && _.map( unselectedDrills, ({ id, title }) => ( <option key={ id } value={ id }>{ title }</option> ))}
 											</Select>
-										</Pane>
-										<Pane>
 											<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty } onClick={ handleSubmit }>Add</Button>
 										</Pane>
 										<Pane>
@@ -75,15 +73,15 @@ export default function EditWorkoutVersionPanel ({ props }) {
 						}}
 				</Formik>  
 			</Pane>
-			<Pane width={ "50%" }>
+			<Pane width="50%">
 				<Pane marginBottom={ 16 }>
 					<Heading>Selected drills:</Heading>
 				</Pane>
 				<Pane>
 					{ !_.isEmpty( currentDrills ) ? _.map( currentDrills, ({ id, title, workoutsDrillId }) => (
-						<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 } key={ id } paddingLeft={ 16 } paddingRight={ 16 }>
+						<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 32 } alignItems="center" background="white" marginBottom={ 16 } key={ id } paddingLeft={ 16 } paddingRight={ 8 }>
 							<Text flex={ 1 }>{ title }</Text>
-							<IconButton icon="cross" intent="danger" onClick={ () => removeDrill({ variables: { id: workoutsDrillId }})}/> 
+							<IconButton icon="small-cross" intent="danger" appearance="minimal" onClick={ () => removeDrill({ variables: { id: workoutsDrillId }})}/> 
 						</Pane> )) : <Paragraph>No drills selected</Paragraph>}
 				</Pane>
 			</Pane>

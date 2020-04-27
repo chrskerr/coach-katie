@@ -17,16 +17,18 @@ import { Services, Queries } from "../index";
 
 export default function AddWorkoutVersionPanel ({ props }) {
 	const { id, workoutId } = props;
+	const { data: workoutData, loading: workoutLoading } = useQuery( Queries.workouts.getOne,{ variables: { id: workoutId }});
 	const { data, loading } = useQuery( Queries.workouts.getVersion, { variables: { id }});
 	const [ addVersion ] = useMutation( Queries.workouts.addVersion, { refetchQueries: [{ query: Queries.workouts.getOne, variables: { id: workoutId }}], awaitRefetchQueries: true }); 
 	const { closePanel } = useContext( Services.UI );
 	const { authUser } = useContext( Services.Auth );
 	const [ errors, setErrors ] = useState( null );
 
-	if ( loading ) return null;
-
+	if ( loading || workoutLoading ) return null;
+    
 	const version = _.get( data, "workouts_versions_by_pk" );
-	const newVersionNum = _.get( version, "version_num" ) + 1;
+	const highestExistingVersion = _.reduce( _.get( workoutData, "workouts_by_pk.versions" ), ( total, curr ) => curr.version_num > total ? curr.version_num : total, 0 );
+	const newVersionNum = highestExistingVersion + 1;
 
 	const initialValues = {
 		body: _.get( version, "body" ),
@@ -84,7 +86,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 									value={ values.running_minutes }
 									onChange={ handleChange }
 								/>
-								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty } onClick={ handleSubmit }>Update</Button>
+								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty } onClick={ handleSubmit }>Add</Button>
 								{ errors && <p>{ errors }</p>}
 							</form> 
 						</>
