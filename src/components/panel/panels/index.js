@@ -4,9 +4,13 @@
 //
 
 import SignIn from "./auth/sign-in.js";
+import DrillsAdd from "./drills/add";
+import DrillsEdit from "./drills/edit";
 
 export default {
 	"auth/sign-in": SignIn,
+	"drills/add": DrillsAdd,
+	"drills/edit": DrillsEdit,
 };
 
-export { Services } from "../../../views/index";
+export { Services, Queries } from "../../../views/index";

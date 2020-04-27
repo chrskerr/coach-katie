@@ -32,6 +32,10 @@ export default function TopNav () {
 			name: "Weeks",
 			route: "/weeks",
 		},
+		{
+			name: "Drills",
+			route: "/drills",
+		},
 	];
 
 	return (

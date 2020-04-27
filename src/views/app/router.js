@@ -1,10 +1,11 @@
 
 // deps
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // app
-import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex } from "../index";
+import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex } from "../index";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Pane } from "evergreen-ui";
 
 //
 // Adultletics Admin / Views / App / App
@@ -12,7 +13,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 
 export default function Router () {
-	const { UI } = Services;
+	const { UI, Auth } = Services;
 	const [ ui, setUI ] = useState({
 		panel: {},
 		openPanel: payload => setUI( ui => ({ ...ui, panel: payload })),
@@ -20,20 +21,24 @@ export default function Router () {
 		notifications: [{}],
 		addNotification: () => {},
 	});
+	const { isAuthenticated } = useContext( Auth );
     
 	return (
 		<>
 			<UI.Provider value={ ui }>
 				<Panel />
 				<BrowserRouter>
-					<TopNav />
-					<div className="v-router">
-						<Switch>
-							<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
-							<Route path="/weeks/:id?"><WeeksIndex /></Route>
-							<Route path="/"><Dashboard /></Route>
-						</Switch>
-					</div>
+					<Pane background="tint1" minHeight="100vh">
+						<TopNav />
+						<div className="v-router">
+							{ isAuthenticated && <Switch>
+								<Route path="/drills/:id?"><DrillsIndex /></Route>
+								<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
+								<Route path="/weeks/:id?"><WeeksIndex /></Route>
+								<Route path="/"><Dashboard /></Route>
+							</Switch> }
+						</div>
+					</Pane>
 				</BrowserRouter>
 			</UI.Provider>
 		</>
