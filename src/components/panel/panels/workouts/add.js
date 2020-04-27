@@ -60,10 +60,10 @@ export default function AddWorkoutPanel () {
 									onChange={ handleChange }
 									autoFocus
 								/>
-								<FormField label="Workout Intensity" value={ values.intensity } onChange={ e => setFieldValue( "intensity", parseInt( e.target.value )) } marginBottom={ 16 }>
+								<FormField label="Workout Intensity" onChange={ e => setFieldValue( "intensity", e.target.value ) } marginBottom={ 16 }>
 									<Pane display="flex" flexDirection="row" justifyContent="space-between">
 										{ _.map( intensityOptions, ({ label, value }) => (
-											<Radio key={ value } name="intensity" value={ value } label={ label } />
+											<Radio key={ value } name="intensity" value={ value } label={ label } checked={ value === values.intensity } />
 										))}
 									</Pane>
 								</FormField>

@@ -35,7 +35,7 @@ export default function Workout ( props ) {
 	const stats = _.get( version, "stats", {});
 	const drills = _.map( _.get( version, "drills", []), "drill" );
 
-	const intensity = _.get( _.find( intensityOptions, [ "value", intensityValue.toString() ]), "label", "" );
+	const intensity = _.get( _.find( intensityOptions, [ "value", intensityValue ]), "label", "" );
 	const type = _.get( _.find( workoutTypes, [ "value", typesValue ]), "label", "" );
 
 	return (

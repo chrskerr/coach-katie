@@ -32,7 +32,7 @@ export default function EditWorkoutVersionPanel ({ props }) {
 		title: _.get( version, "workout.title", "" ),
 		running_km: _.get( version, "stats.running_km", 0 ),
 		running_minutes: _.get( version, "stats.running_minutes", 0 ),
-		intensity: _.get( version, "workout.intensity", 3 ).toString(),
+		intensity: _.get( version, "workout.intensity", "3" ),
 		type: _.get( version, "workout.type", "" ),
 	};
 
@@ -65,7 +65,6 @@ export default function EditWorkoutVersionPanel ({ props }) {
 				}}
 			>{
 					({ values, dirty, handleChange, handleSubmit, isSubmitting, setFieldValue }) => {
-						console.log( values );
 						return (
 							<>
 								<form>
@@ -76,10 +75,10 @@ export default function EditWorkoutVersionPanel ({ props }) {
 										onChange={ handleChange }
 										autoFocus
 									/>
-									<FormField label="Workout Intensity (effects all versions)" onChange={ e => setFieldValue( "intensity", parseInt( e.target.value )) } marginBottom={ 16 }>
+									<FormField label="Workout Intensity (effects all versions)" onChange={ e => setFieldValue( "intensity", e.target.value ) } marginBottom={ 16 }>
 										<Pane display="flex" flexDirection="row" justifyContent="space-between">
 											{ _.map( intensityOptions, ({ label, value }) => (
-												<Radio key={ value } name="intensity" value={ value } label={ label } checked={ value === initialValues.intensity }/>
+												<Radio key={ value } name="intensity" value={ value } label={ label } checked={ value === values.intensity }/>
 											))}
 										</Pane>
 									</FormField>

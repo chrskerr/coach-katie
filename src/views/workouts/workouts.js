@@ -33,7 +33,7 @@ export default function Workouts () {
 			<Pane>
 				{ workouts && _.map( workouts, workout => {
 					const { id, title, intensity, type } = workout;
-					const intensityLabel = _.get( _.find( intensityOptions, [ "value", intensity.toString() ]), "label", "" );
+					const intensityLabel = _.get( _.find( intensityOptions, [ "value", intensity ]), "label", "" );
 					const typeLabel = _.get( _.find( workoutTypes, [ "value", type ]), "label", "" );
 					return ( 
 						<Link to={ `/workouts/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
