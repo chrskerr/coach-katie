@@ -17,7 +17,7 @@ import { Services, Queries, Loading } from "../index";
 export default function Drill ( props ) {
 	const { openPanel } = useContext( Services.UI );
 	const { id } = props;
-	const { data, loading } = useQuery( Queries.drills.getDrillById, { variables: { id }});
+	const { data, loading } = useQuery( Queries.drills.getOne, { variables: { id }});
 
 	if ( loading ) return <Loading />;
 

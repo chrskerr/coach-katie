@@ -26,8 +26,8 @@ export default function Router () {
 	return (
 		<>
 			<UI.Provider value={ ui }>
-				<Panel />
 				<BrowserRouter>
+					<Panel />
 					<Pane background="tint1" minHeight="100vh">
 						<TopNav />
 						<div className="v-router">

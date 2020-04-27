@@ -6,7 +6,7 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 
 // app
-import { Pane, Card, Heading, Text, Button } from "evergreen-ui";
+import { Pane, Heading, Text, Button } from "evergreen-ui";
 import { Services, Queries, Loading } from "../index";
 
 //
@@ -16,7 +16,7 @@ import { Services, Queries, Loading } from "../index";
 
 export default function Drills () {
 	const { openPanel } = useContext( Services.UI );
-	const { data, loading } = useQuery( Queries.drills.getDrills );
+	const { data, loading } = useQuery( Queries.drills.getAll );
 	const drills = _.get( data, "drills" );
 
 	if ( loading ) return <Loading />;
@@ -34,9 +34,9 @@ export default function Drills () {
 					const { id, title } = drill;
 					return ( 
 						<Link to={ `/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
-							<Card display="flex" elevation={ 2 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
+							<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
 								<Text marginLeft={ 24 }>{ title }</Text> 
-							</Card> 
+							</Pane> 
 						</Link>
 					);
 				})}

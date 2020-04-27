@@ -17,8 +17,8 @@ import { Services, Queries } from "../index";
 
 export default function EditDrillPanel ({ props }) {
 	const { id } = props;
-	const { data, loading } = useQuery( Queries.drills.getDrillById, { variables: { id }});
-	const [ updateDrill ] = useMutation( Queries.drills.updateDrill, { refetchQueries: [{ query: Queries.drills.getDrillById, variables: { id }}], awaitRefetchQueries: true }); 
+	const { data, loading } = useQuery( Queries.drills.getOne, { variables: { id }});
+	const [ updateDrill ] = useMutation( Queries.drills.add, { refetchQueries: [{ query: Queries.drills.getOne, variables: { id }}], awaitRefetchQueries: true }); 
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 

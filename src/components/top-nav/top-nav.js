@@ -52,7 +52,7 @@ export default function TopNav () {
 									key={ route }
 									id={ route }
 									onSelect={ () => history.push( route ) }
-									isSelected={ route === pathname }
+									isSelected={ route === "/" ? pathname === route : pathname.startsWith( route ) }
 									aria-controls={ `panel-${ name }` }
 									height={ 40 }
 								>

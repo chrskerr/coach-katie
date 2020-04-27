@@ -22,7 +22,7 @@ export default function Panel () {
 	const _isOpen = !_.isEmpty( panel );
 	const ShownPanel = panelMap[ _.get( panel, "panel", false ) ];
 	const props = _.get( panel, "props", {});
-	const width = widthMap[ _.get( panel, "width", "normal" ) ]; 
+	const size = widthMap[ _.get( panel, "size", "normal" ) ]; 
 
 	return (
 		<>
@@ -30,7 +30,7 @@ export default function Panel () {
 				isShown={ _isOpen }
 				onCloseComplete={ closePanel }
 				preventBodyScrolling
-				width={ width }
+				width={ size }
 			>
 				<div className="v-panel">
 					{ ( _isOpen && ShownPanel ) && <ShownPanel props={ props } /> }

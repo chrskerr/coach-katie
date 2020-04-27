@@ -9,51 +9,158 @@ import gql from "graphql-tag";
 
 // AUTH
 const GET_USER = gql`
-    query getUser ( $uid: String! ) {
-        users_by_pk( uid: $uid ) {
-            email first_name id
-        }
-    }
+	query getUser ( $uid: String! ) {
+		users_by_pk( uid: $uid ) {
+			email first_name id
+		}
+	}
 `;
 
 
 // DRILLS
 const GET_ALL_DRILLS = gql`
-    query getAllDrills {
-        drills {
-            id title url
-        }
-    }
+	query getAllDrills {
+		drills ( order_by: { title: asc }) {
+			id title url
+		}
+	}
 `;
 
 const GET_DRILL_BY_ID = gql`
-    query getAllDrills ( $id: uuid! ) {
-        drills_by_pk ( id: $id ) {
-            id title url
-            workouts_drills {
-                workouts_version {
-                    workout { title }
-                    version_num
-                }
-            }
-        }
-    }
+	query getAllDrills ( $id: uuid! ) {
+		drills_by_pk ( id: $id ) {
+			id title url
+			workouts_drills {
+				workouts_version {
+					workout { title }
+					version_num
+				}
+			}
+		}
+	}
 `;
 
 const INSERT_DRILL = gql`
-    mutation insertDrills ( $objects: [drills_insert_input!]! ) {
-        insert_drills ( objects: $objects ) {
-            returning { id }
-        }
-    }
+	mutation insertDrills ( $objects: [drills_insert_input!]! ) {
+		insert_drills ( objects: $objects ) {
+			returning { id }
+		}
+	}
 `;
 
 const UPDATE_DRILL = gql`
-    mutation updateDrills ( $id: uuid!, $data: drills_set_input! ) {
-        update_drills( where: { id: { _eq: $id }}, _set: $data ) {
-            returning { id }
-        }
-    }
+	mutation updateDrills ( $id: uuid!, $data: drills_set_input! ) {
+		update_drills( where: { id: { _eq: $id }}, _set: $data ) {
+			returning { id }
+		}
+	}
+`;
+
+
+// WORKOUTS
+const GET_ALL_WORKOUTS = gql`
+	query getWorkouts {
+		workouts {
+			id title
+		}
+	}
+`;
+
+const GET_WORKOUT = gql`
+	query getWorkout ( $id: uuid! ) {
+		workouts_by_pk( id: $id ) {
+			id title
+			versions ( order_by: { version_num: asc } ){
+				id body
+				version_num
+				owner {
+					first_name
+				}
+				drills {
+					id
+					drill {
+						title id
+					}
+				}
+				stats {
+					running_km id
+					running_minutes
+				}
+			}
+		}
+	}
+`;
+
+const GET_WORKOUT_VERSION = gql`
+	query getWorkout ( $id: uuid! ) {
+		workouts_versions_by_pk ( id: $id ) {
+			id body
+			version_num
+			owner {
+				first_name
+			}
+			drills {
+				id
+				drill {
+					title id
+				}
+			}
+			stats {
+				id
+				running_km
+				running_minutes
+			}
+			workout {
+				id title
+			}
+		}
+	}
+`;
+
+const INSERT_WORKOUT = gql`
+	mutation insertWorkout ( $objects: [workouts_insert_input!]! ) {
+		insert_workouts ( objects: $objects ) {
+			returning { id }
+		}
+	}
+`;
+
+const INSERT_WORKOUT_VERSION = gql`
+	mutation insertWorkoutVersion ( $objects: [workouts_versions_insert_input!]! ) {
+		insert_workouts_versions ( objects: $objects ) {
+			returning { id }
+		}
+	}
+`;
+
+const UPDATE_WORKOUT_VERSION = gql`
+	mutation updateWorkoutVersion ( $version_id: uuid!, $stats_id: uuid!, $workout_id: uuid!, $body: String!, $title: String!, $stats_data: workouts_stats_set_input! ) {
+		update_workouts_versions( where: { id: { _eq: $version_id }}, _set: { body: $body }) {
+			returning { id }
+		}
+		update_workouts_stats( where: { id: { _eq: $stats_id }}, _set: $stats_data ) {
+			returning { id }
+		}
+		update_workouts( where: { id: { _eq: $workout_id }}, _set: { title: $title }) {
+			returning { id }
+		}
+	}
+`;
+
+const INSERT_WORKOUTS_DRILL = gql`
+	mutation insertWorkoutsDrills ( $objects: [workouts_drills_insert_input!]! ) {
+		insert_workouts_drills( objects: $objects ) {
+			returning { id }
+		}
+	}
+`;
+
+const DELETE_WORKOUTS_DRILL = gql`
+	mutation deleteWorkoutsDrills ( $id: uuid! ) {
+		delete_workouts_drills( where: { id: { _eq: $id }}) {
+			returning { id }
+		}
+	}
 `;
 
 
@@ -62,9 +169,19 @@ export default {
 		getUser: GET_USER,
 	},
 	drills: {
-		getDrills: GET_ALL_DRILLS,
-		getDrillById: GET_DRILL_BY_ID,
-		addDrill: INSERT_DRILL,
-		updateDrill: UPDATE_DRILL,
+		getAll: GET_ALL_DRILLS,
+		getOne: GET_DRILL_BY_ID,
+		add: INSERT_DRILL,
+		update: UPDATE_DRILL,
+	},
+	workouts: {
+		getAll: GET_ALL_WORKOUTS,
+		getOne: GET_WORKOUT,
+		getVersion: GET_WORKOUT_VERSION,
+		addWorkout: INSERT_WORKOUT,
+		addVersion: INSERT_WORKOUT_VERSION,
+		updateVersion: UPDATE_WORKOUT_VERSION,
+		addDrill: INSERT_WORKOUTS_DRILL,
+		removeDrill: DELETE_WORKOUTS_DRILL,
 	},
 };

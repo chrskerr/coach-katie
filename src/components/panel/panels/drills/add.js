@@ -14,7 +14,7 @@ import { Services, Queries } from "../index";
 
 
 export default function AddDrillPanel () {
-	const [ insertDrill ] = useMutation( Queries.drills.addDrill, { refetchQueries: [{ query: Queries.drills.getDrills }], awaitRefetchQueries: true }); 
+	const [ insertDrill ] = useMutation( Queries.drills.add, { refetchQueries: [{ query: Queries.drills.getAll }], awaitRefetchQueries: true }); 
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 
