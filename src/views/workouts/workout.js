@@ -7,8 +7,8 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 
 // app
-import { Pane, Button, Heading, Text, Paragraph, Tablist, Tab } from "evergreen-ui";
-import { Services, Queries, Loading } from "../index";
+import { Pane, Badge, Button, Heading, Text, Paragraph, Tablist, Tab } from "evergreen-ui";
+import { Services, Queries, Loading, constants } from "../index";
 
 //
 // Adultletics Admin / Views / Workout / Workout
@@ -20,8 +20,11 @@ export default function Workout ( props ) {
 	const { data, loading } = useQuery( Queries.workouts.getOne, { variables: { id }});
 	const { openPanel } = useContext( Services.UI );
 	const [ selectedVersion, setSelectedVersion ] = useState();
+	const { intensityOptions, workoutTypes } = constants;
 
 	const title = _.get( data, "workouts_by_pk.title" );
+	const typesValue = _.get( data, "workouts_by_pk.type" );
+	const intensityValue = _.get( data, "workouts_by_pk.intensity" );
 	const versions = _.get( data, "workouts_by_pk.versions" );
 	useEffect(() => { if ( !selectedVersion ) setSelectedVersion( _.get( _.last( versions ), "version_num" ));}, [ versions ]);
 
@@ -32,6 +35,9 @@ export default function Workout ( props ) {
 	const stats = _.get( version, "stats", {});
 	const drills = _.map( _.get( version, "drills", []), "drill" );
 
+	const intensity = _.get( _.find( intensityOptions, [ "value", intensityValue.toString() ]), "label", "" );
+	const type = _.get( _.find( workoutTypes, [ "value", typesValue ]), "label", "" );
+
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
@@ -39,8 +45,14 @@ export default function Workout ( props ) {
 				<Button marginLeft={ 8 } iconBefore="edit" onClick={ () => openPanel({ panel: "workouts/edit", props: { id: version.id }, size: "wide" })}>Edit</Button>
 				<Button marginLeft={ 8 } iconBefore="walk" onClick={ () => openPanel({ panel: "workouts/edit-drills", props: { id: version.id }, size: "wide" })}>Edit Drills</Button>
 			</Pane>
-			<Pane marginBottom={ 32 }>
-				<Heading>{ title }</Heading>
+			<Pane marginBottom={ 32 } display="flex" flexDirection="row">
+				<Pane marginRight={ 16 }>
+					<Heading>{ title }</Heading>
+				</Pane>
+				<Pane flex={ 1 }>
+					<Badge marginRight={ 8 } color="blue">{ type }</Badge>
+					<Badge color="blue">{ intensity }</Badge>
+				</Pane>
 			</Pane>
 			<Pane display="flex" flexDirection="row" alignItems="center" marginBottom={ 24 }>
 				<Text>Versions:</Text>

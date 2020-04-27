@@ -4,6 +4,10 @@ html, body {
     padding: 0; margin: 0;
 }
 
+a {
+    text-decoration: none !important;
+}
+
 @import "../components/panel/panel";
 @import "../components/top-nav/top-nav";
 @import "./dashboard/dashboard";

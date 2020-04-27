@@ -21,4 +21,4 @@ export default {
 	"workouts/edit-drills": WorkoutsDrillsEdit,
 };
 
-export { Services, Queries } from "../../../views/index";
+export { Services, Queries, constants } from "../../../views/index";

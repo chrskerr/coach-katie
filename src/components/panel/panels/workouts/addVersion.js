@@ -25,7 +25,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 	const [ errors, setErrors ] = useState( null );
 
 	if ( loading || workoutLoading ) return null;
-    
+
 	const version = _.get( data, "workouts_versions_by_pk" );
 	const highestExistingVersion = _.reduce( _.get( workoutData, "workouts_by_pk.versions" ), ( total, curr ) => curr.version_num > total ? curr.version_num : total, 0 );
 	const newVersionNum = highestExistingVersion + 1;
@@ -65,7 +65,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 					return (
 						<>
 							<form>
-								<FormField label="Workout Description">
+								<FormField label="Workout Description" marginBottom={ 8 }>
 									<Textarea
 										name="body"
 										value={ values.body }

@@ -61,7 +61,7 @@ const UPDATE_DRILL = gql`
 const GET_ALL_WORKOUTS = gql`
 	query getWorkouts {
 		workouts {
-			id title
+			id title type intensity
 		}
 	}
 `;
@@ -69,7 +69,8 @@ const GET_ALL_WORKOUTS = gql`
 const GET_WORKOUT = gql`
 	query getWorkout ( $id: uuid! ) {
 		workouts_by_pk( id: $id ) {
-			id title
+			id title type
+            intensity
 			versions ( order_by: { version_num: asc } ){
 				id body
 				version_num
@@ -111,7 +112,8 @@ const GET_WORKOUT_VERSION = gql`
 				running_minutes
 			}
 			workout {
-				id title
+				id title type
+                intensity
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import panelMap from "./panels";
 // Adultletics Admin / Views / Panel / Panel
 //
 
+
 const widthMap = {
 	wide: 930,
 	normal: 620,
