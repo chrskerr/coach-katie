@@ -21,7 +21,7 @@ const GET_USER = gql`
 const GET_ALL_DRILLS = gql`
 	query getAllDrills {
 		drills ( order_by: { title: asc }) {
-			id title url
+			id title url description
 		}
 	}
 `;
@@ -29,7 +29,7 @@ const GET_ALL_DRILLS = gql`
 const GET_DRILL_BY_ID = gql`
 	query getAllDrills ( $id: uuid! ) {
 		drills_by_pk ( id: $id ) {
-			id title url
+			id title url description
 			workouts_drills {
 				workouts_version {
 					workout { title }
@@ -119,14 +119,6 @@ const GET_WORKOUT_VERSION = gql`
 	}
 `;
 
-const INSERT_WORKOUT = gql`
-	mutation insertWorkout ( $objects: [workouts_insert_input!]! ) {
-		insert_workouts ( objects: $objects ) {
-			returning { id }
-		}
-	}
-`;
-
 const INSERT_WORKOUT_VERSION = gql`
 	mutation insertWorkoutVersion ( $objects: [workouts_versions_insert_input!]! ) {
 		insert_workouts_versions ( objects: $objects ) {
@@ -136,14 +128,14 @@ const INSERT_WORKOUT_VERSION = gql`
 `;
 
 const UPDATE_WORKOUT_VERSION = gql`
-	mutation updateWorkoutVersion ( $version_id: uuid!, $stats_id: uuid!, $workout_id: uuid!, $body: String!, $title: String!, $stats_data: workouts_stats_set_input! ) {
+	mutation updateWorkoutVersion ( $version_id: uuid!, $stats_id: uuid!, $workout_id: uuid!, $body: String!, $workout_data: workouts_set_input!, $stats_data: workouts_stats_set_input! ) {
 		update_workouts_versions( where: { id: { _eq: $version_id }}, _set: { body: $body }) {
 			returning { id }
 		}
 		update_workouts_stats( where: { id: { _eq: $stats_id }}, _set: $stats_data ) {
 			returning { id }
 		}
-		update_workouts( where: { id: { _eq: $workout_id }}, _set: { title: $title }) {
+		update_workouts( where: { id: { _eq: $workout_id }}, _set: $workout_data ) {
 			returning { id }
 		}
 	}
@@ -165,6 +157,37 @@ const DELETE_WORKOUTS_DRILL = gql`
 	}
 `;
 
+const DELETE_WORKOUT = gql`
+    mutation deleteWorkout ( $id: uuid! ) {
+        delete_workouts_drills( where: { workouts_version: { workout: { id: { _eq: $id }}}}) {
+            returning { id }
+        }
+        delete_workouts_versions( where: { workout: { id: { _eq: $id }}}) {
+            returning { id }
+        }
+        delete_workouts_stats( where: { workouts_version: { workout: { id: { _eq: $id }}}}) {
+            returning { id }
+        }
+        delete_workouts( where: { id: { _eq: $id }}) {
+            returning { id }
+        }
+    }
+`;
+
+const DELETE_VERSION = gql`
+    mutation deleteWorkout ( $id: uuid! ) {
+        delete_workouts_drills( where: { workouts_version: { id: { _eq: $id }}}) {
+            returning { id }
+        }
+        delete_workouts_versions( where: { id: { _eq: $id }}) {
+            returning { id }
+        }
+        delete_workouts_stats( where: { workouts_version: { id: { _eq: $id }}}) {
+            returning { id }
+        }
+    }
+`;
+
 
 export default {
 	auth: {
@@ -180,10 +203,11 @@ export default {
 		getAll: GET_ALL_WORKOUTS,
 		getOne: GET_WORKOUT,
 		getVersion: GET_WORKOUT_VERSION,
-		addWorkout: INSERT_WORKOUT,
 		addVersion: INSERT_WORKOUT_VERSION,
 		updateVersion: UPDATE_WORKOUT_VERSION,
 		addDrill: INSERT_WORKOUTS_DRILL,
 		removeDrill: DELETE_WORKOUTS_DRILL,
+		deleteWorkout: DELETE_WORKOUT,
+		deleteVersion: DELETE_VERSION,
 	},
 };

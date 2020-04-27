@@ -43,7 +43,7 @@ export default function EditWorkoutVersionPanel ({ props }) {
 			</Pane>
 			<Formik
 				initialValues={{ ...initialValues }}
-				onSubmit={ async ({ title, body, running_km, running_minutes }) => {
+				onSubmit={ async ({ title, body, running_km, running_minutes, type, intensity }) => {
 					setErrors( null );
 					try {
 						await updateVersion({ variables: {
@@ -51,7 +51,11 @@ export default function EditWorkoutVersionPanel ({ props }) {
 							workout_id: _.get( version, "workout.id" ),
 							stats_id: _.get( version, "stats.id" ),
 							body,
-							title,
+							workout_data: {
+								title,
+								type,
+								intensity,
+							},
 							stats_data: {
 								running_minutes,
 								running_km,
@@ -93,6 +97,7 @@ export default function EditWorkoutVersionPanel ({ props }) {
 											name="body"
 											value={ values.body }
 											onChange={ handleChange }
+											rows={ 24 }
 										/>
 									</FormField>
 									<TextInputField

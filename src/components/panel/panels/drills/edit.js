@@ -2,7 +2,7 @@
 // deps
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { Pane, TextInputField, Button, Text } from "evergreen-ui";
+import { Pane, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -18,7 +18,7 @@ import { Services, Queries } from "../index";
 export default function EditDrillPanel ({ props }) {
 	const { id } = props;
 	const { data, loading } = useQuery( Queries.drills.getOne, { variables: { id }});
-	const [ updateDrill ] = useMutation( Queries.drills.add, { refetchQueries: [{ query: Queries.drills.getOne, variables: { id }}], awaitRefetchQueries: true }); 
+	const [ updateDrill ] = useMutation( Queries.drills.update, { refetchQueries: [{ query: Queries.drills.getOne, variables: { id }}], awaitRefetchQueries: true }); 
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 
@@ -27,13 +27,13 @@ export default function EditDrillPanel ({ props }) {
 	const drill = _.get( data, "drills_by_pk" );
 	const title = _.get( drill, "title" );
 	const url = _.get( drill, "url" );
+	const description = _.get( drill, "description" );
     
 	return (
 		<Formik
-			initialValues={{ title, url }}
+			initialValues={{ title, url, description: _.isNull( description ) ? "" : description }}
 			onSubmit={ async data => {
 				setErrors( null );
-				console.log( data );
 				try {
 					await updateDrill({ variables: { id, data }});
 					closePanel();
@@ -62,6 +62,13 @@ export default function EditDrillPanel ({ props }) {
 									placeholder="https://www.youtube-nocookie.com/embed/nPMB8PZE9F8"
 									onChange={ handleChange }
 								/>
+								<FormField label="Workout Description" marginBottom={ 16 }>
+									<Textarea
+										name="description"
+										onChange={ handleChange }
+										value={ values.description }
+									/>
+								</FormField>
 								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.url } onClick={ handleSubmit }>Update</Button>
 								{ errors && <p>{ errors }</p>}
 							</form> 

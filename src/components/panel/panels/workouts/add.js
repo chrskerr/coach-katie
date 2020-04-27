@@ -1,10 +1,12 @@
 
 // deps
 import React, { useContext, useState } from "react";
+import PropTypes from "prop-types";
 import { Radio, Select, TextInputField, Textarea, FormField, Button, Pane } from "evergreen-ui";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
+import { useHistory } from "react-router-dom";
 
 // app
 import { Services, Queries, constants } from "../index";
@@ -15,35 +17,42 @@ import { Services, Queries, constants } from "../index";
 
 
 
-export default function AddWorkoutPanel () {
-	const [ addWorkout ] = useMutation( Queries.workouts.addWorkout, { refetchQueries: [{ query: Queries.workouts.getAll }], awaitRefetchQueries: true }); 
+export default function AddWorkoutPanel ({ props }) {
+	const { emit } = props;
+	const [ addVersion ] = useMutation( Queries.workouts.addVersion, { refetchQueries: [{ query: Queries.workouts.getAll }], awaitRefetchQueries: true }); 
 	const { authUser } = useContext( Services.Auth );
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 	const { intensityOptions, workoutTypes } = constants;
+	const history = useHistory();
 
 	return (
 		<Formik
 			initialValues={{ running_km: 0, running_minutes: 0, intensity: "3" }}
-			onSubmit={ async ({ title, body, running_km, running_minutes }) => {
+			onSubmit={ async ({ title, body, running_km, running_minutes, intensity, type }) => {
 				setErrors( null );
 				try {
-					await addWorkout({ variables: { objects: [{
-						title,
-						versions: {
+					const res = await addVersion({ variables: { objects: [{
+						version_num: 1,
+						_owner: authUser.id,
+						body,
+						workout: {
 							data: {
-								version_num: 1,
-								_owner: authUser.id,
-								body,
-								stats: {
-									data: {
-										running_km, running_minutes,
-									},
-								},
+								title, type,
+								intensity,
 							},
 						},
+						stats: {
+							data: {
+								running_km, running_minutes,
+							},
+						},
+
 					}]}});
 					closePanel();
+					const id = _.get( res, "data.insert_workouts_versions.returning[0].id" );
+					if ( emit ) emit( id );
+					history.push( `/workouts/${ id }` );
 				} catch ( error ) {
 					console.error( error );
 					setErrors( error.message );
@@ -77,6 +86,7 @@ export default function AddWorkoutPanel () {
 									<Textarea
 										name="body"
 										onChange={ handleChange }
+										rows={ 24 }
 									/>
 								</FormField>
 								<TextInputField
@@ -100,3 +110,7 @@ export default function AddWorkoutPanel () {
 		</Formik>
 	);
 }
+AddWorkoutPanel.propTypes = {
+	props: PropTypes.object,
+	emit: PropTypes.func,
+};

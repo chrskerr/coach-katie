@@ -36,13 +36,16 @@ export default function Workouts () {
 					const intensityLabel = _.get( _.find( intensityOptions, [ "value", intensity ]), "label", "" );
 					const typeLabel = _.get( _.find( workoutTypes, [ "value", type ]), "label", "" );
 					return ( 
-						<Link to={ `/workouts/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
+						<Link to={ `/workouts/${ id }` } key={ id } style={{ marginBottom: "24px", width: "100%" }}>
 							<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 } >
-								<Text marginLeft={ 24 } marginRight={ 8 }>{ title }</Text> 
-								<Badge marginRight={ 8 } color="blue">{ typeLabel }</Badge>
-								<Badge color="blue">{ intensityLabel }</Badge>
-							</Pane> 
+								<Pane flex={ 1 } >
+									<Text marginLeft={ 24 } marginRight={ 8 }>{ title }</Text> 
+									<Badge marginRight={ 8 } color="blue">{ typeLabel }</Badge>
+									<Badge color="blue">{ intensityLabel }</Badge>
+								</Pane> 
+							</Pane>
 						</Link>
+
 					);
 				})}
 			</Pane>

@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Button, Pane, Heading, Card, Text } from "evergreen-ui";
+import { Button, Pane, Heading, Text } from "evergreen-ui";
 import { Services, Queries, Loading } from "../index";
 
 //
@@ -23,6 +23,7 @@ export default function Drill ( props ) {
 
 	const drill = _.get( data, "drills_by_pk", {});
 	const title = _.get( drill, "title" );
+	const description = _.get( drill, "description" );
 	const url = _.get( drill, "url" );
 	const workouts = _.get( drill, "workouts_drills", []);
 	const workoutsCount = _.size( workouts );
@@ -36,9 +37,14 @@ export default function Drill ( props ) {
 				<Heading>{ title }</Heading>
 			</Pane>
 			<Pane display="flex">
-				<Card flex={ 1 } background="white" padding={ 32 } marginRight={ 32 } elevation={ 1 }>
-					<Text>Appears in <strong>{ workoutsCount }</strong> workouts</Text>
-				</Card>
+				<Pane flex={ 1 } marginRight={ 32 } >
+					{ description && <Pane background="white" padding={ 32 }  marginBottom={ 32 } elevation={ 1 }>
+						<Text>{ description }</Text>
+					</Pane> }
+					<Pane background="white" padding={ 32 }  marginBottom={ 32 } elevation={ 1 }>
+						<Text>Appears in <strong>{ workoutsCount }</strong> workouts</Text>
+					</Pane>
+				</Pane>
 				<Pane elevation={ 1 } height={ 315 } width={ 560 }>
 					<iframe width="560" height="315" src={ url } title={ title } frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 				</Pane>

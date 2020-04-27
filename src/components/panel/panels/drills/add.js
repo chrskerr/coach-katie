@@ -1,7 +1,7 @@
 
 // deps
 import React, { useContext, useState } from "react";
-import { Pane, TextInputField, Button, Text } from "evergreen-ui";
+import { Pane, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -20,10 +20,9 @@ export default function AddDrillPanel () {
 
 	return (
 		<Formik
-			initialValues={{}}
+			initialValues={{ description: "" }}
 			onSubmit={ async data => {
 				setErrors( null );
-				console.log( data );
 				try {
 					await insertDrill({ variables: { objects: [ data ]}});
 					closePanel();
@@ -49,6 +48,12 @@ export default function AddDrillPanel () {
 									placeholder="https://www.youtube-nocookie.com/embed/nPMB8PZE9F8"
 									onChange={ handleChange }
 								/>
+								<FormField label="Workout Description" marginBottom={ 16 }>
+									<Textarea
+										name="description"
+										onChange={ handleChange }
+									/>
+								</FormField>
 								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.url } onClick={ handleSubmit }>Add</Button>
 								{ errors && <p>{ errors }</p>}
 							</form> 

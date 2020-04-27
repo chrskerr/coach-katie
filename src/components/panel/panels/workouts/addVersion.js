@@ -16,7 +16,7 @@ import { Services, Queries } from "../index";
 
 
 export default function AddWorkoutVersionPanel ({ props }) {
-	const { id, workoutId } = props;
+	const { id, workoutId, emit } = props;
 	const { data: workoutData, loading: workoutLoading } = useQuery( Queries.workouts.getOne,{ variables: { id: workoutId }});
 	const { data, loading } = useQuery( Queries.workouts.getVersion, { variables: { id }});
 	const [ addVersion ] = useMutation( Queries.workouts.addVersion, { refetchQueries: [{ query: Queries.workouts.getOne, variables: { id: workoutId }}], awaitRefetchQueries: true }); 
@@ -45,7 +45,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 			onSubmit={ async ({ body, running_km, running_minutes }) => {
 				setErrors( null );
 				try {
-					await addVersion({ variables: { objects: [{
+					const res = await addVersion({ variables: { objects: [{
 						body, 
 						version_num: newVersionNum,
 						_workout: workoutId,
@@ -55,6 +55,8 @@ export default function AddWorkoutVersionPanel ({ props }) {
 						},
 					}]}});
 					closePanel();
+					const id = _.get( res, "data.insert_workouts_versions.returning[0].id" );
+					if ( emit ) emit( id );
 				} catch ( error ) {
 					console.error( error );
 					setErrors( error.message );
@@ -70,6 +72,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 										name="body"
 										value={ values.body }
 										onChange={ handleChange }
+										rows={ 24 }
 									/>
 								</FormField>
 								<TextInputField
@@ -99,4 +102,5 @@ AddWorkoutVersionPanel.propTypes = {
 	props: PropTypes.object,
 	id: PropTypes.string,
 	workoutId: PropTypes.string,
+	emit: PropTypes.func,
 };
