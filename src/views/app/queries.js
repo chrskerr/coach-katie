@@ -62,6 +62,23 @@ const GET_ALL_WORKOUTS = gql`
 	query getWorkouts {
 		workouts {
 			id title type intensity
+            versions ( order_by: { version_num: asc } ){
+				id body
+				version_num
+				owner {
+					first_name
+				}
+				drills {
+					id
+					drill {
+						title id
+					}
+				}
+				stats {
+					running_km id
+					running_minutes
+				}
+			}
 		}
 	}
 `;
@@ -189,6 +206,80 @@ const DELETE_VERSION = gql`
 `;
 
 
+// WEEKS
+const GET_ALL_WEEKS = gql`
+    query getAllWeeks {
+        weeks ( order_by: { week_start: desc }) {
+            id title updated_at week_start
+        }
+    }
+`;
+
+const SUBSCRIBE_WEEK = gql`
+    subscription weekSubscription ( $id: uuid! ) {
+        weeks( where: { id: { _eq: $id }}) {
+            created_at id week_start
+            title updated_at
+            days ( order_by: { _day: asc }) {
+                id
+                day { id title uid }
+                workout {
+                    body id
+                    version_num
+                    drills {
+                        id
+                        drill {
+                            description
+                            id title url
+                        }
+                    }
+                    workout {
+                        id intensity
+                        title type
+                    }
+                    stats {
+                        id running_km
+                        running_minutes
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const UPDATE_WEEK = gql`
+    mutation updateWeek ( $id: uuid!, $data: weeks_set_input! ) {
+        update_weeks( where: { id: { _eq: $id }}, _set: $data ) {
+            returning { id }
+        }
+    }
+`;
+
+const UPDATE_WEEK_DAY = gql`
+    mutation updateWeeksDays ( $id: uuid!, $data: weeks_days_set_input! ) {
+        update_weeks_days( where: { id: { _eq: $id }}, _set: $data ) {
+            returning { id }
+        }
+    }
+`;
+
+const CREATE_WEEK = gql`
+    mutation updateWeeksDays ( $objects: [weeks_insert_input!]! ) {
+        insert_weeks( objects: $objects ) {
+            returning { id }
+        }
+    }
+`;
+
+const GET_ALL_DAYS = gql`
+    query getAllDays {
+        days {
+            id title  uid
+        }
+    }
+`;
+
+
 export default {
 	auth: {
 		getUser: GET_USER,
@@ -209,5 +300,15 @@ export default {
 		removeDrill: DELETE_WORKOUTS_DRILL,
 		deleteWorkout: DELETE_WORKOUT,
 		deleteVersion: DELETE_VERSION,
+	},
+	weeks: {
+		getAll: GET_ALL_WEEKS,
+		subscribe: SUBSCRIBE_WEEK,
+		updateWeek: UPDATE_WEEK,
+		updateWeekday: UPDATE_WEEK_DAY,
+		add: CREATE_WEEK,
+	},
+	days: {
+		getAll: GET_ALL_DAYS,
 	},
 };

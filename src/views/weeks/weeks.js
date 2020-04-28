@@ -16,8 +16,8 @@ import { Services, Queries, Loading } from "../index";
 
 export default function Weeks () {
 	const { openPanel } = useContext( Services.UI );
-	const { data, loading } = useQuery( Queries.drills.getAll );
-	const workouts = _.get( data, "drillsd" );
+	const { data, loading } = useQuery( Queries.weeks.getAll );
+	const weeks = _.get( data, "weeks" );
 
 	if ( loading ) return <Loading />;
 
@@ -30,10 +30,10 @@ export default function Weeks () {
 				<Heading>All Weeks:</Heading>
 			</Pane>
 			<Pane>
-				{ workouts && _.map( workouts, workout => {
+				{ weeks && _.map( weeks, workout => {
 					const { id, title } = workout;
 					return ( 
-						<Link to={ `/workouts/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
+						<Link to={ `/weeks/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
 							<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
 								<Text marginLeft={ 24 }>{ title }</Text> 
 							</Pane> 
