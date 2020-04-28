@@ -8,7 +8,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Services, Queries } from "../index";
+import { Services, Queries, Loading } from "../index";
 
 //
 // Adultletics Admin / Views / Panel / Panels / Workouts / Add Version
@@ -24,7 +24,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 	const { authUser } = useContext( Services.Auth );
 	const [ errors, setErrors ] = useState( null );
 
-	if ( loading || workoutLoading ) return null;
+	if ( loading || workoutLoading ) return <Loading />;
 
 	const version = _.get( data, "workouts_versions_by_pk" );
 	const highestExistingVersion = _.reduce( _.get( workoutData, "workouts_by_pk.versions" ), ( total, curr ) => curr.version_num > total ? curr.version_num : total, 0 );

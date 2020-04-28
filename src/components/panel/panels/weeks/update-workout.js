@@ -109,7 +109,8 @@ const SearchRow = ({ workout, matchSize, onSelect, selected }) => {
 	const versionId = _.get( version, "id" );
 	const body = isTruncated ? _.truncate( _.get( version, "body" ), { lenght: 100 }) : _.get( version, "body" );
 
-	useEffect(() => { if ( !selectedVersion ) setSelectedVersion( _.reduce( selectOptions, ( total, curr ) => curr.value > total ? curr.value : total, 0 ));}, [ selectOptions, selectedVersion ]);
+	useEffect(() => { if ( !selectedVersion ) setSelectedVersion( _.reduce( selectOptions, ( total, curr ) => curr.value > total ? curr.value : total, 0 ));}, [ selectOptions, selectedVersion ]); // sets initial value of version to the latest version
+    
 	// eslint-disable-next-line
 	useEffect(() => { if ( selected ) onSelect( versionId );}, [ versionId ]);
 	
@@ -126,22 +127,35 @@ const SearchRow = ({ workout, matchSize, onSelect, selected }) => {
 		e.preventDefault();
 		setIsTruncated( !isTruncated );
 	};
+    
+	const _handleSelectClick = () => {
+		if ( selected ) { 
+			onSelect( "" );
+		} else {
+			onSelect( versionId );
+		}
+	};
 
 	if ( !selectedVersion ) return null;
 	
 	return (
-		<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 32 } alignItems="center" marginBottom={ 16 } paddingLeft={ 16 } paddingRight={ 8 } { ...colourProps } >
-			<Pane flex={ 1 } onClick={ () => onSelect( versionId ) } display="flex" alignItems="center" marginRight={ 8 }>
-				<Heading size={ 200 } { ...colourProps } marginRight={ 16 }>{ title }</Heading>
-				<Text flex={ 1 }>{ body }</Text>
-			</Pane>
-			<Pane display="flex" alignItems="center">
-				<IconButton icon="small-plus" appearance="minimal" onClick={ _handleTruncateClick } marginRight={ 8 } />
+		<Pane display="flex" flexDirection="row" minHeight={ 32 } marginBottom={ 16 }>
+			<Pane display="flex">
 				<Select onChange={ e => setSelectedVersion( Number( e.target.value )) } defaultValue={ selectedVersion }>
 					{ selectOptions && _.map( selectOptions, ({ value, label }) => <option key={ value } value={ value } >{ label }</option> )}
 				</Select> 
+				<IconButton icon={ isTruncated ? "expand-all" : "collapse-all" } iconSize={ 10 } appearance="minimal" onClick={ _handleTruncateClick }/>
+			</Pane>
+			<Pane { ...colourProps } elevation={ 1 } display="flex" flex={ 1 } onClick={ _handleSelectClick } paddingLeft={ 16 } paddingRight={ 16 } paddingBottom={ isTruncated ? 0 : 16 } paddingTop={ isTruncated ? 0 : 16 }>
+				<Pane display="flex" alignItems="center">
+					<Heading size={ 300 } marginRight={ 16 }>{ title }</Heading>
+				</Pane>
+				<Pane flex={ 1 } display="flex" flexDirection="column" justifyContent="center">
+					{ body && _.map( body.split( "\n" ), ( line, i ) => line ? <Text key={ i }>{ line }</Text> : <br key={ i } /> )}
+				</Pane>
 			</Pane>
 		</Pane>
+
 	);
 };
 SearchRow.propTypes = {
