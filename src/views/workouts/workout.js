@@ -36,7 +36,7 @@ export default function Workout ( props ) {
 	if ( loading ) return <Loading />;
 
 	const version = _.find( versions, [ "version_num", selectedVersion ]);
-	const body = _.get( version, "body" );
+	const body = _.get( version, "body", "" );
 	const stats = _.get( version, "stats", {});
 	const drills = _.map( _.get( version, "drills", []), "drill" );
 
@@ -88,11 +88,11 @@ export default function Workout ( props ) {
 				</Pane>
 			</Pane>
 			<Pane background="white" padding={ 32 } marginBottom={ 32 } elevation={ 1 }>
-				<Heading size={ 200 }>Description:</Heading>
-				<Text>{ body }</Text>
+				<Heading marginBottom={ 16 } size={ 200 }>Description:</Heading>
+				{ body && _.map( body.split( "\n" ), ( line, i ) => line ? <Paragraph key={ i }>{ line }</Paragraph> : <br key={ i } /> )}
 			</Pane>
 			<Pane marginBottom={ 32 }>
-				<Heading size={ 200 }>Drills:</Heading>
+				<Heading size={ 200 } marginBottom={ 16 }>Drills:</Heading>
 				{ !_.isEmpty( drills ) ? _.map( drills, drill => {
 					const { id, title } = drill;
 					return ( 
@@ -105,7 +105,7 @@ export default function Workout ( props ) {
 				}) : <Paragraph>No attached drills</Paragraph> }
 			</Pane>
 			<Pane background="white" padding={ 32 } elevation={ 1 }>
-				<Heading size={ 200 }>Stats:</Heading>
+				<Heading size={ 200 } marginBottom={ 16 }>Stats:</Heading>
 				<Paragraph>Total running kilometers - <strong>{ _.get( stats, "running_km", 0 ) }</strong></Paragraph>
 				<Paragraph>Total running minutes - <strong>{ _.get( stats, "running_minutes", 0 ) }</strong></Paragraph>
 			</Pane>

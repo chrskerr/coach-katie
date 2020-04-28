@@ -110,7 +110,8 @@ const SearchRow = ({ workout, matchSize, onSelect, selected }) => {
 	const body = isTruncated ? _.truncate( _.get( version, "body" ), { lenght: 100 }) : _.get( version, "body" );
 
 	useEffect(() => { if ( !selectedVersion ) setSelectedVersion( _.reduce( selectOptions, ( total, curr ) => curr.value > total ? curr.value : total, 0 ));}, [ selectOptions, selectedVersion ]);
-	useEffect(() => { if ( selected ) onSelect( versionId );}, [ selected, versionId ]);
+	// eslint-disable-next-line
+	useEffect(() => { if ( selected ) onSelect( versionId );}, [ versionId ]);
 	
 	let colourProps;
 	if ( selected ) {

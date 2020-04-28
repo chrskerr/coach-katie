@@ -73,36 +73,29 @@ const _handleDownload = ( week, e ) => {
 	e.preventDefault();
 
 	const { title, days } = week;    
-	const doc = new Document;
+	const doc = new Document();
 
-	doc.addSection({
-		children: [
-			new Paragraph({ text: title, heading: HeadingLevel.HEADING_1 }),                    
-		],
-	});
+	const children = [ new Paragraph({ text: title, heading: HeadingLevel.HEADING_1 }) ];
 
 	_.forEach( days, day => {
 		const title = _.get( day, "day.title", "" );
 		const workout = _.get( day, "workout", []);
 		const drills = _.compact( _.get( day, "workout.drills", []));
-		const children = [ new Paragraph({ text: title, heading: HeadingLevel.HEADING_3 }) ];
+        
+		children.push( new Paragraph({ text: title, heading: HeadingLevel.HEADING_3, spacing: { before: 300 }}));
         
 		if ( _.isEmpty( workout )) { 
 			children.push( new Paragraph({ text: "Nothing assigned today, rest day!" }));
 		} else {
-			children.push( new Paragraph({ text: workout.body }));
 			if ( !_.isEmpty( drills )) {
 				const drillsText = _.map( drills, ({ drill: { title, url }}) => new Paragraph({ text: `${ title }: ${ url }`, bullet: { level: 0 }}));
 				children.push( new Paragraph({ text: "Please perform the following drills:", heading: HeadingLevel.HEADING_4 }));
 				children.push( ...drillsText );
 			}
+			children.push( new Paragraph({ text: workout.body }));
 		}
-    
-		doc.addSection({ children });
 	});
     
-    
+	doc.addSection({ children });
 	Packer.toBlob( doc ).then( blob => save( blob, `${ title }.docx` ));
-    
-
 };
