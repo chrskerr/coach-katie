@@ -27,11 +27,12 @@ export default function EditDrillPanel ({ props }) {
 	const drill = _.get( data, "drills_by_pk" );
 	const title = _.get( drill, "title" );
 	const url = _.get( drill, "url" );
+	const embed_url = _.get( drill, "embed_url" );
 	const description = _.get( drill, "description" );
     
 	return (
 		<Formik
-			initialValues={{ title, url, description: _.isNull( description ) ? "" : description }}
+			initialValues={{ title, url, embed_url, description: _.isNull( description ) ? "" : description }}
 			onSubmit={ async data => {
 				setErrors( null );
 				try {
@@ -56,9 +57,16 @@ export default function EditDrillPanel ({ props }) {
 									autoFocus
 								/>
 								<TextInputField
-									label="Url, must be the embed URL from youtube"
+									label="Url to include on weekly workout download"
 									name="url"
 									value={ values.url }
+									placeholder="https://youtu.be/nPMB8PZE9F8"
+									onChange={ handleChange }
+								/>
+								<TextInputField
+									label="Url to include on this page (see below on how-to find)"
+									name="embed_url"
+									value={ values.embed_url }
 									placeholder="https://www.youtube-nocookie.com/embed/nPMB8PZE9F8"
 									onChange={ handleChange }
 								/>

@@ -27,7 +27,7 @@ export default function Apollo ({ children }) {
 	});
     
 	const wsLink = new WebSocketLink({
-		uri: "ws://adultletics-hasura.herokuapp.com/v1/graphql",
+		uri: "wss://adultletics-hasura.herokuapp.com/v1/graphql",
 		options: {
 			reconnect: true,
 			connectionParams: token ? { headers: { Authorization: `Bearer ${ token }` }} : {},

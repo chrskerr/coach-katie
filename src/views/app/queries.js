@@ -21,7 +21,7 @@ const GET_USER = gql`
 const GET_ALL_DRILLS = gql`
 	query getAllDrills {
 		drills ( order_by: { title: asc }) {
-			id title url description
+			id title url description embed_url
 		}
 	}
 `;
@@ -29,7 +29,7 @@ const GET_ALL_DRILLS = gql`
 const GET_DRILL_BY_ID = gql`
 	query getAllDrills ( $id: uuid! ) {
 		drills_by_pk ( id: $id ) {
-			id title url description
+			id title url description embed_url
 			workouts_drills {
 				workouts_version {
 					workout { title }

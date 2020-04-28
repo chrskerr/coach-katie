@@ -43,8 +43,16 @@ export default function AddDrillPanel () {
 									autoFocus
 								/>
 								<TextInputField
-									label="Url, must be the embed URL from youtube"
+									label="Url to include on weekly workout download"
 									name="url"
+									value={ values.url }
+									placeholder="https://youtu.be/nPMB8PZE9F8"
+									onChange={ handleChange }
+								/>
+								<TextInputField
+									label="Url to include the video in this Admin Portal (see below on how-to find)"
+									name="embed_url"
+									value={ values.embed_url }
 									placeholder="https://www.youtube-nocookie.com/embed/nPMB8PZE9F8"
 									onChange={ handleChange }
 								/>

@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Button, Pane, Heading, Text } from "evergreen-ui";
+import { Button, Pane, Heading, Text, Paragraph, Link } from "evergreen-ui";
 import { Services, Queries, Loading } from "../index";
 
 //
@@ -25,6 +25,7 @@ export default function Drill ( props ) {
 	const title = _.get( drill, "title" );
 	const description = _.get( drill, "description" );
 	const url = _.get( drill, "url" );
+	const embed_url = _.get( drill, "embed_url" );
 	const workouts = _.get( drill, "workouts_drills", []);
 	const workoutsCount = _.size( workouts );
 
@@ -33,21 +34,24 @@ export default function Drill ( props ) {
 			<Pane display="flex" justifyContent="flex-end">
 				<Button iconBefore="edit" onClick={ () => openPanel({ panel: "drills/edit", props: { id }})}>Edit</Button>
 			</Pane>
-			<Pane marginBottom={ 32 }>
-				<Heading>{ title }</Heading>
+			<Pane marginBottom={ 32 } display="flex">
+				<Heading marginRight={ 16 }>{ title }</Heading>
+				{ url && <Link href={ url } target="_blank" rel="noreferrer noopener">{ url }</Link> }
 			</Pane>
 			<Pane display="flex">
 				<Pane flex={ 1 } marginRight={ 32 } >
-					{ description && <Pane background="white" padding={ 32 }  marginBottom={ 32 } elevation={ 1 }>
-						<Text>{ description }</Text>
-					</Pane> }
+					{ description && 
+						<Pane background="white" padding={ 32 }  marginBottom={ 32 } elevation={ 1 }>
+							<Paragraph>{ description }</Paragraph>
+						</Pane> 
+					}
 					<Pane background="white" padding={ 32 }  marginBottom={ 32 } elevation={ 1 }>
 						<Text>Appears in <strong>{ workoutsCount }</strong> workouts</Text>
 					</Pane>
 				</Pane>
-				<Pane elevation={ 1 } height={ 315 } width={ 560 }>
-					<iframe width="560" height="315" src={ url } title={ title } frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-				</Pane>
+				{ embed_url && <Pane elevation={ 1 } height={ 315 } width={ 560 }>
+					<iframe width="560" height="315" src={ embed_url } title={ title } frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+				</Pane> }
 			</Pane>
 		</>
 	);
