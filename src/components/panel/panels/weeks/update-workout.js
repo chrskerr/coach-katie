@@ -8,7 +8,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Services, Queries } from "../index";
+import { Services, Queries, Loading } from "../index";
 
 //
 // Adultletics Admin / Views / Panel / Panels / Weeks / Add Workout
@@ -39,7 +39,7 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 		), [ "match", "desc" ],
 	), [ searchTerms, workouts ]);
 
-	if ( loading ) return null;
+	if ( loading ) return <Loading />;
 
 	return ( <>
 		<Pane marginBottom={ 56 }>

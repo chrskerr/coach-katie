@@ -58,7 +58,6 @@ export default function Workout ( props ) {
 			<Pane display="flex" justifyContent="flex-end">
 				<Button marginLeft={ 8 } iconBefore="plus" onClick={ () => openPanel({ panel: "workouts/add-version", props: { id: version.id, workoutId: id }, size: "wide" })}>Add Version</Button>
 				<Button marginLeft={ 8 } iconBefore="edit" onClick={ () => openPanel({ panel: "workouts/edit", props: { id: version.id }, size: "wide" })}>Edit</Button>
-				<Button marginLeft={ 8 } iconBefore="walk" onClick={ () => openPanel({ panel: "workouts/edit-drills", props: { id: version.id }, size: "wide" })}>Edit Drills</Button>
 			</Pane>
 			<Pane marginBottom={ 32 } display="flex" flexDirection="row" alignItems="center">
 				<Pane marginRight={ 16 }>

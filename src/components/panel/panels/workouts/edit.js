@@ -2,13 +2,13 @@
 // deps
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { Radio, Select, TextInputField, Heading, Pane, Textarea, FormField, Button } from "evergreen-ui";
+import { Radio, Select, TextInputField, Heading, Pane, Textarea, FormField, Button, Text, IconButton, Paragraph } from "evergreen-ui";
 import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Services, Queries, constants } from "../index";
+import { Services, Queries, constants, Loading } from "../index";
 
 //
 // Adultletics Admin / Views / Panel / Panels / Workouts / Edit
@@ -18,12 +18,15 @@ import { Services, Queries, constants } from "../index";
 export default function EditWorkoutVersionPanel ({ props }) {
 	const { id } = props;
 	const { data, loading } = useQuery( Queries.workouts.getVersion, { variables: { id }});
-	const [ updateVersion ] = useMutation( Queries.workouts.updateVersion, { refetchQueries: [{ query: Queries.workouts.getVersion, variables: { id }}], awaitRefetchQueries: true }); 
+	const { data: drillsData, loading: drillsLoading } = useQuery( Queries.drills.getAll );
+	const [ updateVersion ] = useMutation( Queries.workouts.updateVersion, { refetchQueries: [{ query: Queries.workouts.getVersion, variables: { id }}], awaitRefetchQueries: true });
+	const [ addDrill, { addDrillsLoading }] = useMutation( Queries.workouts.addDrill, { refetchQueries: [{ query: Queries.workouts.getVersion, variables: { id }}], awaitRefetchQueries: true });
+	const [ removeDrill ] = useMutation( Queries.workouts.removeDrill, { refetchQueries: [{ query: Queries.workouts.getVersion, variables: { id }}], awaitRefetchQueries: true });
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 	const { intensityOptions, workoutTypes } = constants;
 
-	if ( loading ) return null;
+	if ( loading || drillsLoading ) return <Loading />;
 
 	const version = _.get( data, "workouts_versions_by_pk" );
 
@@ -35,6 +38,12 @@ export default function EditWorkoutVersionPanel ({ props }) {
 		intensity: _.get( version, "workout.intensity", "3" ),
 		type: _.get( version, "workout.type", "" ),
 	};
+    
+	const workoutsDrills = _.get( version, "drills", []);
+	const currentDrills = _.map( workoutsDrills, drill => ({ workoutsDrillId: drill.id, ...drill.drill }));
+	const allDrills = _.get( drillsData, "drills" );
+
+	const unselectedDrills = _.filter( allDrills, drill => !_.some( currentDrills, [ "id", drill.id ]));
 
 	return (
 		<>
@@ -92,6 +101,46 @@ export default function EditWorkoutVersionPanel ({ props }) {
 											{ workoutTypes && _.map( workoutTypes, ({ value, label }) => ( <option key={ value } value={ value }>{ label }</option> ))}
 										</Select>
 									</FormField>
+									<Pane>
+										<Pane marginBottom={ 16 }>
+											<Heading>Add Drills to Workout:</Heading>
+										</Pane>
+										<Pane marginBottom={ 8 } display="flex" justifyContent="space-between">
+											<Select name="drill" value={ values.drill } onChange={ handleChange } height={ 32 }>
+												<option key="empty" value="">Please select an option...</option>
+												{ unselectedDrills && _.map( unselectedDrills, ({ id, title }) => ( <option key={ id } value={ id }>{ title }</option> ))}
+											</Select>
+											<Button 
+												iconBefore={ addDrillsLoading ? "" : "tick"} 
+												isLoading={ addDrillsLoading } 
+												disabled={ !values.drill } 
+												onClick={ e => {
+													e.preventDefault();
+													addDrill({ variables: { objects: [{ _drill: values.drill, _workouts_version: _.get( version, "id" ) }]}}); 
+												}} 
+												marginRight={ 8 } 
+												marginLeft={ 8 }>Attach drill
+											</Button>
+										</Pane>
+										<Pane>
+											{ errors && <p>{ errors }</p>}
+										</Pane>
+									</Pane>
+									<Pane>
+										<Pane marginBottom={ 16 }>
+											<Heading>Selected drills:</Heading>
+										</Pane>
+										<Pane>
+											{ !_.isEmpty( currentDrills ) ? _.map( currentDrills, ({ id, title, workoutsDrillId }) => (
+												<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 32 } alignItems="center" background="white" marginBottom={ 16 } key={ id } paddingLeft={ 16 } paddingRight={ 8 }>
+													<Text flex={ 1 }>{ title }</Text>
+													<IconButton icon="small-cross" intent="danger" appearance="minimal" onClick={ e => {
+														e.preventDefault();
+														removeDrill({ variables: { id: workoutsDrillId }});
+													}}/> 
+												</Pane> )) : <Paragraph>No drills selected</Paragraph>}
+										</Pane>
+									</Pane>
 									<FormField label="Workout Description" marginBottom={ 16 }>
 										<Textarea
 											name="body"
