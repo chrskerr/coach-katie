@@ -109,6 +109,32 @@ const GET_WORKOUT = gql`
 	}
 `;
 
+const SUBSCRIBE_WORKOUT = gql`
+	subscription getWorkout ( $id: uuid! ) {
+		workouts_by_pk( id: $id ) {
+			id title type
+            intensity
+			versions ( order_by: { version_num: asc } ){
+				id body
+				version_num
+				owner {
+					first_name
+				}
+				drills {
+					id
+					drill {
+						title id
+					}
+				}
+				stats {
+					running_km id
+					running_minutes
+				}
+			}
+		}
+	}
+`;
+
 const GET_WORKOUT_VERSION = gql`
 	query getWorkout ( $id: uuid! ) {
 		workouts_versions_by_pk ( id: $id ) {
@@ -139,7 +165,7 @@ const GET_WORKOUT_VERSION = gql`
 const INSERT_WORKOUT_VERSION = gql`
 	mutation insertWorkoutVersion ( $objects: [workouts_versions_insert_input!]! ) {
 		insert_workouts_versions ( objects: $objects ) {
-			returning { id }
+			returning { id workout { id } }
 		}
 	}
 `;
@@ -176,6 +202,9 @@ const DELETE_WORKOUTS_DRILL = gql`
 
 const DELETE_WORKOUT = gql`
     mutation deleteWorkout ( $id: uuid! ) {
+        update_weeks_days( where: { workout: { _workout: {_eq: $id }}}, _set: { _workouts_version: null }) {
+            returning { id }
+        }
         delete_workouts_drills( where: { workouts_version: { workout: { id: { _eq: $id }}}}) {
             returning { id }
         }
@@ -193,6 +222,9 @@ const DELETE_WORKOUT = gql`
 
 const DELETE_VERSION = gql`
     mutation deleteWorkout ( $id: uuid! ) {
+        update_weeks_days( where: { _workouts_version: { _eq: $id }}, _set: { _workouts_version: null }) {
+            returning { id }
+        }
         delete_workouts_drills( where: { workouts_version: { id: { _eq: $id }}}) {
             returning { id }
         }
@@ -293,6 +325,7 @@ export default {
 	workouts: {
 		getAll: GET_ALL_WORKOUTS,
 		getOne: GET_WORKOUT,
+		subscribe: SUBSCRIBE_WORKOUT,
 		getVersion: GET_WORKOUT_VERSION,
 		addVersion: INSERT_WORKOUT_VERSION,
 		updateVersion: UPDATE_WORKOUT_VERSION,

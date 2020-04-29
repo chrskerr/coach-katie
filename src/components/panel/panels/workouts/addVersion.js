@@ -17,9 +17,9 @@ import { Services, Queries, Loading } from "../index";
 
 export default function AddWorkoutVersionPanel ({ props }) {
 	const { id, workoutId, emit } = props;
-	const { data: workoutData, loading: workoutLoading } = useQuery( Queries.workouts.getOne,{ variables: { id: workoutId }});
+	const { data: workoutData, loading: workoutLoading } = useQuery( Queries.workouts.getOne, { variables: { id: workoutId }});
 	const { data, loading } = useQuery( Queries.workouts.getVersion, { variables: { id }});
-	const [ addVersion ] = useMutation( Queries.workouts.addVersion, { refetchQueries: [{ query: Queries.workouts.getOne, variables: { id: workoutId }}], awaitRefetchQueries: true }); 
+	const [ addVersion ] = useMutation( Queries.workouts.addVersion ); 
 	const { closePanel } = useContext( Services.UI );
 	const { authUser } = useContext( Services.Auth );
 	const [ errors, setErrors ] = useState( null );

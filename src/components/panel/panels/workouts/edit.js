@@ -40,10 +40,10 @@ export default function EditWorkoutVersionPanel ({ props }) {
 	};
     
 	const workoutsDrills = _.get( version, "drills", []);
-	const currentDrills = _.map( workoutsDrills, drill => ({ workoutsDrillId: drill.id, ...drill.drill }));
+	const selectedDrills = _.map( workoutsDrills, drill => ({ workoutsDrillId: drill.id, ...drill.drill }));
 	const allDrills = _.get( drillsData, "drills" );
 
-	const unselectedDrills = _.filter( allDrills, drill => !_.some( currentDrills, [ "id", drill.id ]));
+	const unselectedDrills = _.filter( allDrills, drill => !_.some( selectedDrills, [ "id", drill.id ]));
 
 	return (
 		<>
@@ -131,14 +131,14 @@ export default function EditWorkoutVersionPanel ({ props }) {
 											<Heading>Selected drills:</Heading>
 										</Pane>
 										<Pane>
-											{ !_.isEmpty( currentDrills ) ? _.map( currentDrills, ({ id, title, workoutsDrillId }) => (
+											{ !_.isEmpty( selectedDrills ) ? _.map( selectedDrills, ({ id, title, workoutsDrillId }) => (
 												<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 32 } alignItems="center" background="white" marginBottom={ 16 } key={ id } paddingLeft={ 16 } paddingRight={ 8 }>
 													<Text flex={ 1 }>{ title }</Text>
 													<IconButton icon="small-cross" intent="danger" appearance="minimal" onClick={ e => {
 														e.preventDefault();
 														removeDrill({ variables: { id: workoutsDrillId }});
 													}}/> 
-												</Pane> )) : <Paragraph>No drills selected</Paragraph>}
+												</Pane> )) : <Paragraph marginBottom={ 16 } >No drills selected</Paragraph>}
 										</Pane>
 									</Pane>
 									<FormField label="Workout Description" marginBottom={ 16 }>

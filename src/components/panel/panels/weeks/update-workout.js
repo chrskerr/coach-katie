@@ -20,7 +20,7 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 
 	const { data, loading } = useQuery( Queries.workouts.getAll );
 	const [ updateWeekday ] = useMutation( Queries.weeks.updateWeekday );
-	const { closePanel } = useContext( Services.UI );
+	const { closePanel, openPanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 	const [ searchTerms, setSearchTerms ] = useState( "" );
 	const [ filteredWorkouts, setFilteredWorkouts ] = useState( "" );
@@ -38,12 +38,26 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 			})),
 		), [ "match", "desc" ],
 	), [ searchTerms, workouts ]);
+    
+	const _handleWorkoutAdd = () => {
+		closePanel();
+		setTimeout(() => openPanel({ panel: "workouts/add", props: { emit: async workoutVersionId => { 
+			try {
+				await updateWeekday({ variables: { id, data: { _workouts_version: workoutVersionId }}});
+				closePanel();
+			} catch ( error ) {
+				console.error( error );
+				setErrors( error.message );
+			}
+		} }}), 200 );
+	};
 
 	if ( loading ) return <Loading />;
 
 	return ( <>
-		<Pane marginBottom={ 56 }>
+		<Pane marginBottom={ 56 } display="flex" justifyContent="space-between">
 			<Heading size={ 600 }>Updating Workout for { title }</Heading>
+			<Button marginLeft={ 8 } iconBefore="plus" onClick={ _handleWorkoutAdd }>Create workout</Button>
 		</Pane>
 		<Formik
 			initialValues={{}}
@@ -97,8 +111,14 @@ const matchWorkout = ( searchTerms, workout ) => {
 	return _.reduce( terms, ( total, curr ) => ( _.lowerCase( title ).includes( curr ) || _.lowerCase( type ).includes( curr )) ? total + 1 : total, 0 );
 };
 
+const getInitialSelectedState = workout => {
+	const versions = _.get( workout, "versions" );
+	const selectOptions = _.map( versions, ({ version_num }) => ({ label: `v${ version_num }`, value: version_num }));
+	return _.reduce( selectOptions, ( total, curr ) => curr.value > total ? curr.value : total, 0 );
+};
+
 const SearchRow = ({ workout, matchSize, onSelect, selected }) => {
-	const [ selectedVersion, setSelectedVersion ] = useState( false );
+	const [ selectedVersion, setSelectedVersion ] = useState( getInitialSelectedState( workout ));
 	const [ isTruncated, setIsTruncated ] = useState( true );
 	const title = _.get( workout, "title" );
 	const versions = _.get( workout, "versions" );
@@ -108,8 +128,6 @@ const SearchRow = ({ workout, matchSize, onSelect, selected }) => {
 	const version = _.find( versions, [ "version_num", selectedVersion ]);
 	const versionId = _.get( version, "id" );
 	const body = isTruncated ? _.truncate( _.get( version, "body" ), { lenght: 100 }) : _.get( version, "body" );
-
-	useEffect(() => { if ( !selectedVersion ) setSelectedVersion( _.reduce( selectOptions, ( total, curr ) => curr.value > total ? curr.value : total, 0 ));}, [ selectOptions, selectedVersion ]); // sets initial value of version to the latest version
     
 	// eslint-disable-next-line
 	useEffect(() => { if ( selected ) onSelect( versionId );}, [ versionId ]);
@@ -135,8 +153,6 @@ const SearchRow = ({ workout, matchSize, onSelect, selected }) => {
 			onSelect( versionId );
 		}
 	};
-
-	if ( !selectedVersion ) return null;
 	
 	return (
 		<Pane display="flex" flexDirection="row" minHeight={ 32 } marginBottom={ 16 }>

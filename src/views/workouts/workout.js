@@ -2,7 +2,7 @@
 // deps
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useSubscription, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
 import { Link, useHistory } from "react-router-dom";
 
@@ -17,7 +17,7 @@ import { Services, Queries, Loading, constants } from "../index";
 
 export default function Workout ( props ) {
 	const { id } = props;
-	const { data, loading } = useQuery( Queries.workouts.getOne, { variables: { id }});
+	const { data, loading } = useSubscription( Queries.workouts.subscribe, { variables: { id }});
 	const [ removeWorkout ] = useMutation( Queries.workouts.deleteWorkout, { refetchQueries: [{ query: Queries.workouts.getAll }], awaitRefetchQueries: true });
 	const [ removeVersion ] = useMutation( Queries.workouts.deleteVersion, { refetchQueries: [{ query: Queries.workouts.getOne, variables: { id }}], awaitRefetchQueries: true });
 	const { openPanel } = useContext( Services.UI );
@@ -52,11 +52,13 @@ export default function Workout ( props ) {
 		await removeVersion({ variables: { id:  _.get( version, "id" ) }});
 		setSelectedVersion( _.get( _.last( versions ), "version_num" ));
 	};
+    
+	const _handleVersionAdd = id => setSelectedVersion( _.get( _.find( versions, [ "id", id ]), "version_num" ));
 
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
-				<Button marginLeft={ 8 } iconBefore="plus" onClick={ () => openPanel({ panel: "workouts/add-version", props: { id: version.id, workoutId: id }, size: "wide" })}>Add Version</Button>
+				<Button marginLeft={ 8 } iconBefore="plus" onClick={ () => openPanel({ panel: "workouts/add-version", props: { id: version.id, workoutId: id, emit: _handleVersionAdd }, size: "wide" })}>Add Version</Button>
 				<Button marginLeft={ 8 } iconBefore="edit" onClick={ () => openPanel({ panel: "workouts/edit", props: { id: version.id }, size: "wide" })}>Edit</Button>
 			</Pane>
 			<Pane marginBottom={ 32 } display="flex" flexDirection="row" alignItems="center">

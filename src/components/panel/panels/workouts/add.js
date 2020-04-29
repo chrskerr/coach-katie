@@ -2,29 +2,35 @@
 // deps
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { Radio, Select, TextInputField, Textarea, FormField, Button, Pane, Heading } from "evergreen-ui";
+import { Radio, Select, TextInputField, Textarea, FormField, Button, Pane, Heading, Text, IconButton, Paragraph } from "evergreen-ui";
 import { Formik } from "formik";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
 import { useHistory } from "react-router-dom";
 
 // app
-import { Services, Queries, constants } from "../index";
+import { Services, Queries, constants, Loading } from "../index";
 
 //
 // Adultletics Admin / Views / Panel / Panels / Workouts / Add
 //
 
 
-
 export default function AddWorkoutPanel ({ props }) {
 	const { emit } = props;
+	const { data: drillsData, loading: drillsLoading } = useQuery( Queries.drills.getAll );
 	const [ addVersion ] = useMutation( Queries.workouts.addVersion, { refetchQueries: [{ query: Queries.workouts.getAll }], awaitRefetchQueries: true }); 
 	const { authUser } = useContext( Services.Auth );
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
+	const [ selectedDrills, setSelectedDrills ] = useState([]);
 	const { intensityOptions, workoutTypes } = constants;
 	const history = useHistory();
+    
+	const allDrills = _.get( drillsData, "drills" );
+	const unselectedDrills = _.filter( allDrills, drill => !_.some( selectedDrills, [ "id", drill.id ]));
+
+	if ( drillsLoading ) return <Loading />;
 
 	return (
 		<>
@@ -35,6 +41,8 @@ export default function AddWorkoutPanel ({ props }) {
 				initialValues={{ running_km: 0, running_minutes: 0, intensity: "3" }}
 				onSubmit={ async ({ title, body, running_km, running_minutes, intensity, type }) => {
 					setErrors( null );
+					const drills_insert_data = _.map( selectedDrills, ({ id }) => ({ _drill: id }));
+					console.log( drills_insert_data );
 					try {
 						const res = await addVersion({ variables: { objects: [{
 							version_num: 1,
@@ -51,12 +59,16 @@ export default function AddWorkoutPanel ({ props }) {
 									running_km, running_minutes,
 								},
 							},
+							drills: {
+								data: drills_insert_data,
+							},
 
 						}]}});
 						closePanel();
-						const id = _.get( res, "data.insert_workouts_versions.returning[0].id" );
-						if ( emit ) emit( id );
-						history.push( `/workouts/${ id }` );
+						const versionId = _.get( res, "data.insert_workouts_versions.returning[0].id" );
+						const workoutId = _.get( res, "data.insert_workouts_versions.returning[0].workout.id" );
+						if ( emit ) emit( versionId );
+						if ( !emit ) history.push( `/workouts/${ workoutId }` );
 					} catch ( error ) {
 						console.error( error );
 						setErrors( error.message );
@@ -86,6 +98,45 @@ export default function AddWorkoutPanel ({ props }) {
 											{ workoutTypes && _.map( workoutTypes, ({ value, label }) => ( <option key={ value } value={ value }>{ label }</option> ))}
 										</Select>
 									</FormField>
+									<Pane>
+										<Pane marginBottom={ 16 }>
+											<Heading>Add Drills to Workout:</Heading>
+										</Pane>
+										<Pane marginBottom={ 8 } display="flex" justifyContent="space-between">
+											<Select name="drill" value={ values.drill } onChange={ handleChange } height={ 32 }>
+												<option key="empty" value="">Please select an option...</option>
+												{ unselectedDrills && _.map( unselectedDrills, ({ id, title }) => ( <option key={ id } value={ id }>{ title }</option> ))}
+											</Select>
+											<Button 
+												iconBefore="tick"
+												disabled={ !values.drill } 
+												onClick={ e => {
+													e.preventDefault();
+													setSelectedDrills([ ...selectedDrills, _.find( allDrills, [ "id", values.drill ]) ]); 
+												}} 
+												marginRight={ 8 } 
+												marginLeft={ 8 }>Attach drill
+											</Button>
+										</Pane>
+										<Pane>
+											{ errors && <p>{ errors }</p>}
+										</Pane>
+									</Pane>
+									<Pane>
+										<Pane marginBottom={ 16 }>
+											<Heading>Selected drills:</Heading>
+										</Pane>
+										<Pane>
+											{ !_.isEmpty( selectedDrills ) ? _.map( selectedDrills, ({ id, title }) => (
+												<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 32 } alignItems="center" background="white" marginBottom={ 16 } key={ id } paddingLeft={ 16 } paddingRight={ 8 }>
+													<Text flex={ 1 }>{ title }</Text>
+													<IconButton icon="small-cross" intent="danger" appearance="minimal" onClick={ e => {
+														e.preventDefault();
+														setSelectedDrills( _.filter( selectedDrills, drill => drill.id !== id ));
+													}}/> 
+												</Pane> )) : <Paragraph marginBottom={ 16 } >No drills selected</Paragraph>}
+										</Pane>
+									</Pane>
 									<FormField label="Workout Description" marginBottom={ 16 }>
 										<Textarea
 											name="body"
