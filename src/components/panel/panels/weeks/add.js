@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
 import { useHistory } from "react-router-dom";
-import { addDays, format, formatISO, startOfWeek, parse } from "date-fns";
+import { addDays, format, formatISO, startOfWeek, parseISO } from "date-fns";
 
 // app
 import { Services, Queries } from "../index";
@@ -29,7 +29,7 @@ export default function AddWeekPanel () {
 
 	if ( daysLoading || weeksLoading ) return null;
     
-	const takenDays = _.map( _.get( weeksData, "weeks" ), ({ week_start }) => formatISO( parse( week_start, "yyyy-MM-dd", today )));
+	const takenDays = _.map( _.get( weeksData, "weeks" ), ({ week_start }) => formatISO( parseISO( week_start )));
 	const dateSelectOptions = _.map([ 7, 14, 21, 28 ], day => {
 		const date = addDays( startOfWeek( today, { weekStartsOn: 1 }), day );
 		return {

@@ -52,6 +52,18 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 		} }}), 200 );
 	};
 
+	const _handleClearWorkout = async e => {
+		e.preventDefault();
+		setErrors( null );
+		try {
+			await updateWeekday({ variables: { id, data: { _workouts_version: null }}});
+			closePanel();
+		} catch ( error ) {
+			console.error( error );
+			setErrors( error.message );
+		}
+	};
+
 	if ( loading ) return <Loading />;
 
 	return ( <>
@@ -90,8 +102,12 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 										/>, 
 									)}
 								</Pane>
-								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !selectedWorkoutVersionId } onClick={ handleSubmit }>Add</Button>
-								{ errors && <p>{ errors }</p>}
+								<Pane display="flex" justifyContent="space-between">
+									<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !selectedWorkoutVersionId } onClick={ handleSubmit }>Add / Update Workout</Button>
+									<Button iconBefore={ isSubmitting ? "" : "cross"} intent="danger" isLoading={ isSubmitting } onClick={ _handleClearWorkout }>Clear Day</Button>
+									{ errors && <p>{ errors }</p>}
+								</Pane>
+
 							</form> 
 						</>
 					);

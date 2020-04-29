@@ -45,7 +45,6 @@ export default function Week ( props ) {
 					const { id, day: { title }, workout } = day;
 					const workoutTitle = _.get( workout, "workout.title" );
 					const workoutVersion = _.get( workout, "version_num" );
-					// console.log( day );
 					return (
 						<Pane key={ id } elevation={ 1 } width="12%" background="white" paddingLeft={ 16 } paddingBottom={ 16 }>
 							<Pane display="flex" justifyContent="space-between" alignItems="flex-end" marginBottom={ 8 }>

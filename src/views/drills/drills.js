@@ -34,7 +34,7 @@ export default function Drills () {
 					const { id, title } = drill;
 					return ( 
 						<Link to={ `/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
-							<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
+							<Pane className="c-row-hover" display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
 								<Text marginLeft={ 24 }>{ title }</Text> 
 							</Pane> 
 						</Link>

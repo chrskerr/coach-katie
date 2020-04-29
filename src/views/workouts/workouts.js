@@ -37,7 +37,7 @@ export default function Workouts () {
 					const typeLabel = _.get( _.find( workoutTypes, [ "value", type ]), "label", "" );
 					return ( 
 						<Link to={ `/workouts/${ id }` } key={ id } style={{ marginBottom: "24px", width: "100%" }}>
-							<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 } >
+							<Pane className="c-row-hover" display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 } >
 								<Pane flex={ 1 } >
 									<Text marginLeft={ 24 } marginRight={ 8 }>{ title }</Text> 
 									<Badge marginRight={ 8 } color="blue">{ typeLabel }</Badge>

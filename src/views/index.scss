@@ -8,6 +8,10 @@ a {
     text-decoration: none !important;
 }
 
+.c-row-hover:hover {
+    background-color: #F7F9FD;
+}
+
 @import "../components/panel/panel";
 @import "../components/top-nav/top-nav";
 @import "./dashboard/dashboard";
