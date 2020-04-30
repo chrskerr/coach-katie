@@ -340,7 +340,7 @@ const SUBSCRIBE_WEEK = gql`
     subscription weekSubscription ( $id: uuid! ) {
         weeks( where: { id: { _eq: $id }}) {
             created_at id week_start
-            title updated_at _challenge
+            title updated_at
             days ( order_by: { _day: asc }) {
                 id
                 day { id title uid }
@@ -364,6 +364,7 @@ const SUBSCRIBE_WEEK = gql`
                     }
                 }
             }
+            daily_challenge { id title description }
         }
     }
 `;

@@ -28,9 +28,9 @@ export default function Week ( props ) {
 	if ( loading || challengesLoading ) return <Loading />;
 
 	const week = _.get( data, "weeks[0]" );
-	const { title, updated_at, days, _challenge } = week;
+	const { title, updated_at, days } = week;
 
-	console.log( _challenge );
+	const challenge = _.get( week, "daily_challenges.id", "" );
 
 	const challenges = _.get( challengesData, "daily_challenges", []);
 	const challengeSelectOptions = _.map( challenges, ({ id, title }) => ({ value: id, label: title }));
@@ -50,7 +50,7 @@ export default function Week ( props ) {
 			</Pane>
 			<Pane>
 				<Formik
-					initialValues={{ challenge: _.isNull( _challenge ) ? "" : _challenge }}
+					initialValues={{ challenge: _.isNull( challenge ) ? "" : challenge }}
 					onSubmit={ async ({ challenge }) => {
 						console.log( challenge );
 						try {
@@ -113,18 +113,22 @@ Week.propTypes = {
 const _handleDownload = ( week, e ) => {
 	e.preventDefault();
 
-	const { title, days } = week;    
+	const { title, days, daily_challenge } = week;    
 	const doc = new Document();
 
 	const children = [ new Paragraph({ text: title, heading: HeadingLevel.HEADING_1 }) ];
+
+	if ( daily_challenge && !_.isEmpty( daily_challenge )) {
+		//add challenge to word doc
+	}
 
 	_.forEach( days, day => {
 		const title = _.get( day, "day.title", "" );
 		const workout = _.get( day, "workout", []);
 		const drills = _.compact( _.get( day, "workout.drills", []));
-        
+    
 		children.push( new Paragraph({ text: title, heading: HeadingLevel.HEADING_3, spacing: { before: 300 }}));
-        
+    
 		if ( _.isEmpty( workout )) { 
 			children.push( new Paragraph({ text: "Nothing assigned today, rest day!" }));
 		} else {
