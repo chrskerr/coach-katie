@@ -20,7 +20,7 @@ const now = new Date();
 export default function Weeks () {
 	const { openPanel } = useContext( Services.UI );
 	const { data, loading } = useQuery( Queries.weeks.getAll );
-	const weeks = _.get( data, "weeks" );
+	const weeks = [ ..._.get( data, "weeks", []) ].sort(( a, b ) => parseISO( b.week_start ) - parseISO( a.week_start ));
 
 	if ( loading ) return <Loading />;
 

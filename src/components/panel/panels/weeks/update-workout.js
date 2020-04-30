@@ -41,7 +41,7 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
     
 	const _handleWorkoutAdd = () => {
 		closePanel();
-		setTimeout(() => openPanel({ panel: "workouts/add", props: { emit: async workoutVersionId => { 
+		setTimeout(() => openPanel({ panel: "workouts/add", size: "wide", props: { emit: async workoutVersionId => { 
 			try {
 				await updateWeekday({ variables: { id, data: { _workouts_version: workoutVersionId }}});
 				closePanel();

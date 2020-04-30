@@ -241,7 +241,38 @@ const DELETE_VERSION = gql`
 // WEEKS
 const GET_ALL_WEEKS = gql`
     query getAllWeeks {
-        weeks ( order_by: { week_start: desc }) {
+        weeks {
+            id title updated_at week_start
+            days ( order_by: { _day: asc }) {
+                id
+                day { id title uid }
+                workout {
+                    body id
+                    version_num
+                    drills {
+                        id
+                        drill {
+                            description
+                            id title url
+                        }
+                    }
+                    workout {
+                        id intensity
+                        title type
+                    }
+                    stats {
+                        id running_km
+                        running_minutes
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const SUBSCRIBE_ALL_WEEKS = gql`
+    subscription getAllWeeks {
+        weeks {
             id title updated_at week_start
             days ( order_by: { _day: asc }) {
                 id
@@ -360,6 +391,7 @@ export default {
 	weeks: {
 		getAll: GET_ALL_WEEKS,
 		subscribe: SUBSCRIBE_WEEK,
+		subscribeAll: SUBSCRIBE_ALL_WEEKS,
 		updateWeek: UPDATE_WEEK,
 		updateWeekday: UPDATE_WEEK_DAY,
 		add: CREATE_WEEK,

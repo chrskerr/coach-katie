@@ -2,7 +2,7 @@
 // deps
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import { useQuery } from "@apollo/react-hooks";
+import { useSubscription } from "@apollo/react-hooks";
 import { ResponsiveBump } from "@nivo/bump";
 import { ResponsiveStream } from "@nivo/stream";
 import { parseISO } from "date-fns";
@@ -18,7 +18,7 @@ import { Queries, constants } from "../index";
 
 
 export default function Dashboard () {
-	const { data } = useQuery( Queries.weeks.getAll );
+	const { data } = useSubscription( Queries.weeks.subscribeAll );    
 	const weeks = [ ..._.get( data, "weeks", []) ].sort(( a, b ) => parseISO( a.week_start ) - parseISO( b.week_start ));
 
 	return (
