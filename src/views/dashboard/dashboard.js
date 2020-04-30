@@ -27,16 +27,97 @@ export default function Dashboard () {
 				<Heading size={ 800 } color="#1070CA">Dashboard</Heading>
 			</Pane>
 			<Pane height={ 300 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
-				<Heading size={ 300 }>Workout popularity over time</Heading>
+				<Heading size={ 300 }>{ _.upperCase( "Workout popularity over time" ) }</Heading>
 				<WorkoutPopularityChart weeks={ weeks } />
 			</Pane>
 			<Pane height={ 300 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
-				<Heading size={ 300 }>Energy system weighting over time</Heading>
+				<Heading size={ 300 }>{ _.upperCase( "Workout types over time" ) }</Heading>
+				<WorkoutTypeChart weeks={ weeks } />
+			</Pane>
+			<Pane height={ 300 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
+				<Heading size={ 300 }>{ _.upperCase( "Energy systems over time" ) }</Heading>
 				<EnergySystemsChart weeks={ weeks } />
 			</Pane>
 		</Pane>
 	);
 }
+
+const WorkoutTypeChart = memo( function WorkoutPopularityChart ( props ) {
+	const { weeks } = props;
+	const { workoutTypes } = constants;
+	const typeList = [];
+
+	const lastTenWeekWeightedCounts = _.compact( _.map( _.range( 9, -1 ), i => {
+		const end = _.size( weeks ) - 1 - i;
+		if ( end < 0 ) return false;
+
+		const start = end - 10 < 0 ? 0 : end - 10;
+		const loopData = _.slice( weeks, start, end );
+
+		return _.reduce( loopData, ( total, curr, i ) => {
+			return _.reduce( _.get( curr, "days", []), ( total, curr ) => {
+				const type = _.get( _.find( workoutTypes, [ "value", _.get( curr, "workout.workout.type" ) ]), "label" );
+				if ( !type ) return total;
+				if ( !typeList.includes( type )) typeList.push( type );
+				const value = _.get( total, [ "data", type ], 0 ) + ( 1 - ( i / 10 ));
+				return { ...total, data: { ...total.data, [ type ]: value }};
+			}, { ...total });
+		}, { label: i, data: {}});
+	}));
+    
+	const lastTenWeekRanks = _.map( lastTenWeekWeightedCounts, week => {
+		const weekAsSortedArrayPairs = _.toPairs( _.get( week, "data" )).sort(( a, b ) => b[ 1 ] - a[ 1 ]);
+		return { ...week, data: _.reduce( weekAsSortedArrayPairs, ( total, curr, i ) => ({ ...total, [ curr[ 0 ] ]: i + 1 }), {}) };
+	});
+    
+	const graphData = _.map( typeList, type => ({
+		id: type,
+		data: _.map( lastTenWeekRanks, week => ({ "x": _.get( week, "label" ), "y": _.get( week, [ "data", type ], _.size( typeList )) })),
+	}));
+
+	if ( _.isEmpty( graphData )) return null;
+
+	return (
+		<ResponsiveBump
+			data={ graphData }
+			margin={{ top: 40, right: 150, bottom: 60, left: 60 }}
+			colors={{ scheme: "category10" }}
+			lineWidth={ 2 }
+			activeLineWidth={ 4 }
+			inactiveLineWidth={ 2 }
+			inactiveOpacity={ 0.6 }
+			pointSize={ 5 }
+			activePointSize={ 10 }
+			inactivePointSize={ 0 }
+			pointColor={{ theme: "background" }}
+			pointBorderWidth={ 3 }
+			activePointBorderWidth={ 3 }
+			pointBorderColor={{ from: "serie.color" }}
+			axisTop={ null }
+			axisRight={ null }
+			axisBottom={{
+				tickSize: 5,
+				tickPadding: 5,
+				tickRotation: 0,
+				legend: "Weeks ago",
+				legendPosition: "middle",
+				legendOffset: 32,
+			}}
+			axisLeft={{
+				tickSize: 5,
+				tickPadding: 5,
+				tickRotation: 0,
+				legend: "Rank",
+				legendPosition: "middle",
+				legendOffset: -40,
+			}}
+			endLabelPadding={ 8 }
+		/>
+	);
+}, _.isEqual );
+WorkoutTypeChart.propTypes = {
+	weeks: PropTypes.array,
+};
 
 const WorkoutPopularityChart = memo( function WorkoutPopularityChart ( props ) {
 	const { weeks } = props;
