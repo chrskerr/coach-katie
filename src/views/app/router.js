@@ -1,11 +1,11 @@
 
 // deps
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 // app
 import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex, Loading } from "../index";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Pane } from "evergreen-ui";
+import { toaster, Pane } from "evergreen-ui";
 
 //
 // Adultletics Admin / Views / App / App
@@ -22,7 +22,9 @@ export default function Router () {
 		addNotification: () => {},
 	});
 	const { isAuthenticated } = useContext( Auth );
-    
+        
+	useEffect(() => { if ( window.innerWidth < 1000 ) toaster.warning( "This page is designed for a larger browswer", { duration: 30, position: "top-right" });}, []);
+
 	return (
 		<>
 			<UI.Provider value={ ui }>
