@@ -26,7 +26,7 @@ export default function Dashboard () {
 			<Pane display="flex" marginBottom={ 48 }>
 				<Heading size={ 800 } color="#1070CA">Dashboard</Heading>
 			</Pane>
-			<Pane height={ 300 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
+			<Pane height={ 450 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
 				<Heading size={ 300 }>{ _.upperCase( "Workout popularity over time" ) }</Heading>
 				<WorkoutPopularityChart weeks={ weeks } />
 			</Pane>
@@ -42,13 +42,15 @@ export default function Dashboard () {
 	);
 }
 
+
+
 const WorkoutTypeChart = memo( function WorkoutPopularityChart ( props ) {
 	const { weeks } = props;
 	const { workoutTypes } = constants;
 	const typeList = [];
 
-	const lastTenWeekWeightedCounts = _.compact( _.map( _.range( 9, -1 ), i => {
-		const end = _.size( weeks ) - 1 - i;
+	const lastTenWeekWeightedCounts = _.compact( _.map( _.rangeRight( 0, 10 ), i => {
+		const end = _.size( weeks ) - i;
 		if ( end < 0 ) return false;
 
 		const start = end - 10 < 0 ? 0 : end - 10;
@@ -59,7 +61,7 @@ const WorkoutTypeChart = memo( function WorkoutPopularityChart ( props ) {
 				const type = _.get( _.find( workoutTypes, [ "value", _.get( curr, "workout.workout.type" ) ]), "label" );
 				if ( !type ) return total;
 				if ( !typeList.includes( type )) typeList.push( type );
-				const value = _.get( total, [ "data", type ], 0 ) + ( 1 - ( i / 10 ));
+				const value = _.get( total, [ "data", type ], 0 ) + ( 1 - (( 11 - i ) / 10 ));
 				return { ...total, data: { ...total.data, [ type ]: value }};
 			}, { ...total });
 		}, { label: i, data: {}});
@@ -119,13 +121,15 @@ WorkoutTypeChart.propTypes = {
 	weeks: PropTypes.array,
 };
 
+
+
 const WorkoutPopularityChart = memo( function WorkoutPopularityChart ( props ) {
 	const { weeks } = props;
 	const workoutList = [];
 
-	const lastTenWeekWeightedCounts = _.compact( _.map( _.range( 9, -1 ), i => {
-		const end = _.size( weeks ) - 1 - i;
-		if ( end < 0 ) return false;
+	const lastTenWeekWeightedCounts = _.compact( _.map( _.rangeRight( 0, 10 ), i => {
+		const end = _.size( weeks ) - i;
+		if ( end <= 0 ) return false;
 
 		const start = end - 10 < 0 ? 0 : end - 10;
 		const loopData = _.slice( weeks, start, end );
@@ -133,9 +137,10 @@ const WorkoutPopularityChart = memo( function WorkoutPopularityChart ( props ) {
 		return _.reduce( loopData, ( total, curr, i ) => {
 			return _.reduce( _.get( curr, "days", []), ( total, curr ) => {
 				const title = _.get( curr, "workout.workout.title" );
-				if ( !title ) return total;
+				const type = _.get( curr, "workout.workout.type" );
+				if ( !title || type === "recovery" ) return total;
 				if ( !workoutList.includes( title )) workoutList.push( title );
-				const value = _.get( total, [ "data", title ], 0 ) + ( 1 - ( i / 10 ));
+				const value = _.get( total, [ "data", title ], 0 ) + ( 1 - (( 11 - i ) / 10 ));
 				return { ...total, data: { ...total.data, [ title ]: value }};
 			}, { ...total });
 		}, { label: i, data: {}});
@@ -146,10 +151,10 @@ const WorkoutPopularityChart = memo( function WorkoutPopularityChart ( props ) {
 		return { ...week, data: _.reduce( weekAsSortedArrayPairs, ( total, curr, i ) => ({ ...total, [ curr[ 0 ] ]: i + 1 }), {}) };
 	});
     
-	const graphData = _.map( workoutList, workout => ({
+	const graphData = _.filter( _.map( workoutList, workout => ({
 		id: workout,
 		data: _.map( lastTenWeekRanks, week => ({ "x": _.get( week, "label" ), "y": _.get( week, [ "data", workout ], _.size( workoutList )) })),
-	}));
+	})), ({ data }) => _.get( _.last( data ), "x" ) <= 12 );
 
 	if ( _.isEmpty( graphData )) return null;
 
@@ -195,6 +200,8 @@ WorkoutPopularityChart.propTypes = {
 	weeks: PropTypes.array,
 };
 
+
+
 const EnergySystemsChart = memo( function EnergySystemsChart ( props ) {
 	const { weeks } = props;
 	const { workoutTypes } = constants;
@@ -209,7 +216,7 @@ const EnergySystemsChart = memo( function EnergySystemsChart ( props ) {
 
 			const workoutTypesObject = _.find( workoutTypes, [ "value", type ]);
 			const system = _.get( workoutTypesObject, "system", "missing" );
-			return { ...total, [ system ]: total.system ? total.system + 1 : 1 };
+			return { ...total, [ system ]: total[ system ] ? total[ system ] + 1 : 1 };
 		}, { ...keysObject });
 	});
     
@@ -221,9 +228,9 @@ const EnergySystemsChart = memo( function EnergySystemsChart ( props ) {
 		axisRight={ null }
 		axisBottom={ null }
 		axisLeft={ null }
-		// offsetType="expand"
+		offsetType="none"
 		order="none"
-		curve="natural"
+		// curve="natural"
 		colors={{ scheme: "category10" }}
 		fillOpacity={ 0.85 }
 		legends={[
