@@ -36,6 +36,10 @@ export default function TopNav () {
 			name: "Drills",
 			route: "/drills",
 		},
+		{
+			name: "Daily Challenges",
+			route: "/challenges",
+		},
 	];
 
 	return (

@@ -1,7 +1,7 @@
 
 // deps
 import React, { useContext, useState } from "react";
-import { Pane, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
+import { Pane, Heading, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -9,7 +9,7 @@ import { useMutation } from "@apollo/react-hooks";
 import { Services, Queries } from "../index";
 
 //
-// Adultletics Admin / Views / Panel / Panels / Drills / add
+// Adultletics Admin / Views / Panel / Panels / Drills / Add
 //
 
 
@@ -18,7 +18,10 @@ export default function AddDrillPanel () {
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 
-	return (
+	return ( <>
+		<Pane marginBottom={ 56 }>
+			<Heading size={ 600 }>Adding a new drill</Heading>
+		</Pane>
 		<Formik
 			initialValues={{ description: "" }}
 			onSubmit={ async data => {
@@ -72,5 +75,5 @@ export default function AddDrillPanel () {
 					);
 				}}
 		</Formik>
-	);
+	</> );
 }

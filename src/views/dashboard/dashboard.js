@@ -61,7 +61,7 @@ const WorkoutTypeChart = memo( function WorkoutPopularityChart ( props ) {
 				const type = _.get( _.find( workoutTypes, [ "value", _.get( curr, "workout.workout.type" ) ]), "label" );
 				if ( !type ) return total;
 				if ( !typeList.includes( type )) typeList.push( type );
-				const value = _.get( total, [ "data", type ], 0 ) + ( 1 - (( 11 - i ) / 10 ));
+				const value = _.get( total, [ "data", type ], 0 ) + ( 1 - (( 10 - i ) / 11 ));
 				return { ...total, data: { ...total.data, [ type ]: value }};
 			}, { ...total });
 		}, { label: i, data: {}});
@@ -140,7 +140,7 @@ const WorkoutPopularityChart = memo( function WorkoutPopularityChart ( props ) {
 				const type = _.get( curr, "workout.workout.type" );
 				if ( !title || type === "recovery" ) return total;
 				if ( !workoutList.includes( title )) workoutList.push( title );
-				const value = _.get( total, [ "data", title ], 0 ) + ( 1 - (( 11 - i ) / 10 ));
+				const value = _.get( total, [ "data", title ], 0 ) + ( 1 - (( 10 - i ) / 11 ));
 				return { ...total, data: { ...total.data, [ title ]: value }};
 			}, { ...total });
 		}, { label: i, data: {}});

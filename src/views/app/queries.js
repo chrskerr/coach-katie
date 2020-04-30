@@ -57,6 +57,41 @@ const UPDATE_DRILL = gql`
 `;
 
 
+// DAILY_CHALLENGES
+const GET_ALL_CHALLENGES = gql`
+	query getAllChallenges {
+		daily_challenges ( order_by: { title: asc }) {
+			id title description
+		}
+	}
+`;
+
+const GET_CHALLENGE_BY_ID = gql`
+	query getChallenge ( $id: uuid! ) {
+		daily_challenges_by_pk ( id: $id ) {
+			id title description
+            weeks { id }
+		}
+	}
+`;
+
+const INSERT_CHALLENGE = gql`
+	mutation insertChalleenge ( $objects: [daily_challenges_insert_input!]! ) {
+		insert_daily_challenges ( objects: $objects ) {
+			returning { id }
+		}
+	}
+`;
+
+const UPDATE_CHALLENGE = gql`
+	mutation updateChallenge ( $id: uuid!, $data: daily_challenges_set_input! ) {
+		update_daily_challenges ( where: { id: { _eq: $id }}, _set: $data ) {
+			returning { id }
+		}
+	}
+`;
+
+
 // WORKOUTS
 const GET_ALL_WORKOUTS = gql`
 	query getWorkouts {
@@ -242,7 +277,7 @@ const DELETE_VERSION = gql`
 const GET_ALL_WEEKS = gql`
     query getAllWeeks {
         weeks {
-            id title updated_at week_start
+            id title updated_at week_start _challenge
             days ( order_by: { _day: asc }) {
                 id
                 day { id title uid }
@@ -305,7 +340,7 @@ const SUBSCRIBE_WEEK = gql`
     subscription weekSubscription ( $id: uuid! ) {
         weeks( where: { id: { _eq: $id }}) {
             created_at id week_start
-            title updated_at
+            title updated_at _challenge
             days ( order_by: { _day: asc }) {
                 id
                 day { id title uid }
@@ -375,6 +410,12 @@ export default {
 		getOne: GET_DRILL_BY_ID,
 		add: INSERT_DRILL,
 		update: UPDATE_DRILL,
+	},
+	dailyChallenges: {
+		getAll: GET_ALL_CHALLENGES,
+		getOne: GET_CHALLENGE_BY_ID,
+		add: INSERT_CHALLENGE,
+		update: UPDATE_CHALLENGE,
 	},
 	workouts: {
 		getAll: GET_ALL_WORKOUTS,

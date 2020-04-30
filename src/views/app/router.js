@@ -3,7 +3,7 @@
 import React, { useState, useContext, useEffect } from "react";
 
 // app
-import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex, Loading } from "../index";
+import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex, DailyChallengesIndex, Loading } from "../index";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { toaster, Pane } from "evergreen-ui";
 
@@ -37,6 +37,7 @@ export default function Router () {
 								<Route path="/drills/:id?"><DrillsIndex /></Route>
 								<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
 								<Route path="/weeks/:id?"><WeeksIndex /></Route>
+								<Route path="/challenges/:id?"><DailyChallengesIndex /></Route>
 								<Route path="/"><Dashboard /></Route>
 							</Switch> : <Loading /> }
 						</div>

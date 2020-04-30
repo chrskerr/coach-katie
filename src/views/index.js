@@ -17,3 +17,4 @@ export { default as Dashboard } from "./dashboard/dashboard";
 export { default as WorkoutsIndex } from "./workouts";
 export { default as WeeksIndex } from "./weeks";
 export { default as DrillsIndex } from "./drills";
+export { default as DailyChallengesIndex } from "./daily-challenges";

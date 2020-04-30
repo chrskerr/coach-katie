@@ -2,7 +2,7 @@
 // deps
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { Pane, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
+import { Pane, Heading, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -11,7 +11,7 @@ import _ from "lodash";
 import { Services, Queries } from "../index";
 
 //
-// Adultletics Admin / Views / Panel / Panels / Drills / add
+// Adultletics Admin / Views / Panel / Panels / Drills / Edit
 //
 
 
@@ -30,7 +30,10 @@ export default function EditDrillPanel ({ props }) {
 	const embed_url = _.get( drill, "embed_url" );
 	const description = _.get( drill, "description" );
     
-	return (
+	return ( <>
+		<Pane marginBottom={ 56 }>
+			<Heading size={ 600 }>Editing challenge: { title }</Heading>
+		</Pane>
 		<Formik
 			initialValues={{ title, url, embed_url, description: _.isNull( description ) ? "" : description }}
 			onSubmit={ async data => {
@@ -87,7 +90,7 @@ export default function EditDrillPanel ({ props }) {
 					);
 				}}
 		</Formik>
-	);
+	</> );
 }
 EditDrillPanel.propTypes = {
 	props: PropTypes.object,
