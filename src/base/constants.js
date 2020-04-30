@@ -8,14 +8,14 @@ const intensityOptions = [
 ];
 
 const workoutTypes = [
-	{ label: "Long Aerobic", value: "long-aerobic" },
-	{ label: "Short Aerobic", value: "short-aerobic" },
-	{ label: "Recovery", value: "recovery" },
-	{ label: "Intervals", value: "intervals" },
-	{ label: "Strength", value: "strength" },
-	{ label: "Tempo Run", value: "tempo" },
-	{ label: "Speed Play", value: "speed-play" },
-	{ label: "Hills", value: "hills" },
+	{ label: "Long Aerobic", value: "long-aerobic", system: "2 aerobic" },
+	{ label: "Short Aerobic", value: "short-aerobic", system: "2 aerobic" },
+	{ label: "Recovery", value: "recovery", system: "1 recovery" },
+	{ label: "Intervals", value: "intervals", system: "4 atp" },
+	{ label: "Strength", value: "strength", system: "4 atp" },
+	{ label: "Tempo Run", value: "tempo", system: "3 anaerobic" },
+	{ label: "Speed Play", value: "speed-play", system: "3 anaerobic" },
+	{ label: "Hills", value: "hills", system: "3 anaerobic" },
 ];
 
 export default {

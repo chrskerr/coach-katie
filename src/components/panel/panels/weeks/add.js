@@ -30,7 +30,7 @@ export default function AddWeekPanel () {
 	if ( daysLoading || weeksLoading ) return null;
     
 	const takenDays = _.map( _.get( weeksData, "weeks" ), ({ week_start }) => formatISO( parseISO( week_start )));
-	const dateSelectOptions = _.map([ 7, 14, 21, 28 ], day => {
+	const dateSelectOptions = _.map( _.range( 7, 29, 7 ) , day => {
 		const date = addDays( startOfWeek( today, { weekStartsOn: 1 }), day );
 		return {
 			value: formatISO( date ),

@@ -3,7 +3,7 @@
 import React, { useState, useContext } from "react";
 
 // app
-import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex } from "../index";
+import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex, Loading } from "../index";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Pane } from "evergreen-ui";
 
@@ -31,12 +31,12 @@ export default function Router () {
 					<Pane background="tint1" minHeight="100vh">
 						<TopNav />
 						<div className="v-router">
-							{ isAuthenticated && <Switch>
+							{ isAuthenticated ? <Switch>
 								<Route path="/drills/:id?"><DrillsIndex /></Route>
 								<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
 								<Route path="/weeks/:id?"><WeeksIndex /></Route>
 								<Route path="/"><Dashboard /></Route>
-							</Switch> }
+							</Switch> : <Loading /> }
 						</div>
 					</Pane>
 				</BrowserRouter>

@@ -19,7 +19,7 @@ export default function App () {
 		authUser: {},
 		token: "",
 		uid: "",
-		isAuthenticating: false,
+		isAuthenticating: true,
 		isAuthenticated: false,
 		updateAuth: payload => setAuth( auth => ({ ...auth, ...payload })),
 		signIn: () => {},

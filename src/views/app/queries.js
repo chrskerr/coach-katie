@@ -243,6 +243,29 @@ const GET_ALL_WEEKS = gql`
     query getAllWeeks {
         weeks ( order_by: { week_start: desc }) {
             id title updated_at week_start
+            days ( order_by: { _day: asc }) {
+                id
+                day { id title uid }
+                workout {
+                    body id
+                    version_num
+                    drills {
+                        id
+                        drill {
+                            description
+                            id title url
+                        }
+                    }
+                    workout {
+                        id intensity
+                        title type
+                    }
+                    stats {
+                        id running_km
+                        running_minutes
+                    }
+                }
+            }
         }
     }
 `;

@@ -1,4 +1,8 @@
 
 .v-panel {
     padding: 4em;
+
+    .c-loading {
+        height: calc( 100vh - 4em );
+    }
 }
