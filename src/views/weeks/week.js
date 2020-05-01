@@ -48,7 +48,7 @@ export default function Week ( props ) {
 					<Text>Last updated: <Badge color="blue">{ format( parseISO( updated_at ), "dd MMM yyyy @ h:mm a" ).replace( "@", "at" ) }</Badge></Text>
 				</Pane>
 			</Pane>
-			<Pane>
+			<Pane marginBottom={ 32 } >
 				<Formik
 					initialValues={{ challenge: _.isNull( challenge ) ? "" : challenge }}
 					onSubmit={ async ({ challenge }) => {
