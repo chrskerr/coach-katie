@@ -1,17 +1,17 @@
 
 // deps
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import PropTypes from "prop-types";
 import { useSubscription, useMutation, useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
 import { format, parseISO } from "date-fns";
-import { Document, Paragraph, HeadingLevel, Packer } from "docx";
+import { Document, Paragraph as DocXParagraph, HeadingLevel, Packer } from "docx";
 import { save } from "save-file";
 import { Formik } from "formik";
 
 // app
-import { SelectField, Pane, Text, Heading, Badge, IconButton, Button } from "evergreen-ui";
-import { Queries, Loading, Services } from "../index";
+import { SelectField, Pane, Paragraph, Text, Heading, Badge, IconButton, Button } from "evergreen-ui";
+import { Queries, Loading, Services, constants } from "../index";
 
 //
 // Adultletics Admin / Views / Week / Week
@@ -29,9 +29,10 @@ export default function Week ( props ) {
 
 	const week = _.get( data, "weeks[0]" );
 	const { title, updated_at, days } = week;
-
+    
+	const workouts = _.compact( _.map( days, "workout" ));    
+    
 	const challenge = _.get( week, "daily_challenges.id", "" );
-
 	const challenges = _.get( challengesData, "daily_challenges", []);
 	const challengeSelectOptions = _.map( challenges, ({ id, title }) => ({ value: id, label: title }));
 
@@ -82,7 +83,7 @@ export default function Week ( props ) {
 						}}
 				</Formik>
 			</Pane>
-			<Pane display="flex" justifyContent="space-between">
+			<Pane display="flex" justifyContent="space-between" marginBottom={ 32 }>
 				{ days && _.map( days, day => {
 					const { id, day: { title }, workout } = day;
 					const workoutTitle = _.get( workout, "workout.title" );
@@ -103,6 +104,18 @@ export default function Week ( props ) {
 					);
 				})}
 			</Pane>
+			<Pane>
+				<Heading marginBottom={ 8 }>Stats:</Heading>
+				<Pane display="flex" justifyContent="space-between">
+					<Pane elevation={ 1 } background="white" padding={ 16 } width={ "20%" }>
+						<Paragraph>Total Running KM: <Text>55</Text></Paragraph>
+						<Paragraph>Total Running Mins: <Text>55</Text></Paragraph>
+					</Pane>
+					<Pane elevation={ 1 } background="white" padding={ 16 } width={ "20%" }>
+						<EnergySystemSplit workouts={ workouts } />
+					</Pane>
+				</Pane>
+			</Pane>
 		</>
 	);
 }
@@ -116,7 +129,7 @@ const _handleDownload = ( week, e ) => {
 	const { title, days, daily_challenge } = week;    
 	const doc = new Document();
 
-	const children = [ new Paragraph({ text: title, heading: HeadingLevel.HEADING_1 }) ];
+	const children = [ new DocXParagraph({ text: title, heading: HeadingLevel.HEADING_1 }) ];
 
 	if ( daily_challenge && !_.isEmpty( daily_challenge )) {
 		//add challenge to word doc
@@ -127,20 +140,38 @@ const _handleDownload = ( week, e ) => {
 		const workout = _.get( day, "workout", []);
 		const drills = _.compact( _.get( day, "workout.drills", []));
     
-		children.push( new Paragraph({ text: title, heading: HeadingLevel.HEADING_3, spacing: { before: 300 }}));
+		children.push( new DocXParagraph({ text: title, heading: HeadingLevel.HEADING_3, spacing: { before: 300 }}));
     
 		if ( _.isEmpty( workout )) { 
-			children.push( new Paragraph({ text: "Nothing assigned today, rest day!" }));
+			children.push( new DocXParagraph({ text: "Nothing assigned today, rest day!" }));
 		} else {
 			if ( !_.isEmpty( drills )) {
-				const drillsText = _.map( drills, ({ drill: { title, url }}) => new Paragraph({ text: `${ title }: ${ url }`, bullet: { level: 0 }}));
-				children.push( new Paragraph({ text: "Please perform the following drills:", heading: HeadingLevel.HEADING_4 }));
+				const drillsText = _.map( drills, ({ drill: { title, url }}) => new DocXParagraph({ text: `${ title }: ${ url }`, bullet: { level: 0 }}));
+				children.push( new DocXParagraph({ text: "Please perform the following drills:", heading: HeadingLevel.HEADING_4 }));
 				children.push( ...drillsText );
 			}
-			children.push( new Paragraph({ text: workout.body }));
+			children.push( new DocXParagraph({ text: workout.body }));
 		}
 	});
     
 	doc.addSection({ children });
 	Packer.toBlob( doc ).then( blob => save( blob, `${ title }.docx` ));
+};
+
+const EnergySystemSplit = memo( function EnergySystemSplit ({ workouts }) {
+	const { workoutTypes, intensityOptions } = constants;
+
+	const allEnergySystems = _.orderBy( _.uniqBy( _.map( workoutTypes, "system" ), "id" ), "id" );
+	const workoutsEnergySystemMap = _.map( workouts, workout => _.get( _.find( workoutTypes, [ "value", _.get( workout, "workout.type" ) ]), "system" ));
+    
+	const graphData = _.map( allEnergySystems, system => ({ id: system, value: _.size( _.filter( workoutsEnergySystemMap, el => el === system )) }));
+
+	console.log( graphData );
+
+	return (
+		<p>Here</p>
+	);
+}, _.isEqual );
+EnergySystemSplit.propTypes = {
+	workouts: PropTypes.array,
 };
