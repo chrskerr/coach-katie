@@ -13,6 +13,7 @@ import WorkoutsVersionAdd from "./workouts/addVersion";
 import WorkoutsEdit from "./workouts/edit";
 import WeeksAdd from "./weeks/add";
 import WeeksDayWorkoutUpdate from "./weeks/update-workout";
+import WeeksViewWorkoutVersion from "./weeks/view-workout-version";
 
 export default {
 	"auth/sign-in": SignIn,
@@ -25,6 +26,7 @@ export default {
 	"workouts/edit": WorkoutsEdit,
 	"weeks/add": WeeksAdd,
 	"weeks/update-workout": WeeksDayWorkoutUpdate,
+	"weeks/view-workout-version": WeeksViewWorkoutVersion,
 };
 
 export { Services, Queries, constants, Loading } from "../../../views/index";

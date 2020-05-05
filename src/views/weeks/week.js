@@ -91,19 +91,21 @@ export default function Week ( props ) {
 					const { id, day: { title }, workout } = day;
 					const workoutTitle = _.get( workout, "workout.title" );
 					const workoutVersion = _.get( workout, "version_num" );
+					const workoutVersionId = _.get( workout, "id", "" );
 					const type = _.get( workout, "workout.type" );
 					return (
 						<Pane key={ id } elevation={ 1 } width="12%" background="white" paddingLeft={ 16 } paddingBottom={ 16 }>
 							<Pane display="flex" justifyContent="space-between" alignItems="flex-end" marginBottom={ 8 }>
 								<Heading size={ 200 }>{ title }</Heading>
-								<IconButton icon="small-plus" appearance="minimal" onClick={ () => openPanel({ panel: "weeks/update-workout", props: { id, title }, size:"wide" })} />
+								<IconButton icon="small-plus" appearance="minimal" onClick={ () => openPanel({ panel: "weeks/update-workout", props: { id, title }, size: "wide" })} />
 							</Pane>
 							<Pane paddingRight={ 16 }>
 								{ _.isEmpty( workout ) ? 
-									<Text color='red'>No workout chosen</Text> : <>
+									<Text color='red'>No workout chosen</Text> : 
+									<div onClick={ () => openPanel({ panel: "weeks/view-workout-version", props: { id: workoutVersionId }, size: "wide" })}>
 										<Paragraph marginBottom={ 8 }>{ workoutTitle } - v{ workoutVersion }</Paragraph>
 										<Badge color="blue">{ _.get( _.find( workoutTypes, [ "value", type ]), "label" ) }</Badge>
-									</>
+									</div>
 								}
 							</Pane>
 						</Pane>
