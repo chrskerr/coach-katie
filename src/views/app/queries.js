@@ -110,8 +110,13 @@ const GET_ALL_WORKOUTS = gql`
 					}
 				}
 				stats {
-					running_km id
-					running_minutes
+					id
+					running_minutes_beginner_short running_km_beginner_short
+					running_minutes_intermediate_short running_km_intermediate_short
+					running_minutes_advanced_short running_km_advanced_short
+					running_minutes_beginner_long running_km_beginner_long
+					running_minutes_intermediate_long running_km_intermediate_long
+					running_minutes_advanced_long running_km_advanced_long
 				}
 			}
 		}
@@ -136,8 +141,13 @@ const GET_WORKOUT = gql`
 					}
 				}
 				stats {
-					running_km id
-					running_minutes
+					id
+					running_minutes_beginner_short running_km_beginner_short
+					running_minutes_intermediate_short running_km_intermediate_short
+					running_minutes_advanced_short running_km_advanced_short
+					running_minutes_beginner_long running_km_beginner_long
+					running_minutes_intermediate_long running_km_intermediate_long
+					running_minutes_advanced_long running_km_advanced_long
 				}
 			}
 		}
@@ -162,8 +172,13 @@ const SUBSCRIBE_WORKOUT = gql`
 					}
 				}
 				stats {
-					running_km id
-					running_minutes
+					id
+					running_minutes_beginner_short running_km_beginner_short
+					running_minutes_intermediate_short running_km_intermediate_short
+					running_minutes_advanced_short running_km_advanced_short
+					running_minutes_beginner_long running_km_beginner_long
+					running_minutes_intermediate_long running_km_intermediate_long
+					running_minutes_advanced_long running_km_advanced_long
 				}
 			}
 		}
@@ -185,9 +200,13 @@ const GET_WORKOUT_VERSION = gql`
 				}
 			}
 			stats {
-				id
-				running_km
-				running_minutes
+                id
+                running_minutes_beginner_short running_km_beginner_short
+                running_minutes_intermediate_short running_km_intermediate_short
+                running_minutes_advanced_short running_km_advanced_short
+                running_minutes_beginner_long running_km_beginner_long
+                running_minutes_intermediate_long running_km_intermediate_long
+                running_minutes_advanced_long running_km_advanced_long
 			}
 			workout {
 				id title type
@@ -296,8 +315,13 @@ const GET_ALL_WEEKS = gql`
                         title type
                     }
                     stats {
-                        id running_km
-                        running_minutes
+                        id
+                        running_minutes_beginner_short running_km_beginner_short
+                        running_minutes_intermediate_short running_km_intermediate_short
+                        running_minutes_advanced_short running_km_advanced_short
+                        running_minutes_beginner_long running_km_beginner_long
+                        running_minutes_intermediate_long running_km_intermediate_long
+                        running_minutes_advanced_long running_km_advanced_long
                     }
                 }
             }
@@ -327,8 +351,13 @@ const SUBSCRIBE_ALL_WEEKS = gql`
                         title type
                     }
                     stats {
-                        id running_km
-                        running_minutes
+                        id
+                        running_minutes_beginner_short running_km_beginner_short
+                        running_minutes_intermediate_short running_km_intermediate_short
+                        running_minutes_advanced_short running_km_advanced_short
+                        running_minutes_beginner_long running_km_beginner_long
+                        running_minutes_intermediate_long running_km_intermediate_long
+					    running_minutes_advanced_long running_km_advanced_long
                     }
                 }
             }
@@ -338,7 +367,7 @@ const SUBSCRIBE_ALL_WEEKS = gql`
 
 const SUBSCRIBE_WEEK = gql`
     subscription weekSubscription ( $id: uuid! ) {
-        weeks( where: { id: { _eq: $id }}) {
+        weeks_by_pk( id: $id ) {
             created_at id week_start
             title updated_at
             days ( order_by: { _day: asc }) {
@@ -359,8 +388,13 @@ const SUBSCRIBE_WEEK = gql`
                         title type
                     }
                     stats {
-                        id running_km
-                        running_minutes
+                        id
+                        running_minutes_beginner_short running_km_beginner_short
+                        running_minutes_intermediate_short running_km_intermediate_short
+                        running_minutes_advanced_short running_km_advanced_short
+                        running_minutes_beginner_long running_km_beginner_long
+                        running_minutes_intermediate_long running_km_intermediate_long
+                        running_minutes_advanced_long running_km_advanced_long
                     }
                 }
             }

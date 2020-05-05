@@ -30,6 +30,7 @@ export default function Apollo ({ children }) {
 		uri: "wss://adultletics-hasura.herokuapp.com/v1/graphql",
 		options: {
 			reconnect: true,
+			timeout: 30000,
 			connectionParams: token ? { headers: { Authorization: `Bearer ${ token }` }} : {},
 		},
 	});

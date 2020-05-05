@@ -103,7 +103,7 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 									)}
 								</Pane>
 								<Pane display="flex" justifyContent="space-between">
-									<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !selectedWorkoutVersionId } onClick={ handleSubmit }>Add / Update Workout</Button>
+									<Button type="submit" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !selectedWorkoutVersionId } onClick={ handleSubmit }>Add / Update Workout</Button>
 									<Button iconBefore={ isSubmitting ? "" : "cross"} intent="danger" isLoading={ isSubmitting } onClick={ _handleClearWorkout }>Clear Day</Button>
 									{ errors && <p>{ errors }</p>}
 								</Pane>

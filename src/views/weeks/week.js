@@ -8,9 +8,10 @@ import { format, parseISO } from "date-fns";
 import { Document, Paragraph as DocXParagraph, HeadingLevel, Packer } from "docx";
 import { save } from "save-file";
 import { Formik } from "formik";
+import { ResponsiveBar } from "@nivo/bar";
 
 // app
-import { SelectField, Pane, Paragraph, Text, Heading, Badge, IconButton, Button } from "evergreen-ui";
+import { SelectField, Pane, Text, Paragraph, Heading, Badge, IconButton, Button } from "evergreen-ui";
 import { Queries, Loading, Services, constants } from "../index";
 
 //
@@ -20,18 +21,20 @@ import { Queries, Loading, Services, constants } from "../index";
 
 export default function Week ( props ) {
 	const { id } = props;
+	const { workoutTypes } = constants;
 	const { data, loading } = useSubscription( Queries.weeks.subscribe, { variables: { id }});
 	const { data: challengesData, loading: challengesLoading } = useQuery( Queries.dailyChallenges.getAll );
 	const [ updateWeek ] = useMutation( Queries.weeks.updateWeek );
 	const { openPanel } = useContext( Services.UI );
 
 	if ( loading || challengesLoading ) return <Loading />;
-
-	const week = _.get( data, "weeks[0]" );
+    
+	const week = _.get( data, "weeks_by_pk" );
 	const { title, updated_at, days } = week;
     
 	const workouts = _.compact( _.map( days, "workout" ));    
-    
+	const stats = _.compact( _.map( days, "workout.stats" ));
+
 	const challenge = _.get( week, "daily_challenges.id", "" );
 	const challenges = _.get( challengesData, "daily_challenges", []);
 	const challengeSelectOptions = _.map( challenges, ({ id, title }) => ({ value: id, label: title }));
@@ -88,6 +91,7 @@ export default function Week ( props ) {
 					const { id, day: { title }, workout } = day;
 					const workoutTitle = _.get( workout, "workout.title" );
 					const workoutVersion = _.get( workout, "version_num" );
+					const type = _.get( workout, "workout.type" );
 					return (
 						<Pane key={ id } elevation={ 1 } width="12%" background="white" paddingLeft={ 16 } paddingBottom={ 16 }>
 							<Pane display="flex" justifyContent="space-between" alignItems="flex-end" marginBottom={ 8 }>
@@ -96,23 +100,30 @@ export default function Week ( props ) {
 							</Pane>
 							<Pane paddingRight={ 16 }>
 								{ _.isEmpty( workout ) ? 
-									<Text color='red'>No workout chosen</Text> : 
-									<Text>{ workoutTitle } - v{ workoutVersion }</Text>
+									<Text color='red'>No workout chosen</Text> : <>
+										<Paragraph marginBottom={ 8 }>{ workoutTitle } - v{ workoutVersion }</Paragraph>
+										<Badge color="blue">{ _.get( _.find( workoutTypes, [ "value", type ]), "label" ) }</Badge>
+									</>
 								}
 							</Pane>
 						</Pane>
 					);
 				})}
 			</Pane>
-			<Pane>
+			<Pane marginBottom={ 40 }>
 				<Heading marginBottom={ 8 }>Stats:</Heading>
 				<Pane display="flex" justifyContent="space-between">
-					<Pane elevation={ 1 } background="white" padding={ 16 } width={ "20%" }>
-						<Paragraph>Total Running KM: <Text>55</Text></Paragraph>
-						<Paragraph>Total Running Mins: <Text>55</Text></Paragraph>
+					<Pane background="white" padding={ 32 } elevation={ 1 } marginBottom={ 24 } width="45%">
+						<Heading size={ 200 }>Workout Minutes:</Heading>
+						<Pane height={ 250 }>
+							<WeeksMinutesSplit stats={ stats } />
+						</Pane>
 					</Pane>
-					<Pane elevation={ 1 } background="white" padding={ 16 } width={ "20%" }>
-						<EnergySystemSplit workouts={ workouts } />
+					<Pane background="white" padding={ 32 } elevation={ 1 } marginBottom={ 24 } width="45%">
+						<Heading size={ 200 }>Energy Systems:</Heading>
+						<Pane height={ 250 }>
+							<EnergySystemSplit workouts={ workouts } />
+						</Pane>
 					</Pane>
 				</Pane>
 			</Pane>
@@ -159,19 +170,85 @@ const _handleDownload = ( week, e ) => {
 };
 
 const EnergySystemSplit = memo( function EnergySystemSplit ({ workouts }) {
-	const { workoutTypes, intensityOptions } = constants;
-
-	const allEnergySystems = _.orderBy( _.uniqBy( _.map( workoutTypes, "system" ), "id" ), "id" );
+	const { workoutTypes } = constants;
+	const allEnergySystems =  _.uniq( _.map( workoutTypes, "system" )).sort();
 	const workoutsEnergySystemMap = _.map( workouts, workout => _.get( _.find( workoutTypes, [ "value", _.get( workout, "workout.type" ) ]), "system" ));
-    
-	const graphData = _.map( allEnergySystems, system => ({ id: system, value: _.size( _.filter( workoutsEnergySystemMap, el => el === system )) }));
-
-	console.log( graphData );
+	const graphData = _.map( allEnergySystems, system => ({ id: _.capitalize( _.nth( system.split( " " ), 1 )), value: _.size( _.filter( workoutsEnergySystemMap, el => el === system )) }));
 
 	return (
-		<p>Here</p>
+		<ResponsiveBar
+			data={ graphData }
+			margin={{ top: 16, right: 16, bottom: 16, left: 72 }}
+			layout="horizontal"
+			colors={{ scheme: "category10" }}
+			colorBy="index"
+			justify={ true }
+			axisTop={ null }
+			axisRight={ null }
+			axisBottom={ null }
+			axisLeft={{
+				tickSize: 5,
+				tickPadding: 5,
+				tickRotation: 0,
+				legendPosition: "middle",
+				legendOffset: -40,
+			}}
+			isInteractive={ false }
+			enableGridY={ false }
+		/>
 	);
 }, _.isEqual );
 EnergySystemSplit.propTypes = {
 	workouts: PropTypes.array,
+};
+
+const WeeksMinutesSplit = memo( function WeeksMinutesSplit ({ stats }) {
+
+	const graphData = _.map([ "short", "long" ], id => ({
+		id: id === "short" ? "5/10km" : "half/ultra",
+		beginner: _.reduce( stats, ( total, curr ) => _.isNull( _.get( curr, `running_minutes_beginner_${ id }`, 0 )) ? total : total + _.get( curr, `running_minutes_beginner_${ id }`, 0 ), 0 ),
+		intermediate: _.reduce( stats, ( total, curr ) => _.isNull( _.get( curr, `running_minutes_intermediate_${ id }`, 0 )) ? total : total + _.get( curr, `running_minutes_intermediate_${ id }`, 0 ), 0 ),
+		advanced: _.reduce( stats, ( total, curr ) => _.isNull( _.get( curr, `running_minutes_advanced_${ id }`, 0 )) ? total : total + _.get( curr, `running_minutes_advanced_${ id }`, 0 ), 0 ),
+	}));
+    
+	return (
+		<ResponsiveBar
+			data={ graphData }
+			margin={{ top: 16, right: 16, bottom: 32, left: 64 }}
+			innerPadding={ 2 }
+			keys={[ "beginner", "intermediate", "advanced" ]}
+			layout="horizontal"
+			groupMode="grouped"
+			colors={{ scheme: "category10" }}
+			justify={ true }
+			axisTop={ null }
+			axisRight={ null }
+			axisBottom={ null }
+			axisLeft={{
+				tickSize: 5,
+				tickPadding: 5,
+				tickRotation: 0,
+				legendPosition: "middle",
+				legendOffset: -40,
+			}}
+			isInteractive={ false }
+			enableGridY={ false }
+			legends={[
+				{
+					dataFrom: "keys",
+					anchor: "bottom",
+					direction: "row",
+					translateX: 0,
+					translateY: 32,
+					itemWidth: 128,
+					itemHeight: 16,
+					itemDirection: "left-to-right",
+					symbolSize: 16,
+				},
+			]}
+		/>
+	);
+}, _.isEqual );
+WeeksMinutesSplit.propTypes = {
+	stats: PropTypes.array,
 };

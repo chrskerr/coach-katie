@@ -39,11 +39,10 @@ export default function AddWorkoutPanel ({ props }) {
 			</Pane>
 			<Formik
 				initialValues={{ running_km: 0, running_minutes: 0, intensity: "3" }}
-				onSubmit={ async ({ title, body, running_km, running_minutes, intensity, type }) => {
+				onSubmit={ async ({ title, body, stats, intensity, type }) => {
 					setErrors( null );
-					const drills_insert_data = _.map( selectedDrills, ({ id }) => ({ _drill: id }));
-					console.log( drills_insert_data );
 					try {
+						const drills_insert_data = _.map( selectedDrills, ({ id }) => ({ _drill: id }));
 						const res = await addVersion({ variables: { objects: [{
 							version_num: 1,
 							_owner: authUser.id,
@@ -55,9 +54,7 @@ export default function AddWorkoutPanel ({ props }) {
 								},
 							},
 							stats: {
-								data: {
-									running_km, running_minutes,
-								},
+								data: stats,
 							},
 							drills: {
 								data: drills_insert_data,
@@ -98,10 +95,7 @@ export default function AddWorkoutPanel ({ props }) {
 											{ workoutTypes && _.map( workoutTypes, ({ value, label }) => ( <option key={ value } value={ value }>{ label }</option> ))}
 										</Select>
 									</FormField>
-									<Pane>
-										<Pane marginBottom={ 16 }>
-											<Heading>Add Drills to Workout:</Heading>
-										</Pane>
+									<FormField label="Add Drills to Workout" marginBottom={ 16 }>
 										<Pane marginBottom={ 8 } display="flex" justifyContent="space-between">
 											<Select name="drill" value={ values.drill } onChange={ handleChange } height={ 32 }>
 												<option key="empty" value="">Please select an option...</option>
@@ -121,11 +115,8 @@ export default function AddWorkoutPanel ({ props }) {
 										<Pane>
 											{ errors && <p>{ errors }</p>}
 										</Pane>
-									</Pane>
-									<Pane>
-										<Pane marginBottom={ 16 }>
-											<Heading>Selected drills:</Heading>
-										</Pane>
+									</FormField>
+									<FormField label="Selected Drills" marginBottom={ 16 }>
 										<Pane>
 											{ !_.isEmpty( selectedDrills ) ? _.map( selectedDrills, ({ id, title }) => (
 												<Pane display="flex" flexDirection="row" elevation={ 1 } height={ 32 } alignItems="center" background="white" marginBottom={ 16 } key={ id } paddingLeft={ 16 } paddingRight={ 8 }>
@@ -136,7 +127,7 @@ export default function AddWorkoutPanel ({ props }) {
 													}}/> 
 												</Pane> )) : <Paragraph marginBottom={ 16 } >No drills selected</Paragraph>}
 										</Pane>
-									</Pane>
+									</FormField>
 									<FormField label="Workout Description" marginBottom={ 16 }>
 										<Textarea
 											name="body"
@@ -144,18 +135,100 @@ export default function AddWorkoutPanel ({ props }) {
 											rows={ 24 }
 										/>
 									</FormField>
-									<TextInputField
-										label="Total Running KM"
-										name="running_km"
-										type="number"
-										onChange={ handleChange }
-									/>
-									<TextInputField
-										label="Total Running Minutes"
-										name="running_minutes"
-										type="number"
-										onChange={ handleChange }
-									/>
+									<FormField label="Stats" marginBottom={ 16 }>
+										<table className="stats-input-table">
+											<thead>
+												<tr>
+													<th></th>
+													<th colSpan={ 2 }><Heading size={ 200 }>5/10km</Heading></th>
+													<th colSpan={ 2 }><Heading size={ 200 }>half/ultra</Heading></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><Heading size={ 200 }>Beginner</Heading></td>
+													<td><TextInputField
+														label="km"
+														name="stats.running_km_beginner_short"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="mins"
+														name="stats.running_minutes_beginner_short"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="km"
+														name="stats.running_km_beginner_long"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="mins"
+														name="stats.running_minutes_beginner_long"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+												</tr>
+												<tr>
+													<td><Heading size={ 200 }>Intermediate</Heading></td>
+													<td><TextInputField
+														label="km"
+														name="stats.running_km_intermediate_short"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="mins"
+														name="stats.running_minutes_intermediate_short"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="km"
+														name="stats.running_km_intermediate_long"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="mins"
+														name="stats.running_minutes_intermediate_long"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+												</tr>
+												<tr>
+													<td><Heading size={ 200 }>Advanced</Heading></td>
+													<td><TextInputField
+														label="km"
+														name="stats.running_km_advanced_short"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="mins"
+														name="stats.running_minutes_advanced_short"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="km"
+														name="stats.running_km_advanced_long"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+													<td><TextInputField
+														label="mins"
+														name="stats.running_minutes_advanced_long"
+														type="number"
+														onChange={ handleChange }
+													/></td>
+												</tr>
+											</tbody>
+										</table>
+									</FormField>
 									<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title } onClick={ handleSubmit }>Add</Button>
 									{ errors && <p>{ errors }</p>}
 								</form> 

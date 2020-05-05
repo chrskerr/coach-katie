@@ -5,4 +5,14 @@
     .c-loading {
         height: calc( 100vh - 4em );
     }
+
+    .stats-input-table {
+        width: 100%;
+        border-spacing: 8px;
+
+        th {
+            text-align: left;
+        }
+
+    }
 }

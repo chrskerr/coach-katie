@@ -32,7 +32,7 @@ export default function Weeks () {
 			<Pane marginBottom={ 16 }>
 				<Heading>All Weeks:</Heading>
 			</Pane>
-			<Pane>
+			<Pane marginBottom={ 40 }>
 				{ weeks && _.map( weeks, workout => {
 					const { id, title, week_start } = workout;
 					const age = differenceInCalendarDays( now, parseISO( week_start ));

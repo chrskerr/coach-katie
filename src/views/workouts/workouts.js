@@ -30,7 +30,7 @@ export default function Workouts () {
 			<Pane marginBottom={ 16 }>
 				<Heading>All Workouts:</Heading>
 			</Pane>
-			<Pane>
+			<Pane marginBottom={ 40 }>
 				{ workouts && _.map( workouts, workout => {
 					const { id, title, intensity, type } = workout;
 					const intensityLabel = _.get( _.find( intensityOptions, [ "value", intensity ]), "label", "" );
