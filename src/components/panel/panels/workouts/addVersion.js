@@ -59,7 +59,7 @@ export default function AddWorkoutVersionPanel ({ props }) {
 						_workout: workoutId,
 						_owner: authUser.id,
 						stats: {
-							data: stats,
+							data: stats ? stats : {},
 						},
 						drills: {
 							data: drills_insert_data,

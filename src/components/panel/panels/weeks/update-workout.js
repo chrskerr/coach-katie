@@ -31,13 +31,10 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 	const selectedWorkoutId = _.get( selectedWorkout, "id" );
 
 	useEffect(() => setFilteredWorkouts( 
-		_.orderBy( 
-			_.map( workouts, workout => ({
-				...workout,
-				match: matchWorkout( searchTerms, workout ),
-			})),
-		), [ "match", "desc" ],
-	), [ searchTerms, workouts ]);
+		_.orderBy( _.map( workouts, workout => ({
+			...workout,
+			match: matchWorkout( searchTerms, workout ),
+		})), [ "match" ], [ "desc" ])), [ searchTerms, workouts ]);
     
 	const _handleWorkoutAdd = () => {
 		closePanel();

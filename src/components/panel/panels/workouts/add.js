@@ -54,7 +54,7 @@ export default function AddWorkoutPanel ({ props }) {
 								},
 							},
 							stats: {
-								data: stats,
+								data: stats ? stats : {},
 							},
 							drills: {
 								data: drills_insert_data,

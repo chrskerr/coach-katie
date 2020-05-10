@@ -22,8 +22,8 @@ export const UI = createContext({
 	panel: {},
 	openPanel: () => {},
 	closePanel: () => {},
-	notifications: [{}],
-	addNotification: () => {},
+	breakpoint: "",
+	setBreakpoint: () => {},
 });
 
 export default { 

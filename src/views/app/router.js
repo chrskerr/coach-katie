@@ -1,6 +1,7 @@
 
 // deps
 import React, { useState, useContext, useEffect } from "react";
+import _ from "lodash";
 
 // app
 import { Services, Panel, TopNav, Dashboard, WorkoutsIndex, WeeksIndex, DrillsIndex, DailyChallengesIndex, Loading } from "../index";
@@ -12,18 +13,27 @@ import { toaster, Pane } from "evergreen-ui";
 //
 
 
+const getBreakpoint = () => {
+	const width = window.innerWidth;
+	if ( width <= 640 ) return "small";
+	if ( width <= 1008 ) return "medium";
+	return "large";
+};
+
 export default function Router () {
 	const { UI, Auth } = Services;
 	const [ ui, setUI ] = useState({
 		panel: {},
 		openPanel: payload => setUI( ui => ({ ...ui, panel: payload })),
 		closePanel: () => setUI( ui => ({ ...ui, panel: {}})),
-		notifications: [{}],
-		addNotification: () => {},
+		breakpoint: getBreakpoint(),
+		setBreakpoint: payload => setUI( ui => ({ ...ui, breakpoint: payload })),
 	});
 	const { isAuthenticated } = useContext( Auth );
-        
-	useEffect(() => { if ( window.innerWidth < 1000 ) toaster.warning( "This page is designed for a larger browswer", { duration: 30, position: "top-right" });}, []);
+	const { breakpoint, setBreakpoint } = ui;
+
+	useEffect(() => window.addEventListener( "resize", _.debounce(() => setBreakpoint( getBreakpoint()), 1000 )), [ setBreakpoint ]);
+	useEffect(() => { if ( breakpoint !== "large" ) toaster.warning( "This page is designed for a larger browswer", { duration: 600 });}, [ breakpoint ]);
 
 	return (
 		<>
