@@ -5,8 +5,8 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ReactGA from 'react-ga';
 
 // app
-import Home from "../views/home/home";
-const ReactApp = lazy(() => import( './react-app' ))
+const Home = lazy(() => import( "../views/home/home" ));
+const ReactApp = lazy(() => import( "./react-app" ));
 
 //
 // Adultletics / App / App

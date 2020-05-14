@@ -29,7 +29,6 @@ export default function Admin () {
 		<>
 			<AdminNav />
 			{ isAuthenticating && <Loading /> }
-			{ ( !isAuthenticating && !isAuthenticated ) && <p>Please log in to continue</p> }
 			{ ( !isAuthenticating && isAuthenticated ) && 
 				<Switch>
 					<Route path="/admin/drills/:id?"><DrillsIndex /></Route>

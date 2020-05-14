@@ -7,8 +7,9 @@ import ReactGA from "react-ga";
 import _ from "lodash";
 import $ from "jquery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRunning, faTimes, faCheck, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faRunning, faTimes, faCheck, faSpinner, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-regular-svg-icons";
+import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -19,10 +20,7 @@ import "./_home.scss";
 // Adultletics / Views / Home
 //
 
-// const url = "https://stripe-server-xdzmzxo7uq-lz.a.run.app/";
-const url = "http://localhost:8080/";
-// const stripePromise = loadStripe( "pk_live_mwNb1i31QrYYF4ghnbGz0CuQ00WF3EYB1n" );
-const stripePromise = loadStripe( "pk_test_Fl19stXoPXnQwM41LT9VQ3Gi00SQ1ugcZp" );
+const url = "https://stripe-server-xdzmzxo7uq-lz.a.run.app/";
 
 const faqItems = [
 	{
@@ -43,7 +41,7 @@ const faqItems = [
 	},
 	{
 		title: "OK I'm in. How much and when?",
-		description: "Sign up today via the link above to get started!<br /><strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.<br />Pay as you go and cancel anytime, no charge if you cancel in the first week.",
+		description: "Sign up today via the link above to get started!\n<strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.\nPay as you go and cancel anytime, no charge if you cancel in the first week.",
 	},
 	{
 		title: "Contact details",
@@ -102,7 +100,7 @@ export default function Home () {
 			<header id="header" className="alt">
 				<div className="links">
 					<Link to="/admin">Employees</Link>
-					<Link to="/members">Members Centre</Link>
+					{/* <Link to="/members">Members Centre</Link> */}
 				</div>
 				<div className="inner">
 					<h1>Adultletics Running Club</h1>
@@ -202,9 +200,8 @@ export default function Home () {
 		
 				<footer id="footer">
 					<ul className="icons">
-						<li><a href="https://www.facebook.com/Adultletics-110617777298114/?view_public_for=110617777298114" target="_blank" rel="noreferrer noopener" className="icon fa-facebook"><span className="label">Facebook</span></a></li>
-						{/* <li><a href="#" target="_blank" rel="noreferrer noopener" className="icon fa-instagram"><span className="label">Instagram</span></a></li> */}
-						<li><a href="mailto:info@adultletics.com.au" className="icon fa-envelope"><span className="label">Email</span></a></li>
+						<li><a href="https://www.facebook.com/Adultletics-110617777298114/?view_public_for=110617777298114" target="_blank" rel="noreferrer noopener" className="icon"><FontAwesomeIcon icon={ faFacebookSquare } /></a></li>
+						<li><a href="mailto:info@adultletics.com.au" className="icon"><FontAwesomeIcon icon={ faEnvelope } /></a></li>
 					</ul>
 					<p className="copyright">&copy; Kate Hobbs & Mike Hobbs. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.</p>
 				</footer>
@@ -212,16 +209,14 @@ export default function Home () {
 			</div>
 
 			{ isCheckoutOpen && 
-				<Elements stripe={ stripePromise }>
-					<div className="modal" id="checkout">
-						<div className="content">
-							<CheckoutModal />
-						</div>
-						<div className="background" onClick={ closeCheckout }>
-							<FontAwesomeIcon icon={ faTimes } color="white" /> 
-						</div>
+				<div className="modal" id="checkout">
+					<div className="content">
+						<Stripe />
 					</div>
-				</Elements> 
+					<div className="background" onClick={ closeCheckout }>
+						<FontAwesomeIcon icon={ faTimes } color="white" /> 
+					</div>
+				</div>
 			}
 		</div>
 	);
@@ -251,7 +246,7 @@ const FaqItem = props => {
 			<FontAwesomeIcon icon={ isOpen ? faMinusSquare : faPlusSquare } onClick={ toggle }/>
 			<div>
 				<h4 onClick={ toggle }>{ title }</h4>
-				<p style={{ display: "none" }}>{ description }</p>
+				{ description && _.map( description.split( "\n" ), ( item, i ) => <p key={ i } style={{ display: "none" }} dangerouslySetInnerHTML={{ __html: item }}></p> ) }
 			</div>
 		</div>
 	);
@@ -261,6 +256,14 @@ FaqItem.propTypes = {
 	item: PropTypes.object,
 };
 
+const Stripe = () => {
+	const stripePromise = loadStripe( "pk_live_mwNb1i31QrYYF4ghnbGz0CuQ00WF3EYB1n" );
+	return (
+		<Elements stripe={ stripePromise }>
+			<CheckoutModal />
+		</Elements> 
+	);
+}; 
 
 const CheckoutModal = () => {
 	const [ viewState, setViewState ] = useState( "initial" );
