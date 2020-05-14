@@ -33,7 +33,7 @@ export default function Drills () {
 				{ drills && _.map( drills, drill => {
 					const { id, title } = drill;
 					return ( 
-						<Link to={ `/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
+						<Link to={ `/admin/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
 							<Pane className="c-row-hover" display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
 								<Text marginLeft={ 24 }>{ title }</Text> 
 							</Pane> 

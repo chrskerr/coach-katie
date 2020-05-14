@@ -5,11 +5,17 @@
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@nivo/axes": "^0.61.0",
     "@nivo/bar": "^0.61.1",
     "@nivo/bump": "^0.61.1",
     "@nivo/core": "^0.61.0",
     "@nivo/stream": "^0.61.1",
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.5.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -27,9 +33,12 @@
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
+    "jquery": "^3.5.1",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-fontawesome": "^1.7.1",
+    "react-ga": "^2.7.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "save-file": "^2.3.1",
@@ -40,6 +49,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "postbuild": "react-snap",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
@@ -62,6 +72,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "gh-pages": "^2.2.0",
-    "proptypes": "^1.1.0"
+    "proptypes": "^1.1.0",
+    "react-snap": "^1.23.0"
   }
 }

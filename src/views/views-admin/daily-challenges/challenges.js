@@ -33,7 +33,7 @@ export default function Challenges () {
 				{ daily_challenges && _.map( daily_challenges, drill => {
 					const { id, title } = drill;
 					return ( 
-						<Link to={ `/challenges/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
+						<Link to={ `/admin/challenges/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
 							<Pane className="c-row-hover" display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
 								<Text marginLeft={ 24 }>{ title }</Text> 
 							</Pane> 

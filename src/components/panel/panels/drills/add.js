@@ -4,6 +4,8 @@ import React, { useContext, useState } from "react";
 import { Pane, Heading, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
+import _ from "lodash";
+import { useHistory } from "react-router-dom";
 
 // app
 import { Services, Queries } from "../index";
@@ -17,6 +19,7 @@ export default function AddDrillPanel () {
 	const [ insertDrill ] = useMutation( Queries.drills.add, { refetchQueries: [{ query: Queries.drills.getAll }], awaitRefetchQueries: true }); 
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
+	const history = useHistory();
 
 	return ( <>
 		<Pane marginBottom={ 56 }>
@@ -27,8 +30,10 @@ export default function AddDrillPanel () {
 			onSubmit={ async data => {
 				setErrors( null );
 				try {
-					await insertDrill({ variables: { objects: [ data ]}});
+					const res = await insertDrill({ variables: { objects: [ data ]}});
 					closePanel();
+					const id = _.get( res, "data.insert_drills.returning[0].id" );
+					history.push( `/admin/drills/${ id }` );
 				} catch ( error ) {
 					console.error( error );
 					setErrors( error.message );

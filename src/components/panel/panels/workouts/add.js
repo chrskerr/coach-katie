@@ -65,7 +65,7 @@ export default function AddWorkoutPanel ({ props }) {
 						const versionId = _.get( res, "data.insert_workouts_versions.returning[0].id" );
 						const workoutId = _.get( res, "data.insert_workouts_versions.returning[0].workout.id" );
 						if ( emit ) emit( versionId );
-						if ( !emit ) history.push( `/workouts/${ workoutId }` );
+						if ( !emit ) history.push( `/admin/workouts/${ workoutId }` );
 					} catch ( error ) {
 						console.error( error );
 						setErrors( error.message );

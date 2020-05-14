@@ -12,7 +12,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 
 // app
-import { Services } from "../index";
+import Services from "./services";
 
 //
 // Adultletics Admin / Views / App / Apollo Provider

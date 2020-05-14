@@ -8,7 +8,8 @@ import _ from "lodash";
 import { useApolloClient } from "@apollo/react-hooks";
 
 // app
-import { Queries, Services } from "../index";
+import Services from "./services";
+import Queries from "./queries";
 
 //
 // Adultletics Admin / Views / App / Firebase
@@ -55,6 +56,7 @@ export default function Firebase ({ children }) {
 				if ( hasuraClaim ) updateAuth({ token, uid: user.uid });
 			} else { 
 				updateAuth({ authUser: {}, token: null, uid: "" }); 
+				updateAuth({ isAuthenticating: false });
 			}
 		});
 	// eslint-disable-next-line

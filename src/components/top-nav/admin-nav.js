@@ -9,11 +9,11 @@ import { Services } from "../../views/index";
 import { useHistory, useLocation } from "react-router-dom";
 
 //
-// Adultletics Admin / Views / TopNav / TopNav
+// Adultletics Admin / Views / Top Nav / Admin Nav
 //
 
 
-export default function TopNav () {
+export default function AdminNav () {
 	const history = useHistory();
 	const { pathname } = useLocation();
 	const { openPanel } = useContext( Services.UI );
@@ -22,23 +22,23 @@ export default function TopNav () {
 	const tabs = [
 		{
 			name: "Home",
-			route: "/",
+			route: "/admin",
 		},
 		{
 			name: "Workouts",
-			route: "/workouts",
+			route: "/admin/workouts",
 		},
 		{
 			name: "Weeks",
-			route: "/weeks",
+			route: "/admin/weeks",
 		},
 		{
 			name: "Drills",
-			route: "/drills",
+			route: "/admin/drills",
 		},
 		{
 			name: "Daily Challenges",
-			route: "/challenges",
+			route: "/admin/challenges",
 		},
 	];
 
@@ -56,7 +56,7 @@ export default function TopNav () {
 									key={ route }
 									id={ route }
 									onSelect={ () => history.push( route ) }
-									isSelected={ route === "/" ? pathname === route : pathname.startsWith( route ) }
+									isSelected={ route === "/admin" ? pathname === route : pathname.startsWith( route ) }
 									aria-controls={ `panel-${ name }` }
 									height={ 40 }
 								>

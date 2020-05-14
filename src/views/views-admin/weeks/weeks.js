@@ -38,7 +38,7 @@ export default function Weeks () {
 					const age = differenceInCalendarDays( now, parseISO( week_start ));
 					const background = age >= 7 ? "#FEF6F6" : "white";
 					return ( 
-						<Link to={ `/weeks/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
+						<Link to={ `/admin/weeks/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
 							<Pane className="c-row-hover" display="flex" elevation={ 1 } height={ 48 } alignItems="center" background={ background } marginBottom={ 16 }>
 								<Text marginLeft={ 24 } marginRight={ 16 }>{ title }</Text> 
 								{ ( age >= 0 && age < 7 ) && <Badge color="green">Current</Badge> }

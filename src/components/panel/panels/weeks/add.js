@@ -57,7 +57,7 @@ export default function AddWeekPanel () {
 					}]}});
 					closePanel();
 					const id = _.get( res, "data.insert_weeks.returning[0].id" );
-					history.push( `/weeks/${ id }` );
+					history.push( `/admin/weeks/${ id }` );
 				} catch ( error ) {
 					console.error( error );
 					setErrors( error.message );
