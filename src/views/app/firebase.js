@@ -29,16 +29,17 @@ export default function Firebase ({ children }) {
 	const { updateAuth, authUser, uid, isAuthenticated } = useContext( Services.Auth );
 
 	useEffect(() => {
-		if ( uid && uid !== _.get( authUser, "uid", "" )) {
-			( async () => {
+		( async () => {
+			if ( uid && uid !== _.get( authUser, "uid", "" )) {
 				const userRes = await apolloClient.query({ query: Queries.auth.getUser, variables: { uid }});
 				const authUser = _.get( userRes, "data.users_by_pk" );
 				updateAuth({ authUser });
-			})();
-		}
+			}
+			updateAuth({ isAuthenticating: false });
+		})();
 	// eslint-disable-next-line
 	}, [ uid ]);
-		
+
 	useEffect(() => {
 		updateAuth({ 
 			signIn: async ( email, password ) => await firebase.auth().signInWithEmailAndPassword( email, password ), 
@@ -55,7 +56,6 @@ export default function Firebase ({ children }) {
 			} else { 
 				updateAuth({ authUser: {}, token: null, uid: "" }); 
 			}
-			updateAuth({ isAuthenticating: false });
 		});
 	// eslint-disable-next-line
 	}, []);

@@ -10,7 +10,7 @@ import _ from "lodash";
 
 // app
 import { Pane, Heading } from "evergreen-ui";
-import { Queries, constants } from "../index";
+import { Queries, constants, Loading } from "../index";
 
 //
 // Adultletics Admin / Views / Dashboard / Dashboard
@@ -18,8 +18,10 @@ import { Queries, constants } from "../index";
 
 
 export default function Dashboard () {
-	const { data } = useSubscription( Queries.weeks.subscribeAll );    
+	const { data, loading } = useSubscription( Queries.weeks.subscribeAll );    
 	const weeks = [ ..._.get( data, "weeks", []) ].sort(( a, b ) => parseISO( a.week_start ) - parseISO( b.week_start ));
+
+	if ( loading ) return <Loading />;
 
 	return (
 		<Pane className="v-dashboard">
@@ -220,6 +222,8 @@ const EnergySystemsChart = memo( function EnergySystemsChart ( props ) {
 		}, { ...keysObject });
 	});
     
+	if ( _.isEmpty( graphData )) return null;
+
 	return <ResponsiveStream
 		data={ graphData }
 		keys={ keys }

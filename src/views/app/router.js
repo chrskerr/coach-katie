@@ -29,7 +29,7 @@ export default function Router () {
 		breakpoint: getBreakpoint(),
 		setBreakpoint: payload => setUI( ui => ({ ...ui, breakpoint: payload })),
 	});
-	const { isAuthenticated } = useContext( Auth );
+	const { isAuthenticated, isAuthenticating } = useContext( Auth );
 	const { breakpoint, setBreakpoint } = ui;
 
 	useEffect(() => window.addEventListener( "resize", _.debounce(() => setBreakpoint( getBreakpoint()), 1000 )), [ setBreakpoint ]);
@@ -43,13 +43,17 @@ export default function Router () {
 					<Pane background="tint1" minHeight="100vh">
 						<TopNav />
 						<div className="v-router">
-							{ isAuthenticated ? <Switch>
-								<Route path="/drills/:id?"><DrillsIndex /></Route>
-								<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
-								<Route path="/weeks/:id?"><WeeksIndex /></Route>
-								<Route path="/challenges/:id?"><DailyChallengesIndex /></Route>
-								<Route path="/"><Dashboard /></Route>
-							</Switch> : <Loading /> }
+							{ isAuthenticating && <Loading /> }
+							{ ( !isAuthenticating && !isAuthenticated ) && <p>Please log in to continue</p> }
+							{ ( !isAuthenticating && isAuthenticated ) && 
+                                <Switch>
+                                	<Route path="/drills/:id?"><DrillsIndex /></Route>
+                                	<Route path="/workouts/:id?"><WorkoutsIndex /></Route>
+                                	<Route path="/weeks/:id?"><WeeksIndex /></Route>
+                                	<Route path="/challenges/:id?"><DailyChallengesIndex /></Route>
+                                	<Route path="/"><Dashboard /></Route>
+                                </Switch>
+							}
 						</div>
 					</Pane>
 				</BrowserRouter>
