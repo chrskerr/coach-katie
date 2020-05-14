@@ -2,6 +2,7 @@ import React from "react";
 import { hydrate, render } from "react-dom";
 import App from "./app/app";
 import * as serviceWorker from "./serviceWorker";
+import "./views";
 
 const rootElement = document.getElementById( "root" );
 if ( rootElement.hasChildNodes()) {

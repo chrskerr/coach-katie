@@ -1,8 +1,8 @@
 
 // deps
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Switch, Route } from "react-router-dom";
-import { toaster } from "evergreen-ui";
+// import { toaster } from "evergreen-ui";
 
 //app
 import "./index.scss";
@@ -21,9 +21,9 @@ import AdminNav from "../../components/top-nav/admin-nav";
 
 export default function Admin () {
 	const { isAuthenticating, isAuthenticated } = useContext( Services.Auth );
-	const { breakpoint } = useContext( Services.UI );
+	// const { breakpoint } = useContext( Services.UI );
 	
-	useEffect(() => { if ( breakpoint !== "large" ) toaster.warning( "This page is designed for a larger browswer", { duration: 600 });}, [ breakpoint ]);
+	// useEffect(() => { if ( breakpoint !== "large" ) toaster.warning( "This page is designed for a larger browswer", { duration: 600 });}, [ breakpoint ]);
 
 	return (
 		<>

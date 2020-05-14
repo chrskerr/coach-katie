@@ -2,7 +2,7 @@
 // deps
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import ReactGA from "react-ga";
 import _ from "lodash";
 import $ from "jquery";
@@ -100,6 +100,10 @@ export default function Home () {
 	return (
 		<div className="v-home">
 			<header id="header" className="alt">
+				<div className="links">
+					<Link to="/admin">Employees</Link>
+					<Link to="/members">Members Centre</Link>
+				</div>
 				<div className="inner">
 					<h1>Adultletics Running Club</h1>
 					<p>The Run School for Big Kids</p>
@@ -141,7 +145,6 @@ export default function Home () {
 						<p>Adultletics believes running is better done with others. It’s more fun, more sustainable, and you are more likely to achieve your goals, whatever they may be. For this reason we have built our club into an online running community - this is where not only the program for the week is shared as well as our educational content, but members’ questions are answered, members share their progress, accomplishments & struggles, as well as how they felt during certain sessions, and general banter!</p>
 					</article>
 				</section>
-
 		
 				<section id="main" className="main">
 					<header>
@@ -329,7 +332,7 @@ const CheckoutModal = () => {
 					return;
 				}
 	
-				throw "uncaught outcome";
+				throw { error: "uncaught outcome" };
 	
 			} catch ( error ) {
 				console.error( error );
