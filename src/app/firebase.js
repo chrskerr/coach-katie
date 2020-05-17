@@ -1,6 +1,6 @@
 
 // deps
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -23,19 +23,23 @@ const firebaseConfig = {
 	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 };
 
-firebase.initializeApp( firebaseConfig );
+const firebaseApp = firebase.initializeApp( firebaseConfig );
 
 export default function Firebase ({ children }) {
 	const apolloClient = useApolloClient();
-	const { updateAuth, authUser, uid, isAuthenticated } = useContext( Services.Auth );
+	const { updateAuth, authUser, uid, isAuthenticated, isAuthenticating } = useContext( Services.Auth );
+ 
+	console.log( isAuthenticating, firebaseApp );
 
 	useEffect(() => {
 		( async () => {
-			if ( uid && uid !== _.get( authUser, "uid", "" )) {
+			const authUserUid = _.get( authUser, "uid" );
+			if ( uid && uid !== authUserUid ) {
 				const userRes = await apolloClient.query({ query: Queries.auth.getUser, variables: { uid }});
 				const authUser = _.get( userRes, "data.users_by_pk" );
 				updateAuth({ authUser });
-			}
+			} 
+			if ( !uid ) updateAuth({ authUser: {}});
 			updateAuth({ isAuthenticating: false });
 		})();
 	// eslint-disable-next-line
@@ -46,7 +50,7 @@ export default function Firebase ({ children }) {
 			signIn: async ( email, password ) => await firebase.auth().signInWithEmailAndPassword( email, password ), 
 			signOut: () => firebase.auth().signOut(),
 		});
-		
+        
 		firebase.auth().onAuthStateChanged( async user => {
 			updateAuth({ isAuthenticating: true });
 			if ( user ) {

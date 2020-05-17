@@ -16,10 +16,10 @@ import { Services, Queries, Loading } from "../index";
 
 
 export default function UpdateWeekDayWorkoutPanel ({ props }) {
-	const { id, title } = props;
+	const { id, title, weekId } = props;
 
 	const { data, loading } = useQuery( Queries.workouts.getAll );
-	const [ updateWeekday ] = useMutation( Queries.weeks.updateWeekday );
+	const [ updateWeekday ] = useMutation( Queries.weeks.updateWeekday, { refetchQueries: [{ query: Queries.weeks.getOne, id: weekId }], awaitRefetchQueries: true });
 	const { closePanel, openPanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 	const [ searchTerms, setSearchTerms ] = useState( "" );
@@ -116,6 +116,7 @@ UpdateWeekDayWorkoutPanel.propTypes = {
 	props: PropTypes.object,
 	id: PropTypes.string,
 	title: PropTypes.string,
+	weekId: PropTypes.string,
 };
 
 const matchWorkout = ( searchTerms, workout ) => {

@@ -25,7 +25,7 @@ export default function Drill ( props ) {
 	const title = _.get( drill, "title" );
 	const description = _.get( drill, "description" );
 	const url = _.get( drill, "url" );
-	const embed_url = _.get( drill, "embed_url" );
+	const embed_url = `https://www.youtube.com/embed/${ _.trim( url ).substring( _.size( url ) - 11, _.size( url )) }`;
 	const workouts = _.get( drill, "workouts_drills", []);
 	const workoutsCount = _.size( workouts );
 

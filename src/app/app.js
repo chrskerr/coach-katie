@@ -6,13 +6,13 @@ import ReactGA from 'react-ga';
 
 // app
 const Home = lazy(() => import( "../views/home/home" ));
-const ReactApp = lazy(() => import( "./react-app" ));
+const AuthContainer = lazy(() => import( "./react-app" ));
 
 //
 // Adultletics / App / App
 //
 
-ReactGA.initialize('UA-000000-01')
+ReactGA.initialize('UA-165263586-1')
 
 export default function App () {
 	return (
@@ -21,7 +21,7 @@ export default function App () {
                 <Suspense fallback={ <></> }>
                     <Switch>
                         <Route exact path="/" component={ Home } />
-                        <Route component={ ReactApp } />
+                        <Route component={ AuthContainer } />
                     </Switch>
                 </Suspense>
 			</BrowserRouter>

@@ -403,6 +403,44 @@ const SUBSCRIBE_WEEK = gql`
     }
 `;
 
+const GET_ONE_WEEK = gql`
+    query weekSubscription ( $id: uuid! ) {
+        weeks_by_pk( id: $id ) {
+            created_at id week_start
+            title updated_at
+            days ( order_by: { _day: asc }) {
+                id
+                day { id title uid }
+                workout {
+                    body id
+                    version_num
+                    drills {
+                        id
+                        drill {
+                            description
+                            id title url
+                        }
+                    }
+                    workout {
+                        id intensity
+                        title type
+                    }
+                    stats {
+                        id
+                        running_minutes_beginner_short running_km_beginner_short
+                        running_minutes_intermediate_short running_km_intermediate_short
+                        running_minutes_advanced_short running_km_advanced_short
+                        running_minutes_beginner_long running_km_beginner_long
+                        running_minutes_intermediate_long running_km_intermediate_long
+                        running_minutes_advanced_long running_km_advanced_long
+                    }
+                }
+            }
+            daily_challenge { id title description }
+        }
+    }
+`;
+
 const UPDATE_WEEK = gql`
     mutation updateWeek ( $id: uuid!, $data: weeks_set_input! ) {
         update_weeks( where: { id: { _eq: $id }}, _set: $data ) {
@@ -466,6 +504,7 @@ export default {
 	},
 	weeks: {
 		getAll: GET_ALL_WEEKS,
+		getOne: GET_ONE_WEEK,
 		subscribe: SUBSCRIBE_WEEK,
 		subscribeAll: SUBSCRIBE_ALL_WEEKS,
 		updateWeek: UPDATE_WEEK,

@@ -30,7 +30,7 @@ export default function Week ( props ) {
 	if ( loading || challengesLoading ) return <Loading />;
     
 	const week = _.get( data, "weeks_by_pk" );
-	const { title, updated_at, days } = week;
+	const { title, updated_at, days, id: weekId } = week;
     
 	const workouts = _.compact( _.map( days, "workout" ));    
 	const stats = _.compact( _.map( days, "workout.stats" ));
@@ -97,7 +97,7 @@ export default function Week ( props ) {
 						<Pane key={ id } elevation={ 1 } width="12%" background="white" paddingLeft={ 16 } paddingBottom={ 16 }>
 							<Pane display="flex" justifyContent="space-between" alignItems="flex-end" marginBottom={ 8 }>
 								<Heading size={ 200 }>{ title }</Heading>
-								<IconButton icon="small-plus" appearance="minimal" onClick={ () => openPanel({ panel: "weeks/update-workout", props: { id, title }, size: "wide" })} />
+								<IconButton icon="small-plus" appearance="minimal" onClick={ () => openPanel({ panel: "weeks/update-workout", props: { id, title, weekId }, size: "wide" })} />
 							</Pane>
 							<Pane paddingRight={ 16 }>
 								{ _.isEmpty( workout ) ? 

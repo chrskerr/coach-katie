@@ -1,7 +1,7 @@
 
 // deps
 import React, { useState, useEffect, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import _ from "lodash";
 
 // app
@@ -18,8 +18,8 @@ const Admin = lazy(() => import('../views/views-admin'))
 //
 
 
-export default function ReactApp () {
-	const { Auth, UI } = Services;
+export default function AuthContainer () {
+	const { Auth } = Services;
 	const [ auth, setAuth ] = useState({
 		authUser: {},
 		token: "",
@@ -30,6 +30,20 @@ export default function ReactApp () {
 		signIn: () => {},
 		signOut: () => {},
 	});
+
+	return (
+		<Auth.Provider value={ auth }>
+            <ApolloProvider>
+                <FirebaseProvider>
+                    <UiContainer />          
+                </FirebaseProvider>
+            </ApolloProvider>
+		</Auth.Provider>
+	);
+}
+
+function UiContainer () {
+	const { UI } = Services;
 	const [ ui, setUI ] = useState({
 		panel: {},
 		openPanel: payload => setUI( ui => ({ ...ui, panel: payload })),
@@ -42,25 +56,19 @@ export default function ReactApp () {
 	useEffect(() => window.addEventListener( "resize", _.debounce(() => setBreakpoint( getBreakpoint()), 1000 )), [ setBreakpoint ]);
 
 	return (
-		<Auth.Provider value={ auth }>
-			<UI.Provider value={ ui }>
-				<ApolloProvider>
-					<FirebaseProvider>
-						<Panel />
-						<Pane background="tint1" minHeight="100vh">
-							<div className="v-router">
-								<Switch>
-									<Route path="/admin" component={ Admin } />
-								</Switch>
-							</div>
-						</Pane>                                
-					</FirebaseProvider>
-				</ApolloProvider>
-			</UI.Provider>
-		</Auth.Provider>
+        <UI.Provider value={ ui }>
+            <Panel />
+            <Pane background="tint1" minHeight="100vh">
+                <div className="v-router">
+                    <Switch>
+                        <Route path="/admin" component={ Admin } />
+                        <Route path="*" component={ NoRoute } />
+                    </Switch>
+                </div>
+            </Pane>  
+        </UI.Provider>
 	);
 }
-
 
 const getBreakpoint = () => {
 	const width = window.innerWidth;
@@ -68,3 +76,9 @@ const getBreakpoint = () => {
 	if ( width <= 1008 ) return "medium";
 	return "large";
 };
+
+const NoRoute = () => {
+    const history = useHistory();
+    history.push( "/" )
+    return ( <></> )
+}

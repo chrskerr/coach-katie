@@ -98,7 +98,7 @@ export default function Workout ( props ) {
 				{ !_.isEmpty( drills ) ? _.map( drills, drill => {
 					const { id, title } = drill;
 					return ( 
-						<Link to={ `/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
+						<Link to={ `/admin/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
 							<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
 								<Text marginLeft={ 24 }>{ title }</Text> 
 							</Pane> 

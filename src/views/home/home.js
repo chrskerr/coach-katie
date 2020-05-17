@@ -55,17 +55,12 @@ export default function Home () {
 
 	useEffect(() => ReactGA.pageview( pathname ), [ pathname ]);
 	useEffect(() => {
-		document.addEventListener( "scroll", () => _.debounce(() => {
-			ReactGA.event({
+		let heartbeat = setInterval(() => {
+			ReactGA.event({ 
 				category: "engagement",
-				action: "scroll",
-				value: window.scrollY / ( document.documentElement.scrollHeight - window.innerHeight ),
+				action: "heartbeat", 
 			});
-		}, 250 ));
-		let heartbeat = ReactGA.event({ 
-			category: "engagement",
-			action: "heartbeat", 
-		});
+		}, 5000 );
 		document.addEventListener( "visibilitychange", () => {
 			clearInterval( heartbeat ); 
 			if ( !document.hidden ) heartbeat = setInterval(() => {
@@ -73,7 +68,7 @@ export default function Home () {
 					category: "engagement",
 					action: "heartbeat", 
 				});
-			}, 10000 );
+			}, 5000 );
 		});
 	}, []);
 	
