@@ -1,6 +1,6 @@
 {
-  "name": "adultletics-admin",
-  "homepage": "https://admin.adultletics.com.au",
+  "name": "adultletics-app",
+  "homepage": "https://www.adultletics.com.au",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -1,6 +1,6 @@
 
 // deps
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -23,13 +23,11 @@ const firebaseConfig = {
 	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 };
 
-const firebaseApp = firebase.initializeApp( firebaseConfig );
+firebase.initializeApp( firebaseConfig );
 
 export default function Firebase ({ children }) {
 	const apolloClient = useApolloClient();
-	const { updateAuth, authUser, uid, isAuthenticated, isAuthenticating } = useContext( Services.Auth );
- 
-	console.log( isAuthenticating, firebaseApp );
+	const { updateAuth, authUser, uid, isAuthenticated } = useContext( Services.Auth );
 
 	useEffect(() => {
 		( async () => {

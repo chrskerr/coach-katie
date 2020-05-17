@@ -4,13 +4,15 @@ const functions = require( "firebase-functions" );
 const admin = require( "firebase-admin" );
 const _ = require( "lodash" );
 const fetch = require( "node-fetch" );
+const cors = require( "cors" );
 
 //
-// Adultletics Admin / Firebase Functions / Index
+// Adultletics / Firebase Functions / Index
 //
 
 
 admin.initializeApp( functions.config().firebase );
+const corsPublic = cors({ origin: true });
 
 const API_HOST = "https://adultletics-hasura.herokuapp.com/v1/graphql";
 const HASURA_GRAPHQL_ADMIN_SECRET = functions.config().hasura.adminsecret;
@@ -28,8 +30,6 @@ exports.processSignUp = functions.auth.user().onCreate( async user => {
 
 	const res = await doQuery( CREATE_USER, { objects: [{ uid, email }]});
 	const id = _.get( res, "data.insert_users.returning[0].id" );
-
-	console.log( res, id );
 
 	const customClaims = {
 		"https://hasura.io/jwt/claims": {
@@ -60,3 +60,33 @@ async function doQuery( query, variables ) {
 	});
 	return response.json();
 }
+
+exports.updateUserRoles = functions.https.onRequest( async ( req, res ) => {
+	try {
+		// corsPublic( req, res, async () => {
+		const admin_secret = _.get( req, "headers.admin_secret" );
+		if ( admin_secret !== HASURA_GRAPHQL_ADMIN_SECRET ) {
+			return res.status( 403 ).json({ error: "Unauthorized - Missing or incorrect admin token." });
+		} else {
+			const event = _.get( req, "body.event" );
+			const id = _.get( event, "data.new.id" );
+			const uid = _.get( event, "data.new.uid" );
+			const role = _.get( event, "data.new.role" );
+
+			const customClaims = {
+				"https://hasura.io/jwt/claims": {
+					"x-hasura-default-role": role,
+					"x-hasura-allowed-roles": [ role ],
+					"x-hasura-user-id": id,
+				},
+			};
+            
+			await admin.auth().setCustomUserClaims( uid, customClaims );
+			return res.status( 200 ).send( "success" );
+		}
+		// });
+	} catch ( error ) {
+		console.error( error );
+		return res.status( 500 ).json({ error: "Server Error" });
+	}
+});
