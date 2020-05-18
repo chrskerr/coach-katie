@@ -263,6 +263,9 @@ const Stripe = () => {
 const CheckoutModal = () => {
 	const [ viewState, setViewState ] = useState( "initial" );
 	const [ isLoading, setIsLoading ] = useState( false );
+	const [ formData, setFormData ] = useState({ name: "", email: "", agreed: false });
+	const { name, email, agreed } = formData;
+    
 	const [ error, setError ] = useState( "" );
 	const stripe = useStripe();
 	const elements = useElements();
@@ -274,9 +277,12 @@ const CheckoutModal = () => {
 		const cardElement = elements.getElement( CardElement );
 	
 		ReactGA.event({ category: "ecommerce", event: "checkout_progress" });
-	
-		const name = event.target[ 0 ].value;
-		const email = event.target[ 1 ].value;
+    
+		if ( !agreed ) {
+			setError( "Please accept the terms" );
+			return; 
+		}
+
 		const data = await stripe.createPaymentMethod({
 			type: "card",
 			card: cardElement,
@@ -361,18 +367,28 @@ const CheckoutModal = () => {
 				<div className="customer-details">
 					<div>
 						<label>Name</label>
-						<input type="text" required placeholder="Please enter your full name"></input>
+						<input type="text" required placeholder="Please enter your full name" value={ name } onChange={ e => setFormData({ ...formData, name: e.target.value })}></input>
 					</div>
 					<div>
 						<label>Email</label>
-						<input type="email" required placeholder="Please enter your email"></input>
+						<input type="email" required placeholder="Please enter your email" value={ email } onChange={ e => setFormData({ ...formData, email: e.target.value })}></input>
+					</div>
+				</div>
+				<div className="terms">
+					<div>
+						<label>Terms and Conditions</label>
+						<textarea type="fieldarea" readOnly value={ terms } rows={ 5 } />
+					</div>
+					<div className="checkbox">
+						<input type="checkbox" required checked={ agreed } value={ agreed } onChange={ () => setFormData({ ...formData, agreed: !agreed })}></input>
+						<label onClick={ () => setFormData({ ...formData, agreed: !agreed })}>I have read and agreed to the terms and conditions as above</label>
 					</div>
 				</div>
 				<div className="dummy-input">
 					<CardElement />
 				</div>
 				<div>
-					<button type="submit" disabled={ isLoading } id="submit-button" style={{ marginTop: "1em" }}>
+					<button type="submit" disabled={ isLoading || !agreed || !name || !email } id="submit-button">
 						Join
 						<FontAwesomeIcon icon={ isLoading ? faSpinner : faCheck } spin={ isLoading } style={{ marginLeft: "8px" }} /> 
 					</button>
@@ -395,3 +411,21 @@ const CheckoutModal = () => {
 		</>
 	);
 };
+
+const terms = `By agreeing to the terms and conditions, I decree that I have read and understood the contents of this document. Any questions I may have had about this document have been answered to my satisfaction and I by ticking this box, I hereby consent to the terms and conditions as outlined below:
+ 
+Voluntary Participation- My participation in this course is voluntary. I agree to fully participate and I will fully disclose any pre-existing conditions or injuries in advance of the training to the organizers and instructors that may limit or hinder my participation.
+
+Assumption of Risk – I realize that during this program there are several ways that I could potentially hurt myself if I am not careful and pay close attention to my Instructors and the proper safety techniques I am taught. I realize that my participation in any of these activities is strictly voluntary and that I assume the risks associated with these activities. I could: (a) receive blisters, cuts and abrasions, and (b) suffer serious bodily injury.
+
+Waiver – I release Michael Hobbs, Kate Hobbs, the sponsors, organizers, instructors, volunteers, and site property owners (as well as all of their affiliates, directors, officers, trustees, employees, representatives, or agents) from all actions or claims of any kind that relate to my participation in this course. I understand and acknowledge that this waiver binds my heirs, administrators, executors, personal representatives, and assignees.
+
+Hold Harmless – I hold Michael Hobbs, Kate Hobbs, the sponsors, organizers, instructors, volunteers, and site owners harmless and indemnify them against all actions or claims (including reasonable attorneys’ fees, judgments and costs) with respect to any injuries, death, or other damages or losses, resulting from my participation in this course.
+
+Medical Treatment - If I am injured during this course, Michael Hobbs, Kate Hobbs, the organizers, instructors or volunteers of this course may render medical services to me, or request that others provide such services. By taking such action, Michael Hobbs, Kate Hobbs, the organizers and volunteers are not admitting any liability to provide or to continue to provide any such services and that such action is not a waiver by the organizers or volunteers of any rights under this release and waiver. Should I require transport to a medical facility as a result of an injury, I am financially responsible for such transportation and medical treatment costs. If I am injured during this course it is my responsibility to seek appropriate medical care and to notify the organizers. I understand that this waiver will have no bearing on any workers compensation claims that I may make as a result of my participation in this event.
+ 
+Media Release- I understand that this entire course will be photographed and recorded for future content creation. I understand that by voluntarily posting in the Facebook group, that that content may be used for future content creation. This may include audio and visual recording of me, including depiction of my full face, body and voice. I hereby forever grant Michael Hobbs, Kate Hobbs, The Embodied Runner and his/her/ its legal representatives, successors, assigns, licensees, advertising agencies, and all person or corporations acting with his/her/its permission, the irrevocable and unrestricted right to use, re-use, publish and re-publish, and copyright my performance, likeness, picture, portrait, photograph, sound and/or voice recording, including the negatives, transparencies, prints, film, video, tapes, digital or other information
+pertaining to them in all forms of media now or hereafter known and in all manner, including electronic media, in still, single, multiple, moving or video format, in whole or part and/or composite representations, in conjunction with my own of a fictitious name, including alteration, modifications, derivations and composites thereof, throughout the world and universe for advertising, promotion, trade or any lawful purposes. This right shall include, but not be limited to, the right to combine my likeness with others and to alter my likeness, by digital means or otherwise, for the purposes set forth herein. I waive my right to inspect or approve the finished product, including written copy that may be created in connection there- with or the use to which it may be applied.
+ 
+Intellectual Property- I understand that the material presented in this course is Intellectual property of Michael Hobbs and Kate Hobbs and reproduction of any kind is liable to immediate legal action.
+Film or digital photography, video photography, and/or audio recordings of any kind of the instruction and training at the course are strictly prohibited without the express permission of the instructors. All film, digital or video imagery and audio recordings are copyright protected. Any person found to have infringed such copyright would be liable to immediate legal action.`;
