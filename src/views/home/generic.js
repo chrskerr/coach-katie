@@ -1,16 +1,6 @@
 
 // deps
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { useLocation, Link } from "react-router-dom";
-import ReactGA from "react-ga";
-import _ from "lodash";
-import $ from "jquery";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRunning, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faPlusSquare, faMinusSquare } from "@fortawesome/free-regular-svg-icons";
-import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
-
+import React from "react";
 
 // app
 

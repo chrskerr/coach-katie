@@ -2675,7 +2675,7 @@
 /* Wrapper */
 
 	.wrapper {
-		padding: 6rem 0 4rem 0 ;
+		padding: 4rem 0 1rem 0 ;
 		position: relative;
 		margin: 0;
 	}
@@ -3713,7 +3713,7 @@
 	}
 
 	#header {
-		background: rgba(0, 0, 0, 0.975);
+		background: rgba( 0, 0, 0, 0.1 );
 		color: #a6a6a6;
 		cursor: default;
 		height: 3.25em;
@@ -3724,7 +3724,7 @@
 		top: 0;
 		width: 100%;
 		z-index: 10001;
-	}
+    }
 
 		#header > .logo {
 			display: inline-block;
@@ -3771,14 +3771,16 @@
 
 			#header > a[href="#menu"] {
 				text-decoration: none;
-				-webkit-tap-highlight-color: transparent;
-			}
+                -webkit-tap-highlight-color: transparent;
+
+                svg {
+                    margin-right: 1em;
+                }
+            }
 
 				#header > a[href="#menu"]:before {
-					content: "";
 					-moz-osx-font-smoothing: grayscale;
 					-webkit-font-smoothing: antialiased;
-					font-family: FontAwesome;
 					font-style: normal;
 					font-weight: normal;
 					text-transform: none !important;
@@ -3796,7 +3798,7 @@
 
 			#header > a:last-child {
 				padding-right: 1.25em;
-			}
+            }
 
 			@media screen and (max-width: 736px) {
 
@@ -3831,15 +3833,10 @@
 			box-shadow: none;
 			overflow: hidden;
 			position: absolute;
-			top: 1.5em;
 		}
 
 			#header.alt h1 {
 				left: 2.5em;
-			}
-
-			#header.alt nav {
-				right: 2.5em;
 			}
 
 	@media screen and (max-width: 980px) {
@@ -3959,15 +3956,9 @@
 			#menu .close:before {
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
-				font-family: FontAwesome;
 				font-style: normal;
 				font-weight: normal;
 				text-transform: none !important;
-			}
-
-			#menu .close:before {
-				content: '\f00d';
-				font-size: 1.25rem;
 			}
 
 			#menu .close:hover {
@@ -4006,7 +3997,7 @@
 		background-color: #8a4680;
 		color: #e2d1df;
 		padding: 8em 0;
-		position: relative;
+		position: relative; 
 	}
 
 		.banner input, .banner select, .banner textarea {

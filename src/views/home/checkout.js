@@ -20,9 +20,32 @@ const url = "https://stripe-server-xdzmzxo7uq-lz.a.run.app/";
 export default function Checkout () {
 	const stripePromise = loadStripe( "pk_live_mwNb1i31QrYYF4ghnbGz0CuQ00WF3EYB1n" );
 	return (
-		<Elements stripe={ stripePromise }>
-			<CheckoutForm />
-		</Elements> 
+		<>
+			<section id="One" className="wrapper style3">
+				<div className="inner">
+					<header className="align-center">
+						<p>An online and in-person running techique and longevity programme</p>
+						<h2>Kate&apos;s Technique</h2>
+					</header>
+				</div>
+			</section>
+
+			<section id="two" className="wrapper style2">
+				<div className="inner">
+					<div className="box">
+						<div className="content">
+							<header className="align-center">
+								<p>maecenas sapien feugiat ex purus</p>
+								<h2>Lorem ipsum dolor</h2>
+							</header>
+							<Elements stripe={ stripePromise }>
+								<CheckoutForm />
+							</Elements> 
+						</div>
+					</div>
+				</div>
+			</section>
+		</>
 	);
 } 
 
@@ -31,7 +54,7 @@ const CheckoutForm = () => {
 	const [ isLoading, setIsLoading ] = useState( false );
 	const [ formData, setFormData ] = useState({ name: "", email: "", agreed: false });
 	const { name, email, agreed } = formData;
-    
+	
 	const [ error, setError ] = useState( "" );
 	const stripe = useStripe();
 	const elements = useElements();
@@ -43,7 +66,7 @@ const CheckoutForm = () => {
 		const cardElement = elements.getElement( CardElement );
 	
 		ReactGA.event({ category: "ecommerce", event: "checkout_progress" });
-    
+	
 		if ( !agreed ) {
 			setError( "Please accept the terms" );
 			return; 

@@ -16,6 +16,7 @@ $.fn.panel = function( userConfig ) {
 	const config = $.extend({
 		delay: 500,
 		hideOnSwipe: true,
+		hideOnClick: true,
 		resetForms: true,
 		side: "right",
 		hideOnEscape: true,
@@ -38,6 +39,39 @@ $.fn.panel = function( userConfig ) {
 		}, config.delay );
 	};
 
+	if ( config.hideOnClick ) {
+
+		$this.find( "a" ).css( "-webkit-tap-highlight-color", "rgba(0,0,0,0)" );
+
+		$this
+			.on( "click", "a", function( event ) {
+
+				const $a = $( this ),
+					href = $a.attr( "href" ),
+					target = $a.attr( "target" );
+
+				if ( !href || href == "#" || href == "" || href == "#" + id )
+					return;
+
+				// Cancel original event.
+				event.preventDefault();
+				event.stopPropagation();
+
+				// Hide panel.
+				$this._hide();
+
+				// Redirect to href.
+				window.setTimeout( function() {
+
+					if ( target == "_blank" )
+						window.open( href );
+					else
+						config.push( href );
+				}, config.delay + 10 );
+
+			});
+
+	}
 	$this.css( "-ms-overflow-style", "-ms-autohiding-scrollbar" ).css( "-webkit-overflow-scrolling", "touch" );
 
 	$this.on( "touchstart", function( event ) {

@@ -1,12 +1,11 @@
 
 // deps
 import React, { lazy, useEffect } from "react";
-import { Link, Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 import $ from "jquery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRunning, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faPlusSquare, faMinusSquare } from "@fortawesome/free-regular-svg-icons";
+import { faEnvelope, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 
 // app
@@ -14,7 +13,8 @@ import "./tools/util"
 const Home = lazy(() => import( "./home" ))
 const Checkout = lazy(() => import( "./checkout" ))
 const Generic = lazy(() => import( "./generic" ))
-const Elements = lazy(() => import( "./home" ))
+const Elements = lazy(() => import( "./elements" ))
+const Adultletics = lazy(() => import( "./adultletics" ))
 
 
 //
@@ -45,28 +45,24 @@ export default function HomeIndex () {
 			}, 5000 );
         });
 
-        $( "#menu" )
-            .append( "<a href=\"#menu\" class=\"close\"></a>" )
-            .appendTo( $( ".v-home" ))
-            .panel({
-                push,
-            });
+        $( "#menu" ).panel({  push });
     }, []);
     
     return (
         <div className="v-home">
-            <header id="header" className="alt">
-				<a href="#menu">Menu</a>
+            <header id="header">
+				<a href="#menu"><FontAwesomeIcon icon={ faBars } />Menu</a>
 			</header>
 			<nav id="menu">
 				<ul className="links">
-					<li><Link to="/">Home</Link></li>
-					<li><Link to="/adutletics">Adultletics</Link></li>
-					<li><Link to="/generic">Generic</Link></li>
-					<li><Link to="/elements">Elements</Link></li>
-					<li><Link to="/checkout">Checkout</Link></li>
-					<li><Link to="/admin">Employees</Link></li>
-					{/* <Link to="/members">Members Centre</Link> */}
+					<li><a href="/">Home</a></li>
+					<li><a href="/adultletics">Adultletics</a></li>
+					<li><a href="/generic">Generic</a></li>
+					<li><a href="/elements">Elements</a></li>
+					<li><a href="/checkout">Checkout</a></li>
+					<li><a href="/admin">Employees</a></li>
+					{/* <a href="/members">Members Centre</a> */}
+                    <a href="#menu" class="close"><FontAwesomeIcon icon={ faTimes } /></a>
 				</ul>
 			</nav>
             <Switch>
@@ -74,6 +70,7 @@ export default function HomeIndex () {
                 <Route path="/checkout"><Checkout /></Route>
                 <Route path="/generic"><Generic /></Route>
                 <Route path="/elements"><Elements /></Route>
+                <Route path="/adultletics"><Adultletics /></Route>
                 <Route path="*"><NoRoute /></Route>
             </Switch>
             <footer id="footer">

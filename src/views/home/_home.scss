@@ -7,4 +7,13 @@
             background-size: cover;
         }
     }
+
+    .faq {
+        display: flex; flex-direction: row;
+
+        svg {
+            margin-right: 2em;
+            font-size: 135%;
+        }
+    }
 }
