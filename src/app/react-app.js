@@ -1,7 +1,7 @@
 
 // deps
 import React, { useState, useEffect, lazy } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import _ from "lodash";
 
 // app

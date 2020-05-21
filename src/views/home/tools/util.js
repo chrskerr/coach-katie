@@ -2,14 +2,13 @@
 import $ from "jquery";
 
 $.fn.panel = function( userConfig ) {
-	if ( this.length == 0 ) return $this;
+	const $this = $( this );
+	if ( this.length === 0 ) return $this;
 
 	if ( this.length > 1 ) {
 		for ( let i = 0; i < this.length; i++ ) $( this[ i ]).panel( userConfig );
 		return $this;
 	}
-
-	const $this = $( this );
 	const $body = $( "body" );
 	const $window = $( window );
 	const id = $this.attr( "id" );
@@ -50,7 +49,7 @@ $.fn.panel = function( userConfig ) {
 					href = $a.attr( "href" ),
 					target = $a.attr( "target" );
 
-				if ( !href || href == "#" || href == "" || href == "#" + id )
+				if ( !href || href === "#" || href === "" || href === "#" + id )
 					return;
 
 				// Cancel original event.
@@ -63,7 +62,7 @@ $.fn.panel = function( userConfig ) {
 				// Redirect to href.
 				window.setTimeout( function() {
 
-					if ( target == "_blank" )
+					if ( target === "_blank" )
 						window.open( href );
 					else
 						config.push( href );
@@ -143,7 +142,7 @@ $.fn.panel = function( userConfig ) {
 		config.target.toggleClass( config.visibleClass );
 	});
 
-	if ( config.hideOnEscape ) $window.on( "keydown", event => { if ( event.keyCode == 27 ) $this._hide( event ); });
+	if ( config.hideOnEscape ) $window.on( "keydown", event => { if ( event.keyCode === 27 ) $this._hide( event ); });
 
 	return $this;
 };
@@ -153,13 +152,14 @@ $.fn.panel = function( userConfig ) {
 	 * @return {jQuery} jQuery object.
 	 */
 $.fn.placeholder = function() {
+	const $this = $( this );
 
 	// Browser natively supports placeholders? Bail.
-	if ( typeof ( document.createElement( "input" )).placeholder != "undefined" )
-		return $( this );
+	if ( typeof ( document.createElement( "input" )).placeholder !== "undefined" )
+		return $this;
 
 	// No elements?
-	if ( this.length == 0 )
+	if ( this.length === 0 )
 		return $this;
 
 	// Multiple elements?
@@ -172,17 +172,14 @@ $.fn.placeholder = function() {
 
 	}
 
-	// lets.
-	const $this = $( this );
-
 	// Text, TextArea.
 	$this.find( "input[type=text],textarea" )
 		.each( function() {
 
 			const i = $( this );
 
-			if ( i.val() == ""
-					||  i.val() == i.attr( "placeholder" ))
+			if ( i.val() === ""
+					||  i.val() === i.attr( "placeholder" ))
 				i
 					.addClass( "polyfill-placeholder" )
 					.val( i.attr( "placeholder" ));
@@ -195,7 +192,7 @@ $.fn.placeholder = function() {
 			if ( i.attr( "name" ).match( /-polyfill-field$/ ))
 				return;
 
-			if ( i.val() == "" )
+			if ( i.val() === "" )
 				i
 					.addClass( "polyfill-placeholder" )
 					.val( i.attr( "placeholder" ));
@@ -208,7 +205,7 @@ $.fn.placeholder = function() {
 			if ( i.attr( "name" ).match( /-polyfill-field$/ ))
 				return;
 
-			if ( i.val() == i.attr( "placeholder" ))
+			if ( i.val() === i.attr( "placeholder" ))
 				i
 					.removeClass( "polyfill-placeholder" )
 					.val( "" );
@@ -229,16 +226,16 @@ $.fn.placeholder = function() {
 					.replace( /type=password/i, "type=text" ),
 			);
 
-			if ( i.attr( "id" ) != "" )
+			if ( i.attr( "id" ) !== "" )
 				x.attr( "id", i.attr( "id" ) + "-polyfill-field" );
 
-			if ( i.attr( "name" ) != "" )
+			if ( i.attr( "name" ) !== "" )
 				x.attr( "name", i.attr( "name" ) + "-polyfill-field" );
 
 			x.addClass( "polyfill-placeholder" )
 				.val( x.attr( "placeholder" )).insertAfter( i );
 
-			if ( i.val() == "" )
+			if ( i.val() === "" )
 				i.hide();
 			else
 				x.hide();
@@ -250,7 +247,7 @@ $.fn.placeholder = function() {
 
 					const x = i.parent().find( "input[name=" + i.attr( "name" ) + "-polyfill-field]" );
 
-					if ( i.val() == "" ) {
+					if ( i.val() === "" ) {
 
 						i.hide();
 						x.show();
@@ -287,14 +284,14 @@ $.fn.placeholder = function() {
 		.on( "submit", function() {
 
 			$this.find( "input[type=text],input[type=password],textarea" )
-				.each( function( event ) {
+				.each( function() {
 
 					const i = $( this );
 
 					if ( i.attr( "name" ).match( /-polyfill-field$/ ))
 						i.attr( "name", "" );
 
-					if ( i.val() == i.attr( "placeholder" )) {
+					if ( i.val() === i.attr( "placeholder" )) {
 
 						i.removeClass( "polyfill-placeholder" );
 						i.val( "" );
@@ -314,8 +311,8 @@ $.fn.placeholder = function() {
 			$this.find( "input,textarea" )
 				.each( function() {
 
-					let i = $( this ),
-						x;
+					const i = $( this );
+					let x;
 
 					i.removeClass( "polyfill-placeholder" );
 
@@ -330,7 +327,7 @@ $.fn.placeholder = function() {
 
 						x = i.parent().find( "input[name=" + i.attr( "name" ) + "-polyfill-field]" );
 
-						if ( i.val() == "" ) {
+						if ( i.val() === "" ) {
 							i.hide();
 							x.show();
 						}
@@ -350,7 +347,7 @@ $.fn.placeholder = function() {
 					case "textarea":
 						i.val( i.attr( "defaultValue" ));
 
-						if ( i.val() == "" ) {
+						if ( i.val() === "" ) {
 							i.addClass( "polyfill-placeholder" );
 							i.val( i.attr( "placeholder" ));
 						}
@@ -380,18 +377,16 @@ $.prioritize = function( $elements, condition ) {
 	const key = "__prioritize";
 
 	// Expand $elements if it's not already a jQuery object.
-	if ( typeof $elements != "jQuery" )
-		$elements = $( $elements );
 
 	// Step through elements.
 	$elements.each( function() {
 
-		let	$e = $( this ), $p,
-			$parent = $e.parent();
+		const $e = $( this );
+		let $p;
+		const $parent = $e.parent();
 
 		// No parent? Bail.
-		if ( $parent.length == 0 )
-			return;
+		if ( $parent.length === 0 ) return;
 
 		// Not moved? Move it.
 		if ( !$e.data( key )) {
@@ -404,7 +399,7 @@ $.prioritize = function( $elements, condition ) {
 			$p = $e.prev();
 
 			// Couldn't find anything? Means this element's already at the top, so bail.
-			if ( $p.length == 0 )
+			if ( $p.length === 0 )
 				return;
 
 			// Move element to top of parent.

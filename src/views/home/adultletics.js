@@ -2,14 +2,11 @@
 // deps
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import ReactGA from "react-ga";
 import _ from "lodash";
 import $ from "jquery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRunning, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-regular-svg-icons";
-import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 
 
 // app
@@ -67,8 +64,8 @@ export default function Adultletics () {
 								<p>Adultletics Running Club Membership</p>
 								<h2>An Athletics Club for Grown-ups</h2>
 							</header>
-							<p>Aduletics is a run club and a runner's school all in one. It's much more than just 'going for a run'. Our focus is about teaching runners how to run, and to equip our runners with the tools they need to train both the brain AND the body.</p>
-							<p>We're all about building stronger AND smarter runners, so there is just as much an emphasis on running technique, skill development, injury prevention and education as there is on the actual programming.</p>
+							<p>Aduletics is a run club and a runner&apos;s school all in one. It&apos;s much more than just &apos;going for a run&apos;. Our focus is about teaching runners how to run, and to equip our runners with the tools they need to train both the brain AND the body.</p>
+							<p>We&apos;re all about building stronger AND smarter runners, so there is just as much an emphasis on running technique, skill development, injury prevention and education as there is on the actual programming.</p>
 						</div>
 					</div>
 				</div>
@@ -142,7 +139,7 @@ export default function Adultletics () {
 							</header>
 							<p>What’s included:</p>
 							<ul>
-								<li>x3 structured running sessions per week (a speedplay session, an aerobic session and a 'mystery' session)</li>
+								<li>x3 structured running sessions per week (a speedplay session, an aerobic session and a &apos;mystery&apos; session)</li>
 								<li>x2 online strength training for runners sessions per week</li>
 								<li>x1 weekly team Q&A, check-in and workshop about a different running-related topic (such as choosing the right shoes, running technique, nutrition for runners, goal setting etc.)</li>
 								<li>A daily challenge, that changes weekly (this may be a physical or mental challenge)</li>
@@ -151,7 +148,7 @@ export default function Adultletics () {
 							</ul>
 							<p style={{ marginBottom: "0.5em" }}><strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.</p>
 							<p>Pay as you go and cancel anytime, no charge if you cancel in the first week.</p>
-							<p>Contact us at <a href="mailto:info@adultletics.com.au">info@adultletics.com.au</a> if you'd like more information.</p>
+							<p>Contact us at <a href="mailto:info@adultletics.com.au">info@adultletics.com.au</a> if you&apos;d like more information.</p>
 							<div style={{ textAlign: "center" }}>
 								<span className="button big">Run with us</span>
 							</div>
@@ -180,7 +177,8 @@ export default function Adultletics () {
 							<div className="box">
 								<div className="content">
 									<header className="align-center">
-										<h2>Coach: Mike Hobbs</h2>
+										<p>About The Coaches</p>
+										<h2>Mike Hobbs</h2>
 									</header>
 									<p><span className="image left"><img src="./images/mike.png" alt="Mike Hobbs" /></span>Mike Hobbs is the creator of the Embodied Runner program, the medical director of an international marathon team comprising over 100 athletes, and is a sports and rehabilitation chiropractor. He works extensively with runners and consults online for runners all around the world. He is currently training for a sub 3-hour road marathon, his master Kettlebell certification and his first ultra marathon later in 2020.</p>
 								</div>
@@ -190,7 +188,8 @@ export default function Adultletics () {
 							<div className="box">
 								<div className="content">
 									<header className="align-center">
-										<h2>Coach: Kate Hobbs</h2>
+										<p>About The Coaches</p>
+										<h2>Kate Hobbs</h2>
 									</header>
 									<p><span className="image left"><img src="./images/kate.png" alt="Kate Hobbs" /></span>Kate is a certified running coach, bringing her own extensive first-hand experience to her athletes. She has raced competitively at a national level for over a decade, running track, trail and mountains. With a recent transition to obstacle course racing, she is already making a name for herself as one of Australia’s top female elite athletes, with multiple podium finishes and representing Australia at the World Championships.</p>
 								</div>

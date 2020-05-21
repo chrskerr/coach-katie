@@ -190,7 +190,7 @@ const CheckoutForm = () => {
 	);
 
 	if ( checkoutStage === "existing_subscriber" ) return (
-		<p style={{ marginBottom: 0, textAlign: "center" }}>Looks like you're already a member with us :)</p>
+		<p style={{ marginBottom: 0, textAlign: "center" }}>Looks like you&apos;re already a member with us :)</p>
 	);
 
 	if ( checkoutStage === "success" ) return (

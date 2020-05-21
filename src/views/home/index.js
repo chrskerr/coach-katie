@@ -46,6 +46,7 @@ export default function HomeIndex () {
         });
 
         $( "#menu" ).panel({  push });
+        // eslint-disable-next-line
     }, []);
     
     return (
