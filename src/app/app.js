@@ -5,7 +5,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ReactGA from 'react-ga';
 
 // app
-const Home = lazy(() => import( "../views/home/home" ));
+const HomeIndex = lazy(() => import( "../views/home" ));
 const AuthContainer = lazy(() => import( "./react-app" ));
 
 //
@@ -20,8 +20,8 @@ export default function App () {
 			<BrowserRouter>
                 <Suspense fallback={ <></> }>
                     <Switch>
-                        <Route exact path="/" component={ Home } />
-                        <Route component={ AuthContainer } />
+                        <Route path="/admin"><AuthContainer /></Route>
+                        <Route><HomeIndex /></Route>
                     </Switch>
                 </Suspense>
 			</BrowserRouter>

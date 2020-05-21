@@ -62,7 +62,6 @@ function UiContainer () {
                 <div className="v-router">
                     <Switch>
                         <Route path="/admin" component={ Admin } />
-                        <Route path="*" component={ NoRoute } />
                     </Switch>
                 </div>
             </Pane>  
@@ -76,9 +75,3 @@ const getBreakpoint = () => {
 	if ( width <= 1008 ) return "medium";
 	return "large";
 };
-
-const NoRoute = () => {
-    const history = useHistory();
-    history.push( "/" )
-    return ( <></> )
-}
