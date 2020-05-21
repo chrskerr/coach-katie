@@ -24,6 +24,7 @@ const Elements = lazy(() => import( "./home" ))
 
 export default function HomeIndex () {
     const { pathname } = useLocation();
+    const { push } = useHistory()
 
 	useEffect(() => ReactGA.pageview( pathname ), [ pathname ]);
 	useEffect(() => {
@@ -45,16 +46,11 @@ export default function HomeIndex () {
         });
 
         $( "#menu" )
-        .append( "<a href=\"#menu\" class=\"close\"></a>" )
-        .appendTo( $( ".v-home" ))
-        .panel({
-            delay: 500,
-            hideOnClick: true,
-            hideOnSwipe: true,
-            resetScroll: true,
-            resetForms: true,
-            side: "right",
-        });
+            .append( "<a href=\"#menu\" class=\"close\"></a>" )
+            .appendTo( $( ".v-home" ))
+            .panel({
+                push,
+            });
     }, []);
     
     return (
