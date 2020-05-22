@@ -24,7 +24,7 @@ export default function Checkout () {
 			<section id="One" className="wrapper style3">
 				<div className="inner">
 					<header className="align-center">
-						<p>An online and in-person running techique and longevity programme</p>
+						<p>An online and in-person running technique and longevity programme</p>
 						<h2>Kate&apos;s Technique</h2>
 					</header>
 				</div>

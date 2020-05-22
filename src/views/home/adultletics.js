@@ -50,7 +50,7 @@ export default function Adultletics () {
 			<section id="One" className="wrapper style3">
 				<div className="inner">
 					<header className="align-center">
-						<p>An online and in-person running techique and longevity programme</p>
+						<p>An online and in-person running technique and longevity programme</p>
 						<h2>Kate&apos;s Technique</h2>
 					</header>
 				</div>
@@ -61,8 +61,8 @@ export default function Adultletics () {
 					<div className="box">
 						<div className="content">
 							<header className="align-center">
-								<p>Adultletics Running Club Membership</p>
-								<h2>An Athletics Club for Grown-ups</h2>
+								<p>An Athletics Club for Grown-ups</p>
+								<h2>Adultletics Running Club Membership</h2>
 							</header>
 							<p>Aduletics is a run club and a runner&apos;s school all in one. It&apos;s much more than just &apos;going for a run&apos;. Our focus is about teaching runners how to run, and to equip our runners with the tools they need to train both the brain AND the body.</p>
 							<p>We&apos;re all about building stronger AND smarter runners, so there is just as much an emphasis on running technique, skill development, injury prevention and education as there is on the actual programming.</p>

@@ -3108,7 +3108,8 @@
 			background-size: cover;
 			background-attachment: fixed;
 			background-position: center;
-			position: relative;
+            position: relative;
+            padding: 6rem 0 4rem 0 ;
 		}
 
 			.wrapper.style3 input, .wrapper.style3 select, .wrapper.style3 textarea {
@@ -3432,11 +3433,12 @@
 			-moz-flex-grow: 0;
 			-webkit-flex-grow: 0;
 			-ms-flex-grow: 0;
-			flex-grow: 0;
+            flex-grow: 0;
+            height: 100%;
 		}
 
 		.grid-style > * {
-			width: 50%;
+            width: 50%;
 		}
 
 		.grid-style > * {
@@ -3466,7 +3468,7 @@
 		}
 
 		.grid-style .box {
-			margin: 0;
+            margin: 0;
 		}
 
 		@media screen and (max-width: 980px) {

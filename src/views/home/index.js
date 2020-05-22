@@ -63,7 +63,7 @@ export default function HomeIndex () {
 					<li><a href="/checkout">Checkout</a></li>
 					<li><a href="/admin">Employees</a></li>
 					{/* <a href="/members">Members Centre</a> */}
-                    <a href="#menu" class="close"><FontAwesomeIcon icon={ faTimes } /></a>
+                    <a href="#menu" className="close"><FontAwesomeIcon icon={ faTimes } /></a>
 				</ul>
 			</nav>
             <Switch>
