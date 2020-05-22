@@ -19,7 +19,7 @@ export default function Home () {
 					<div className="inner">
 						<header>
 							<p>An online and in-person running technique and longevity programme</p>
-							<h2>Kate&apos;s Technique</h2>
+							<h2>Kate&apos;s Way</h2>
 						</header>
 					</div>
 				</article>

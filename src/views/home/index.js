@@ -11,8 +11,7 @@ import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 // app
 import "./tools/util"
 const Home = lazy(() => import( "./home" ))
-const Checkout = lazy(() => import( "./checkout" ))
-const Generic = lazy(() => import( "./generic" ))
+const Join = lazy(() => import( "./join" ))
 const Elements = lazy(() => import( "./elements" ))
 const Adultletics = lazy(() => import( "./adultletics" ))
 
@@ -58,18 +57,26 @@ export default function HomeIndex () {
 				<ul className="links">
 					<li><a href="/">Home</a></li>
 					<li><a href="/adultletics">Adultletics</a></li>
-					<li><a href="/generic">Generic</a></li>
-					<li><a href="/elements">Elements</a></li>
-					<li><a href="/checkout">Checkout</a></li>
+					<li><a href="/join">Join the club</a></li>
 					<li><a href="/admin">Employees</a></li>
 					{/* <a href="/members">Members Centre</a> */}
+                    <li><a href="/elements">Elements</a></li>
                     <a href="#menu" className="close"><FontAwesomeIcon icon={ faTimes } /></a>
 				</ul>
 			</nav>
+            { pathname !== "/" && 			
+                <section id="One" className="wrapper style3">
+                    <div className="inner">
+                        <header className="align-center">
+                            <p>An online and in-person running technique and longevity programme</p>
+                            <h2>Kate&apos;s Way</h2>
+                        </header>
+                    </div>
+                </section>
+            }
             <Switch>
                 <Route exact path="/"><Home /></Route>
-                <Route path="/checkout"><Checkout /></Route>
-                <Route path="/generic"><Generic /></Route>
+                <Route path="/join"><Join /></Route>
                 <Route path="/elements"><Elements /></Route>
                 <Route path="/adultletics"><Adultletics /></Route>
                 <Route path="*"><NoRoute /></Route>

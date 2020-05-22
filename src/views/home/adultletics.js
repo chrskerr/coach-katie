@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ReactGA from "react-ga";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 import $ from "jquery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -47,15 +48,6 @@ export default function Adultletics () {
 
 	return (
 		<>
-			<section id="One" className="wrapper style3">
-				<div className="inner">
-					<header className="align-center">
-						<p>An online and in-person running technique and longevity programme</p>
-						<h2>Kate&apos;s Technique</h2>
-					</header>
-				</div>
-			</section>
-
 			<section id="two" className="wrapper style2">
 				<div className="inner">
 					<div className="box">
@@ -66,6 +58,9 @@ export default function Adultletics () {
 							</header>
 							<p>Aduletics is a run club and a runner&apos;s school all in one. It&apos;s much more than just &apos;going for a run&apos;. Our focus is about teaching runners how to run, and to equip our runners with the tools they need to train both the brain AND the body.</p>
 							<p>We&apos;re all about building stronger AND smarter runners, so there is just as much an emphasis on running technique, skill development, injury prevention and education as there is on the actual programming.</p>
+							<div className="align-center">
+								<Link to="/join" className="button special">Run with us</Link>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -149,8 +144,8 @@ export default function Adultletics () {
 							<p style={{ marginBottom: "0.5em" }}><strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.</p>
 							<p>Pay as you go and cancel anytime, no charge if you cancel in the first week.</p>
 							<p>Contact us at <a href="mailto:info@adultletics.com.au">info@adultletics.com.au</a> if you&apos;d like more information.</p>
-							<div style={{ textAlign: "center" }}>
-								<span className="button big">Run with us</span>
+							<div className="align-center">
+								<Link to="/join" className="button special">Run with us</Link>
 							</div>
 						</div>
 					</div>

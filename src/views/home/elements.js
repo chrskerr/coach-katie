@@ -13,23 +13,14 @@ import React from "react";
 export default function Elements () {
 	return (
 		<>
-			<section id="One" className="wrapper style3">
-				<div className="inner">
-					<header className="align-center">
-						<p>Sed amet nulla</p>
-						<h2>Elements</h2>
-					</header>
-				</div>
-			</section>
-
 			<div id="main" className="container">
 				<h2 id="elements">Elements</h2>
 				<div className="row 200%">
 					<div className="6u 12u$(medium)">
 						<h3>Text</h3>
 						<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-                        This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-                        This is <u>underlined</u>. Finally, this is a <a href="#">link</a>.</p>
+						This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
+						This is <u>underlined</u>. Finally, this is a <a href="#">link</a>.</p>
 						<hr />
 						<h2>Heading Level 2</h2>
 						<h3>Heading Level 3</h3>

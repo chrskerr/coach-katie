@@ -12,31 +12,22 @@ import { loadStripe } from "@stripe/stripe-js";
 
 
 //
-// Adultletics / Views / Home / Checkout
+// Adultletics / Views / Home / Join
 //
 
 const url = "https://stripe-server-xdzmzxo7uq-lz.a.run.app/";
 
-export default function Checkout () {
+export default function Join () {
 	const stripePromise = loadStripe( "pk_live_mwNb1i31QrYYF4ghnbGz0CuQ00WF3EYB1n" );
 	return (
 		<>
-			<section id="One" className="wrapper style3">
-				<div className="inner">
-					<header className="align-center">
-						<p>An online and in-person running technique and longevity programme</p>
-						<h2>Kate&apos;s Technique</h2>
-					</header>
-				</div>
-			</section>
-
 			<section id="two" className="wrapper style2">
 				<div className="inner">
 					<div className="box">
 						<div className="content">
 							<header className="align-center">
-								<p>maecenas sapien feugiat ex purus</p>
-								<h2>Lorem ipsum dolor</h2>
+								<p>Sign up to one of our plans</p>
+								<h2>Join The Club</h2>
 							</header>
 							<Elements stripe={ stripePromise }>
 								<CheckoutForm />
@@ -153,37 +144,37 @@ const CheckoutForm = () => {
 				<p>Pay as you go and cancel anytime, no charge if you cancel in the first week.</p>
 			</div>
 			<form id="subscription-form" onSubmit={ _submitForm }>
-				<div className="customer-details">
-					<div>
+				<div className="row uniform">
+					<div className="6u 12u$(xsmall)">
 						<label>Name</label>
 						<input type="text" required placeholder="Please enter your full name" value={ name } onChange={ e => setFormData({ ...formData, name: e.target.value })}></input>
 					</div>
-					<div>
+					<div className="6u$ 12u$(xsmall)">
 						<label>Email</label>
 						<input type="email" required placeholder="Please enter your email" value={ email } onChange={ e => setFormData({ ...formData, email: e.target.value })}></input>
 					</div>
-				</div>
-				<div className="terms">
-					<div>
+
+					<div className="dummy-input 12u$">
+						<label>Card Details</label>
+						<CardElement />
+					</div>
+					<div className="12u$">
 						<label>Terms and Conditions</label>
 						<textarea type="fieldarea" readOnly value={ terms } rows={ 5 } />
 					</div>
-					<div className="checkbox">
+					<div className="12u$">
 						<input type="checkbox" required checked={ agreed } value={ agreed } onChange={ () => setFormData({ ...formData, agreed: !agreed })}></input>
 						<label onClick={ () => setFormData({ ...formData, agreed: !agreed })}>I have read and agreed to the terms and conditions as above</label>
 					</div>
-				</div>
-				<div className="dummy-input">
-					<CardElement />
-				</div>
-				<div>
-					<button type="submit" disabled={ isLoading || !agreed || !name || !email } id="submit-button">
+					<div className="12u$">
+						<button className="special" type="submit" disabled={ isLoading || !agreed || !name || !email } id="submit-button">
 						Join
-						<FontAwesomeIcon icon={ isLoading ? faSpinner : faCheck } spin={ isLoading } style={{ marginLeft: "8px" }} /> 
-					</button>
-				</div>
-				<div>
-					{ error && <p>{ error }</p> }
+							<FontAwesomeIcon icon={ isLoading ? faSpinner : faCheck } spin={ isLoading } style={{ marginLeft: "8px" }} /> 
+						</button>
+					</div>
+					<div>
+						{ error && <p>{ error }</p> }
+					</div>
 				</div>
 			</form>
 		</>
