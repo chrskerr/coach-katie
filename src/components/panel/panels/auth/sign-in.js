@@ -1,7 +1,7 @@
 
 // deps
 import React, { useContext, useState } from "react";
-import { TextInputField, Button } from "evergreen-ui";
+import { TextInputField, Pane } from "evergreen-ui";
 import { Formik } from "formik";
 
 // app
@@ -17,7 +17,10 @@ export default function SignInPanel () {
 	const { closePanel } = useContext( Services.UI );
 	const [ errors, setErrors ] = useState( null );
 
-	return (
+	return ( <>
+		<Pane marginBottom={ 56 }>
+			<h2>Sign In</h2>
+		</Pane>
 		<Formik
 			initialValues={{}}
 			onSubmit={ async ({ email, password }) => {
@@ -34,23 +37,32 @@ export default function SignInPanel () {
 				({ values, handleChange, handleSubmit, isSubmitting }) => {
 					return (
 						<form>
-							<TextInputField
-								label="Email"
-								type="email"
-								name="email"
-								onChange={ handleChange }
-								autoFocus
-							/>
-							<TextInputField
-								label="Password"
-								type="password"
-								name="password"
-								onChange={ handleChange }
-							/>
-							<Button isLoading={ isAuthenticating || isSubmitting } disabled={ !values.email || !values.password } onClick={ handleSubmit }>Log In</Button>
-							{ errors && <p>{ errors }</p>}
-						</form> );
+							<div className="row uniform">
+								<div className="12u$">
+									<TextInputField
+										label="Email"
+										type="email"
+										name="email"
+										onChange={ handleChange }
+										autoFocus
+									/>
+								</div>
+								<div className="12u$">
+									<TextInputField
+										label="Password"
+										type="password"
+										name="password"
+										onChange={ handleChange }
+									/>
+								</div>
+								<div className="12u$">
+									<button className="special" isLoading={ isAuthenticating || isSubmitting } disabled={ !values.email || !values.password } onClick={ handleSubmit }>Log In</button>
+								</div>
+								{ errors && <p>{ errors }</p>}
+							</div>
+						</form> 
+					);
 				}}
 		</Formik>
-	);
+	</> );
 }

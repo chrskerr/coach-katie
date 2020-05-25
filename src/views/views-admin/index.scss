@@ -2,7 +2,7 @@
 html, body {
     box-sizing: border-box;
     min-height: 100vh;
-    background-color: #F9F9FB;
+    background-color: get( background, $colours );
 }
 
 a {

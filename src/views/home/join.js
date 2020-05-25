@@ -15,6 +15,7 @@ import { loadStripe } from "@stripe/stripe-js";
 // Adultletics / Views / Home / Join
 //
 
+
 const url = "https://stripe-server-xdzmzxo7uq-lz.a.run.app/";
 
 export default function Join () {
@@ -131,7 +132,7 @@ const CheckoutForm = () => {
 		<>
 			<div>
 				<h4>Adultletics Running Club Subscription</h4>
-				<p style={{ marginBottom: "0.5em" }}>What’s included:</p>
+				<p>What’s included:</p>
 				<ul>
 					<li>x3 structured running sessions per week</li>
 					<li>x2 online strength training for runners sessions per week</li>
@@ -140,7 +141,7 @@ const CheckoutForm = () => {
 					<li>Weekly drills to work on running technique and skill development</li>
 					<li>Connection to a like minded group of people for further support, laughs, motivation & inspiration</li>
 				</ul>
-				<p style={{ marginBottom: "0em" }}><strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.</p>
+				<p><strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.</p>
 				<p>Pay as you go and cancel anytime, no charge if you cancel in the first week.</p>
 			</div>
 			<form id="subscription-form" onSubmit={ _submitForm }>

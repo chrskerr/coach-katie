@@ -58,13 +58,11 @@ function UiContainer () {
 	return (
         <UI.Provider value={ ui }>
             <Panel />
-            <Pane background="tint1" minHeight="100vh">
-                <div className="v-router">
-                    <Switch>
-                        <Route path="/admin" component={ Admin } />
-                    </Switch>
-                </div>
-            </Pane>  
+            <div className="v-router">
+                <Switch>
+                    <Route path="/admin" component={ Admin } />
+                </Switch>
+            </div>
         </UI.Provider>
 	);
 }

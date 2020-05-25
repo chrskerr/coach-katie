@@ -13,7 +13,7 @@ import { Pane, Heading } from "evergreen-ui";
 import { Queries, constants, Loading } from "../index";
 
 //
-// Adultletics Admin / Views / Dashboard / Dashboard
+// Adultletics / Views / Admin / Dashboard / Dashboard
 //
 
 
@@ -28,18 +28,48 @@ export default function Dashboard () {
 			<Pane display="flex" marginBottom={ 48 }>
 				<Heading size={ 800 } color="#1070CA">Dashboard</Heading>
 			</Pane>
-			<Pane height={ 450 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
-				<Heading size={ 300 }>{ _.upperCase( "Workout popularity over time" ) }</Heading>
-				<WorkoutPopularityChart weeks={ weeks } />
-			</Pane>
-			<Pane height={ 300 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
-				<Heading size={ 300 }>{ _.upperCase( "Workout types over time" ) }</Heading>
-				<WorkoutTypeChart weeks={ weeks } />
-			</Pane>
-			<Pane height={ 300 } elevation={ 1 } background="white" padding={ 24 } marginBottom={ 24 }>
-				<Heading size={ 300 }>{ _.upperCase( "Energy systems over time" ) }</Heading>
-				<EnergySystemsChart weeks={ weeks } />
-			</Pane>
+			<section id="two" className="wrapper style2" style={{ marginBottom: 24 }}>
+				<div className="inner">
+					<div className="box">
+						<div className="content">
+							<header className="align-center">
+								<h2>Workout popularity over time</h2>
+							</header>
+							<div style={{ height: 350 }}>
+								<WorkoutPopularityChart weeks={ weeks } />
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="three" className="wrapper style2" style={{ marginBottom: 24 }}>
+				<div className="inner">
+					<div className="box">
+						<div className="content">
+							<header className="align-center">
+								<h2>Workout types over time</h2>
+							</header>
+							<div style={{ height: 350 }}>
+								<WorkoutTypeChart weeks={ weeks } />
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="four" className="wrapper style2" style={{ marginBottom: 24 }}>
+				<div className="inner">
+					<div className="box">
+						<div className="content">
+							<header className="align-center">
+								<h2>Energy systems over time</h2>
+							</header>
+							<div style={{ height: 350 }}>
+								<EnergySystemsChart weeks={ weeks } />
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 		</Pane>
 	);
 }
@@ -68,12 +98,12 @@ const WorkoutTypeChart = memo( function WorkoutPopularityChart ( props ) {
 			}, { ...total });
 		}, { label: i, data: {}});
 	}));
-    
+	
 	const lastTenWeekRanks = _.map( lastTenWeekWeightedCounts, week => {
 		const weekAsSortedArrayPairs = _.toPairs( _.get( week, "data" )).sort(( a, b ) => b[ 1 ] - a[ 1 ]);
 		return { ...week, data: _.reduce( weekAsSortedArrayPairs, ( total, curr, i ) => ({ ...total, [ curr[ 0 ] ]: i + 1 }), {}) };
 	});
-    
+	
 	const graphData = _.map( typeList, type => ({
 		id: type,
 		data: _.map( lastTenWeekRanks, week => ({ "x": _.get( week, "label" ), "y": _.get( week, [ "data", type ], _.size( typeList )) })),
@@ -147,12 +177,12 @@ const WorkoutPopularityChart = memo( function WorkoutPopularityChart ( props ) {
 			}, { ...total });
 		}, { label: i, data: {}});
 	}));
-    
+	
 	const lastTenWeekRanks = _.map( lastTenWeekWeightedCounts, week => {
 		const weekAsSortedArrayPairs = _.toPairs( _.get( week, "data" )).sort(( a, b ) => b[ 1 ] - a[ 1 ]);
 		return { ...week, data: _.reduce( weekAsSortedArrayPairs, ( total, curr, i ) => ({ ...total, [ curr[ 0 ] ]: i + 1 }), {}) };
 	});
-    
+	
 	const graphData = _.filter( _.map( workoutList, workout => ({
 		id: workout,
 		data: _.map( lastTenWeekRanks, week => ({ "x": _.get( week, "label" ), "y": _.get( week, [ "data", workout ], _.size( workoutList )) })),
@@ -207,7 +237,7 @@ WorkoutPopularityChart.propTypes = {
 const EnergySystemsChart = memo( function EnergySystemsChart ( props ) {
 	const { weeks } = props;
 	const { workoutTypes } = constants;
-    
+	
 	const keys = _.uniq( _.map( workoutTypes, "system" )).sort();
 	const keysObject = _.reduce( keys, ( total, curr ) => ({ ...total, [ curr ]: 0 }), {});
 
@@ -221,7 +251,7 @@ const EnergySystemsChart = memo( function EnergySystemsChart ( props ) {
 			return { ...total, [ system ]: total[ system ] ? total[ system ] + 1 : 1 };
 		}, { ...keysObject });
 	});
-    
+	
 	if ( _.isEmpty( graphData )) return null;
 
 	return <ResponsiveStream

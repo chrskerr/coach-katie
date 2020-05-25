@@ -5,7 +5,6 @@ import { Switch, Route } from "react-router-dom";
 // import { toaster } from "evergreen-ui";
 
 //app
-import "./index.scss";
 import Dashboard from "./dashboard/dashboard";
 import WorkoutsIndex from "./workouts";
 import WeeksIndex from "./weeks";

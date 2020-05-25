@@ -68,8 +68,8 @@ export default function HomeIndex () {
                 <section id="One" className="wrapper style3">
                     <div className="inner">
                         <header className="align-center">
-                            <p>An online and in-person running technique and longevity programme</p>
-                            <h2>Kate&apos;s Way</h2>
+                            <p>An athletics club for grown-ups</p>
+                            <h2>Adultletics Running</h2>
                         </header>
                     </div>
                 </section>

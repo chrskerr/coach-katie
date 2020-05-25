@@ -6,11 +6,11 @@ import _ from "lodash";
 import { Link } from "react-router-dom";
 
 // app
-import { Pane, Heading, Text, Button } from "evergreen-ui";
+import { Pane, Text } from "evergreen-ui";
 import { Services, Queries, Loading } from "../index";
 
 //
-// Adultletics Admin / Views / Challenges / Challenges
+// Adultletics / Views / Admin / Challenges / Challenges
 //
 
 
@@ -24,10 +24,10 @@ export default function Challenges () {
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
-				<Button iconBefore="plus" onClick={ () => openPanel({ panel: "daily-challenges/add" })}>Add</Button>
+				<button className="small alt" iconBefore="plus" onClick={ () => openPanel({ panel: "daily-challenges/add" })}>Add</button>
 			</Pane>
 			<Pane marginBottom={ 16 }>
-				<Heading>All Daily Challenges:</Heading>
+				<h3>All Daily Challenges:</h3>
 			</Pane>
 			<Pane>
 				{ daily_challenges && _.map( daily_challenges, drill => {

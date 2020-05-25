@@ -1,7 +1,7 @@
 
 // deps
 import React, { useContext, useState } from "react";
-import { SelectField, Button, Pane, Heading } from "evergreen-ui";
+import { SelectField, Pane } from "evergreen-ui";
 import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -12,7 +12,7 @@ import { addDays, format, formatISO, startOfWeek, parseISO } from "date-fns";
 import { Services, Queries } from "../index";
 
 //
-// Adultletics Admin / Views / Panel / Panels / Weeks / Add
+// Adultletics / Views / Panel / Panels / Weeks / Add
 //
 
 
@@ -40,7 +40,7 @@ export default function AddWeekPanel () {
 
 	return ( <>
 		<Pane marginBottom={ 56 }>
-			<Heading size={ 600 }>Adding a new week</Heading>
+			<h2>Adding a new week</h2>
 		</Pane>
 		<Formik
 			initialValues={{}}
@@ -66,18 +66,24 @@ export default function AddWeekPanel () {
 		>{
 				({ values, dirty, handleChange, handleSubmit, isSubmitting }) => {
 					return (
-						<>
-							<form>
-								<SelectField label="Please choose which upcoming week to create" name="week_start" value={ values.type } onChange={ handleChange } height={ 40 }>
-									<option key="empty" value="">Please select an option...</option>
-									{ dateSelectOptions && _.map( dateSelectOptions, ({ value, label, disabled }) => ( 
-										<option key={ value } value={ value } disabled={ disabled }>{ label }</option> 
-									))}
-								</SelectField>
-								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.week_start } onClick={ handleSubmit }>Add</Button>
-								{ errors && <p>{ errors }</p>}
-							</form> 
-						</>
+						<form>
+							<div className="row uniform">
+								<div className="12u$">
+									<div className="select-wrapper">
+										<SelectField label="Please choose which upcoming week to create" name="week_start" value={ values.type } onChange={ handleChange } height={ 40 }>
+											<option key="empty" value="">Please select an option...</option>
+											{ dateSelectOptions && _.map( dateSelectOptions, ({ value, label, disabled }) => ( 
+												<option key={ value } value={ value } disabled={ disabled }>{ label }</option> 
+											))}
+										</SelectField>
+									</div>
+								</div>
+								<div className="12u$">
+									<button className="special" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.week_start } onClick={ handleSubmit }>Add</button>
+								</div>
+								{ errors && <p>{ errors }</p> }
+							</div>
+						</form> 
 					);
 				}}
 		</Formik>

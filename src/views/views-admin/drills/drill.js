@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Button, Pane, Heading, Text, Paragraph, Link } from "evergreen-ui";
+import { Pane, Text, Paragraph, Link } from "evergreen-ui";
 import { Services, Queries, Loading } from "../index";
 
 //
@@ -32,10 +32,10 @@ export default function Drill ( props ) {
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
-				<Button iconBefore="edit" onClick={ () => openPanel({ panel: "drills/edit", props: { id }})}>Edit</Button>
+				<button className="alt small" iconBefore="edit" onClick={ () => openPanel({ panel: "drills/edit", props: { id }})}>Edit</button>
 			</Pane>
 			<Pane marginBottom={ 32 } display="flex">
-				<Heading marginRight={ 16 }>{ title }</Heading>
+				<h3 style={{ marginRight: 16 }}>{ title }</h3>
 				{ url && <Link href={ url } target="_blank" rel="noreferrer noopener">{ url }</Link> }
 			</Pane>
 			<Pane display="flex">

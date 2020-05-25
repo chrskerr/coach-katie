@@ -1,7 +1,7 @@
 
 // deps
 import React, { useContext, useState } from "react";
-import { Pane, Heading, TextInputField, Button, Textarea, FormField } from "evergreen-ui";
+import { Pane, TextInputField, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 import { useHistory } from "react-router-dom";
@@ -11,7 +11,7 @@ import _ from "lodash";
 import { Services, Queries } from "../index";
 
 //
-// Adultletics Admin / Views / Panel / Panels / Challenges / Add
+// Adultletics / Views / Panel / Panels / Challenges / Add
 //
 
 
@@ -23,7 +23,7 @@ export default function AddDailyChallengePanel () {
 
 	return ( <>
 		<Pane marginBottom={ 56 }>
-			<Heading size={ 600 }>Adding a new daily challenge</Heading>
+			<h2>Add a new Daily Challenge</h2>
 		</Pane>
 		<Formik
 			initialValues={{ description: "" }}
@@ -42,24 +42,30 @@ export default function AddDailyChallengePanel () {
 		>{
 				({ values, dirty, handleChange, handleSubmit, isSubmitting }) => {
 					return (
-						<>
-							<form>
-								<TextInputField
-									label="Title"
-									name="title"
-									onChange={ handleChange }
-									autoFocus
-								/>
-								<FormField label="Description" marginBottom={ 16 }>
-									<Textarea
-										name="description"
+						<form>
+							<div className="row uniform">
+								<div className="12u$">
+									<TextInputField
+										label="Title"
+										name="title"
 										onChange={ handleChange }
+										autoFocus
 									/>
-								</FormField>
-								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.description } onClick={ handleSubmit }>Add</Button>
-								{ errors && <p>{ errors }</p>}
-							</form> 
-						</>
+								</div>
+								<div className="12u$">
+									<FormField label="Description" marginBottom={ 16 }>
+										<Textarea
+											name="description"
+											onChange={ handleChange }
+										/>
+									</FormField>
+								</div>
+								<div className="12u$">
+									<button className="special" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.description } onClick={ handleSubmit }>Add</button>
+									{ errors && <p>{ errors }</p>}
+								</div>
+							</div>
+						</form> 
 					);
 				}}
 		</Formik>

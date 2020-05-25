@@ -18,8 +18,8 @@ export default function Home () {
 				<article className="visible top">
 					<div className="inner">
 						<header>
-							<p>An online and in-person running technique and longevity programme</p>
-							<h2>Kate&apos;s Way</h2>
+							<p>An athletics club for grown-ups</p>
+							<h2>Adultletics Running</h2>
 						</header>
 					</div>
 				</article>
@@ -28,12 +28,11 @@ export default function Home () {
 			<section id="one" className="wrapper style2">
 				<div className="inner">
 					<div className="grid-style">
-
 						<div>
 							<div className="box">
 								<div className="content">
 									<header className="align-center">
-										<p>An Athletics Club for Grown-ups</p>
+										<p>The Weekly Online Running Club</p>
 										<h2>Adultletics Running Club</h2>
 									</header>
 									<p>Aduletics is a run club and a runner&apos;s school all in one. It&apos;s much more than just &apos;going for a run&apos;. Our focus is about teaching runners how to run, and to equip our runners with the tools they need to train both the brain AND the body.</p>
@@ -60,40 +59,6 @@ export default function Home () {
 							</div>
 						</div>
 
-					</div>
-				</div>
-			</section>
-
-			<section id="two" className="wrapper style3">
-				<div className="inner">
-					<header className="align-center">
-						<p>Great technique leads to enjoyable and sustainable training</p>
-						<h2>Enjoy your body again!</h2>
-					</header>
-				</div>
-			</section>
-
-			<section id="three" className="wrapper style2">
-				<div className="inner">
-					<div className="grid-style">
-						<div>
-							<div className="box">
-								<div className="content">
-									<header className="align-center">
-										<p>About</p>
-										<h2>Kate Hobbs</h2>
-									</header>
-									<p>Kate is a certified running coach, bringing her own extensive first-hand experience to her athletes. She has raced competitively at a national level for over a decade, running track, trail and mountains. With a recent transition to obstacle course racing, she is already making a name for herself as one of Australia’s top female elite athletes, with multiple podium finishes and representing Australia at the World Championships.</p>
-								</div>
-							</div>
-						</div>
-						<div>
-							<div className="box">
-								<div className="image fit">
-									<img src="./images/kate.png" alt="Kate Hobbs" />
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</section>

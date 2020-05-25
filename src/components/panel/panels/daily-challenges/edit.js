@@ -2,7 +2,7 @@
 // deps
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
-import { Pane, Heading, TextInputField, Button, Textarea, FormField } from "evergreen-ui";
+import { Pane, TextInputField, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -11,7 +11,7 @@ import _ from "lodash";
 import { Services, Queries } from "../index";
 
 //
-// Adultletics Admin / Views / Panel / Panels / Challenges / Edit
+// Adultletics / Views / Panel / Panels / Challenges / Edit
 //
 
 
@@ -30,7 +30,7 @@ export default function EditDailyChallengePanel ({ props }) {
     
 	return ( <>
 		<Pane marginBottom={ 56 }>
-			<Heading size={ 600 }>Editing challenge: { title }</Heading>
+			<h2>Editing challenge: { title }</h2>
 		</Pane>
 		<Formik
 			initialValues={{ title, description: _.isNull( description ) ? "" : description }}
@@ -48,26 +48,33 @@ export default function EditDailyChallengePanel ({ props }) {
 		>{
 				({ values, dirty, handleChange, handleSubmit, isSubmitting }) => {
 					return (
-						<>
-							<form>
-								<TextInputField
-									label="Title"
-									name="title"
-									value={ values.title }
-									onChange={ handleChange }
-									autoFocus
-								/>
-								<FormField label="Description" marginBottom={ 16 }>
-									<Textarea
-										name="description"
+						<form>
+							<div className="row uniform">
+								<div className="12u$">
+									<TextInputField
+										label="Title"
+										name="title"
+										value={ values.title }
 										onChange={ handleChange }
-										value={ values.description }
+										autoFocus
 									/>
-								</FormField>
-								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.description } onClick={ handleSubmit }>Update</Button>
+								</div>
+								<div className="12u$">
+									<FormField label="Description" marginBottom={ 16 }>
+										<Textarea
+											name="description"
+											onChange={ handleChange }
+											value={ values.description }
+											rows={ 8 }
+										/>
+									</FormField>
+								</div>
+								<div className="12u$">
+									<button className="special" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.description } onClick={ handleSubmit }>Update</button>
+								</div>
 								{ errors && <p>{ errors }</p>}
-							</form> 
-						</>
+							</div>
+						</form> 
 					);
 				}}
 		</Formik>

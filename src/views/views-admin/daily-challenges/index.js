@@ -4,7 +4,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 // app
-import { Pane, Heading } from "evergreen-ui";
+import { Pane } from "evergreen-ui";
 import Challenge from "./challenge";
 import Challenges from "./challenges";
 
@@ -20,7 +20,7 @@ export default function DrillsIndex () {
 	return (
 		<>
 			<Pane>
-				<Heading size={ 800 } color="#1070CA" marginBottom={ 48 }>Daily Challenges</Heading>
+				<h2 style={{ color: "#1070CA" }} marginBottom={ 48 }>Daily Challenges</h2>
 			</Pane>
 			<Pane>
 				{ _drillView ? <Challenge id={ id } /> : <Challenges /> }

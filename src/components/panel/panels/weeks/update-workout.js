@@ -2,7 +2,7 @@
 // deps
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { SearchInput, Button, Pane, Heading, Text, Select, IconButton } from "evergreen-ui";
+import { SearchInput, Pane, Heading, Text, Select, IconButton } from "evergreen-ui";
 import { Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -65,8 +65,8 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 
 	return ( <>
 		<Pane marginBottom={ 56 } display="flex" justifyContent="space-between">
-			<Heading size={ 600 }>Updating Workout for { title }</Heading>
-			<Button marginLeft={ 8 } iconBefore="plus" onClick={ _handleWorkoutAdd }>Create workout</Button>
+			<h2>Updating Workout for { title }</h2>
+			<button className="small alt" style={{ marginLeft: 8 }} iconBefore="plus" onClick={ _handleWorkoutAdd }>Create workout</button>
 		</Pane>
 		<Formik
 			initialValues={{}}
@@ -100,11 +100,10 @@ export default function UpdateWeekDayWorkoutPanel ({ props }) {
 									)}
 								</Pane>
 								<Pane display="flex" justifyContent="space-between">
-									<Button type="submit" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !selectedWorkoutVersionId } onClick={ handleSubmit }>Add / Update Workout</Button>
-									<Button iconBefore={ isSubmitting ? "" : "cross"} intent="danger" isLoading={ isSubmitting } onClick={ _handleClearWorkout }>Clear Day</Button>
+									<button className="special" type="submit" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !selectedWorkoutVersionId } onClick={ handleSubmit }>Add / Update Workout</button>
+									<button className="alt" iconBefore={ isSubmitting ? "" : "cross"} intent="danger" isLoading={ isSubmitting } onClick={ _handleClearWorkout }>Clear Day</button>
 									{ errors && <p>{ errors }</p>}
 								</Pane>
-
 							</form> 
 						</>
 					);

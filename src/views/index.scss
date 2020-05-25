@@ -1,10 +1,4 @@
 
-
-@import "../components/panel/panel";
-@import "../components/top-nav/top-nav";
-@import "../components/loading/loading";
-@import "../app/app";
-@import "./home/home";
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
 
 /*
@@ -12,6 +6,39 @@
 	templated.co @templatedco
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 */
+
+@function get( $key, $map ) {
+
+	@if type-of( $key ) == string and (str-index($key, ".") or 0) > 0 {
+
+		$parent-key: str-slice($key, 1, str-index($key, ".") - 1);
+		$child-key: str-slice($key, str-index($key, ".") + 1);
+
+		@if type-of(map-get($map, $parent-key)) == map {
+			@return get($child-key, map-get($map, $parent-key));
+		}
+	}
+
+	@return map-get($map, $key);
+}
+
+
+/* Colours */
+$colours: (
+    // special: #8a4680,
+    special: #f9bc60,
+    secondary: #004643,
+    white: #fff,
+    background: #f2f2f2,
+    text-light: #a6a6a6,
+    text-dark: #0d0d0d,
+);
+
+@each $colour-name, $colour in $colours {
+	.-colour-#{ $colour-name } { color: $colour !important; }
+	.-bg-#{ $colour-name } { background-color: $colour !important; }
+}
+
 
 /* Reset */
 
@@ -1573,7 +1600,7 @@
 	}
 
 	body {
-		background: #fff;
+		background: get( white, $colours );
 	}
 
 		body.is-loading *, body.is-loading *:before, body.is-loading *:after {
@@ -1634,7 +1661,7 @@
 		}
 
 	body {
-		background-color: #fff;
+		background-color: get( white, $colours );
 		color: #444;
 	}
 
@@ -1786,7 +1813,7 @@
 	}
 
 	a {
-		color: #8a4680;
+		color: get( special, $colours );
 	}
 
 	strong, b {
@@ -1814,7 +1841,7 @@
 
 	.box {
 		margin-bottom: 2rem;
-		background: #FFF;
+		background: get( white, $colours );
 	}
 
 		.box .image.fit {
@@ -1827,8 +1854,9 @@
 			}
 
 		.box header h2 {
-			margin-bottom: 2rem;
-		}
+            margin-bottom: 2rem;
+            text-transform: lowercase;
+        }
 
 		.box header p {
 			text-transform: uppercase;
@@ -1985,7 +2013,7 @@
 	button,
 	.button {
 		background-color: #f2f2f2;
-		color: #000 !important;
+		color: get( text-dark, $colours ) !important;
 	}
 
 		input[type="submit"]:hover,
@@ -2043,8 +2071,8 @@
 		input[type="button"].special,
 		button.special,
 		.button.special {
-			background-color: #8a4680;
-			color: #ffffff !important;
+			background-color: get( special, $colours );
+			color: get( white, $colours ) !important;
 		}
 
 			input[type="submit"].special:hover,
@@ -2258,8 +2286,8 @@
 		select:focus,
 		textarea:focus,
         .StripeElement:focus {
-			border-color: #8a4680;
-			box-shadow: 0 0 0 1px #8a4680;
+			border-color: get( special, $colours );
+			box-shadow: 0 0 0 1px get( special, $colours );
 		}
 
 	.select-wrapper:before {
@@ -2279,15 +2307,15 @@
 
 	input[type="checkbox"]:checked + label:before,
 	input[type="radio"]:checked + label:before {
-		background-color: #8a4680;
-		border-color: #8a4680;
-		color: #ffffff;
+		background-color: get( special, $colours );
+		border-color: get( special, $colours );
+		color: get( white, $colours );
 	}
 
 	input[type="checkbox"]:focus + label:before,
 	input[type="radio"]:focus + label:before {
-		border-color: #8a4680;
-		box-shadow: 0 0 0 1px #8a4680;
+		border-color: get( special, $colours );
+		box-shadow: 0 0 0 1px get( special, $colours );
 	}
 
 	::-webkit-input-placeholder {
@@ -2571,7 +2599,12 @@
 	header p {
 		position: relative;
 		margin: 0 0 1.5rem 0;
-	}
+    }
+    
+    header > h2 {
+        font-variant-caps: petite-caps;		
+        letter-spacing: 4px;
+    }
 
 	header h2 + p {
 		font-size: 1.25rem;
@@ -2695,24 +2728,24 @@
 		}
 
 		.wrapper.style1 {
-			background-color: #8a4680;
+			background-color: get( special, $colours );
 			color: #e2d1df;
 		}
 
 			.wrapper.style1 input, .wrapper.style1 select, .wrapper.style1 textarea {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style1 a {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style1 strong, .wrapper.style1 b {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style1 h1, .wrapper.style1 h2, .wrapper.style1 h3, .wrapper.style1 h4, .wrapper.style1 h5, .wrapper.style1 h6 {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style1 blockquote {
@@ -2738,7 +2771,7 @@
 			.wrapper.style1 button,
 			.wrapper.style1 .button {
 				background-color: #f2f2f2;
-				color: #000 !important;
+				color: get( text-dark, $colours ) !important;
 			}
 
 				.wrapper.style1 input[type="submit"]:hover,
@@ -2764,7 +2797,7 @@
 				.wrapper.style1 .button.alt {
 					background-color: transparent;
 					box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
-					color: #ffffff !important;
+					color: get( white, $colours ) !important;
 				}
 
 					.wrapper.style1 input[type="submit"].alt:hover,
@@ -2796,12 +2829,12 @@
 				.wrapper.style1 input[type="button"].special,
 				.wrapper.style1 button.special,
 				.wrapper.style1 .button.special {
-					background-color: #ffffff;
-					color: #8a4680 !important;
+					background-color: get( white, $colours );
+					color: get( special, $colours ) !important;
 				}
 
 			.wrapper.style1 label {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style1 input[type="text"],
@@ -2820,8 +2853,8 @@
 				.wrapper.style1 select:focus,
                 .wrapper.style1 textarea:focus,
                 .wrapper.style1 .StripeElement:focus {
-					border-color: #ffffff;
-					box-shadow: 0 0 0 1px #ffffff;
+					border-color: get( white, $colours );
+					box-shadow: 0 0 0 1px get( white, $colours );
 				}
 
 			.wrapper.style1 .select-wrapper:before {
@@ -2841,15 +2874,15 @@
 
 			.wrapper.style1 input[type="checkbox"]:checked + label:before,
 			.wrapper.style1 input[type="radio"]:checked + label:before {
-				background-color: #ffffff;
-				border-color: #ffffff;
-				color: #8a4680;
+				background-color: get( white, $colours );
+				border-color: get( white, $colours );
+				color: get( special, $colours );
 			}
 
 			.wrapper.style1 input[type="checkbox"]:focus + label:before,
 			.wrapper.style1 input[type="radio"]:focus + label:before {
-				border-color: #ffffff;
-				box-shadow: 0 0 0 1px #ffffff;
+				border-color: get( white, $colours );
+				box-shadow: 0 0 0 1px get( white, $colours );
 			}
 
 			.wrapper.style1 ::-webkit-input-placeholder {
@@ -2889,7 +2922,7 @@
 				}
 
 			.wrapper.style1 table th {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style1 table thead {
@@ -2905,24 +2938,24 @@
 			}
 
 		.wrapper.style2 {
-			background-color: #f2f2f2;
-			color: #a6a6a6;
+			background-color: get( background, $colours );
+			color: get( text-light, $colours );
 		}
 
 			.wrapper.style2 input, .wrapper.style2 select, .wrapper.style2 textarea {
-				color: #000;
+				color: get( text-dark, $colours );
 			}
 
 			.wrapper.style2 a {
-				color: #8a4680;
+				color: get( special, $colours );
 			}
 
 			.wrapper.style2 strong, .wrapper.style2 b {
-				color: #000;
+				color: get( text-dark, $colours );
 			}
 
 			.wrapper.style2 h1, .wrapper.style2 h2, .wrapper.style2 h3, .wrapper.style2 h4, .wrapper.style2 h5, .wrapper.style2 h6 {
-				color: #000;
+				color: get( text-dark, $colours );
 			}
 
 			.wrapper.style2 blockquote {
@@ -2947,7 +2980,7 @@
 			.wrapper.style2 input[type="button"],
 			.wrapper.style2 button,
 			.wrapper.style2 .button {
-				background-color: #000;
+				background-color: get( text-dark, $colours );
 				color: #f2f2f2 !important;
 			}
 
@@ -2958,7 +2991,7 @@
 				.wrapper.style2 .button.alt {
 					background-color: transparent;
 					box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.15);
-					color: #000 !important;
+					color: get( text-dark, $colours ) !important;
 				}
 
 					.wrapper.style2 input[type="submit"].alt:hover,
@@ -2982,7 +3015,7 @@
 					.wrapper.style2 input[type="button"].alt.icon:before,
 					.wrapper.style2 button.alt.icon:before,
 					.wrapper.style2 .button.alt.icon:before {
-						color: #999999;
+						color: get( text-light, $colours );
 					}
 
 				.wrapper.style2 input[type="submit"].special,
@@ -2990,8 +3023,8 @@
 				.wrapper.style2 input[type="button"].special,
 				.wrapper.style2 button.special,
 				.wrapper.style2 .button.special {
-					background-color: #8a4680;
-					color: #ffffff !important;
+					background-color: get( special, $colours );
+					color: get( white, $colours ) !important;
 				}
 
 					.wrapper.style2 input[type="submit"].special:hover,
@@ -3011,7 +3044,7 @@
 					}
 
 			.wrapper.style2 label {
-				color: #000;
+				color: get( text-dark, $colours );
 			}
 
 			.wrapper.style2 input[type="text"],
@@ -3030,8 +3063,8 @@
 				.wrapper.style2 select:focus,
                 .wrapper.style2 textarea:focus,
                 .wrapper.style2 .StripeElement:focus {
-					border-color: #8a4680;
-					box-shadow: 0 0 0 1px #8a4680;
+					border-color: get( special, $colours );
+					box-shadow: 0 0 0 1px get( special, $colours );
 				}
 
 			.wrapper.style2 .select-wrapper:before {
@@ -3040,7 +3073,7 @@
 
 			.wrapper.style2 input[type="checkbox"] + label,
 			.wrapper.style2 input[type="radio"] + label {
-				color: #a6a6a6;
+				color: get( text-light, $colours );
 			}
 
 				.wrapper.style2 input[type="checkbox"] + label:before,
@@ -3051,35 +3084,35 @@
 
 			.wrapper.style2 input[type="checkbox"]:checked + label:before,
 			.wrapper.style2 input[type="radio"]:checked + label:before {
-				background-color: #8a4680;
-				border-color: #8a4680;
-				color: #ffffff;
+				background-color: get( special, $colours );
+				border-color: get( special, $colours );
+				color: get( white, $colours );
 			}
 
 			.wrapper.style2 input[type="checkbox"]:focus + label:before,
 			.wrapper.style2 input[type="radio"]:focus + label:before {
-				border-color: #8a4680;
-				box-shadow: 0 0 0 1px #8a4680;
+				border-color: get( special, $colours );
+				box-shadow: 0 0 0 1px get( special, $colours );
 			}
 
 			.wrapper.style2 ::-webkit-input-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style2 :-moz-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style2 ::-moz-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style2 :-ms-input-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style2 .formerize-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style2 ul.alt li {
@@ -3087,7 +3120,7 @@
 			}
 
 			.wrapper.style2 header p {
-				color: #999999;
+				color: get( text-light, $colours );
 			}
 
 			.wrapper.style2 table tbody tr {
@@ -3099,7 +3132,7 @@
 				}
 
 			.wrapper.style2 table th {
-				color: #000;
+				color: get( text-dark, $colours );
 			}
 
 			.wrapper.style2 table thead {
@@ -3115,30 +3148,26 @@
 			}
 
 		.wrapper.style3 {
-			background-color: #000;
+			background-color: get( secondary, $colours );
 			color: #bfbfbf;
-			background-image: url( "https://source.unsplash.com/QVD3Xht9txA/1440x700" );
-			background-size: cover;
-			background-attachment: fixed;
-			background-position: center;
             position: relative;
-            padding: 6rem 0 4rem 0 ;
+            padding: 8rem 0 4rem 0 ;
 		}
 
 			.wrapper.style3 input, .wrapper.style3 select, .wrapper.style3 textarea {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style3 a {
-				color: #8a4680;
+				color: get( special, $colours );
 			}
 
 			.wrapper.style3 strong, .wrapper.style3 b {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style3 h1, .wrapper.style3 h2, .wrapper.style3 h3, .wrapper.style3 h4, .wrapper.style3 h5, .wrapper.style3 h6 {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style3 blockquote {
@@ -3164,7 +3193,7 @@
 			.wrapper.style3 button,
 			.wrapper.style3 .button {
 				background-color: #f2f2f2;
-				color: #000 !important;
+				color: get( text-dark, $colours ) !important;
 			}
 
 				.wrapper.style3 input[type="submit"]:hover,
@@ -3190,7 +3219,7 @@
 				.wrapper.style3 .button.alt {
 					background-color: transparent;
 					box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
-					color: #ffffff !important;
+					color: get( white, $colours ) !important;
 				}
 
 					.wrapper.style3 input[type="submit"].alt:hover,
@@ -3214,7 +3243,7 @@
 					.wrapper.style3 input[type="button"].alt.icon:before,
 					.wrapper.style3 button.alt.icon:before,
 					.wrapper.style3 .button.alt.icon:before {
-						color: #999999;
+						color: get( text-light, $colours );
 					}
 
 				.wrapper.style3 input[type="submit"].special,
@@ -3222,8 +3251,8 @@
 				.wrapper.style3 input[type="button"].special,
 				.wrapper.style3 button.special,
 				.wrapper.style3 .button.special {
-					background-color: #8a4680;
-					color: #ffffff !important;
+					background-color: get( special, $colours );
+					color: get( white, $colours ) !important;
 				}
 
 					.wrapper.style3 input[type="submit"].special:hover,
@@ -3243,7 +3272,7 @@
 					}
 
 			.wrapper.style3 label {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style3 input[type="text"],
@@ -3260,8 +3289,8 @@
 				.wrapper.style3 input[type="email"]:focus,
 				.wrapper.style3 select:focus,
 				.wrapper.style3 textarea:focus {
-					border-color: #8a4680;
-					box-shadow: 0 0 0 1px #8a4680;
+					border-color: get( special, $colours );
+					box-shadow: 0 0 0 1px get( special, $colours );
 				}
 
 			.wrapper.style3 .select-wrapper:before {
@@ -3281,35 +3310,35 @@
 
 			.wrapper.style3 input[type="checkbox"]:checked + label:before,
 			.wrapper.style3 input[type="radio"]:checked + label:before {
-				background-color: #8a4680;
-				border-color: #8a4680;
-				color: #ffffff;
+				background-color: get( special, $colours );
+				border-color: get( special, $colours );
+				color: get( white, $colours );
 			}
 
 			.wrapper.style3 input[type="checkbox"]:focus + label:before,
 			.wrapper.style3 input[type="radio"]:focus + label:before {
-				border-color: #8a4680;
-				box-shadow: 0 0 0 1px #8a4680;
+				border-color: get( special, $colours );
+				box-shadow: 0 0 0 1px get( special, $colours );
 			}
 
 			.wrapper.style3 ::-webkit-input-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style3 :-moz-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style3 ::-moz-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style3 :-ms-input-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style3 .formerize-placeholder {
-				color: #999999 !important;
+				color: get( text-light, $colours ) !important;
 			}
 
 			.wrapper.style3 ul.alt li {
@@ -3317,7 +3346,7 @@
 			}
 
 			.wrapper.style3 header p {
-				color: #999999;
+				color: get( text-light, $colours );
 			}
 
 			.wrapper.style3 table tbody tr {
@@ -3329,7 +3358,7 @@
 				}
 
 			.wrapper.style3 table th {
-				color: #ffffff;
+				color: get( white, $colours );
 			}
 
 			.wrapper.style3 table thead {
@@ -3381,7 +3410,6 @@
 				transition-delay: 1.25s;
 				content: '';
 				display: block;
-				background-color: rgba(0, 0, 0, 0.95);
 				height: 100%;
 				left: 0;
 				opacity: 0.75;
@@ -3604,7 +3632,7 @@
 		}
 
 		.gallery .image {
-			background: #FFF;
+			background: get( white, $colours );
 			padding: 1rem;
 		}
 
@@ -3729,7 +3757,7 @@
 
 	#header {
 		background: rgba( 0, 0, 0, 0.1 );
-		color: #a6a6a6;
+		color: get( text-light, $colours );
 		cursor: default;
 		height: 3.25em;
 		left: 0;
@@ -3754,7 +3782,7 @@
 
 			#header > .logo a {
 				font-size: 1.25em;
-				color: #FFF;
+				color: get( white, $colours );
 				text-decoration: none;
 			}
 
@@ -3777,7 +3805,7 @@
 			padding: 0 0.75em;
 			color: inherit;
 			text-decoration: none;
-			color: #FFF;
+			color: get( white, $colours );
 		}
 
 			#header > a:hover {
@@ -3897,7 +3925,7 @@
 		-webkit-overflow-scrolling: touch;
 		background: rgba(0, 0, 0, 0.95);
 		box-shadow: none;
-		color: #000;
+		color: get( text-dark, $colours );
 		height: 100%;
 		max-width: 80%;
 		overflow-y: auto;
@@ -3934,7 +3962,7 @@
 					}
 
 						#menu > ul.links > li > a:not(.button):hover {
-							color: #FFF;
+							color: get( white, $colours );
 						}
 
 					#menu > ul.links > li > .button {
@@ -3954,7 +3982,7 @@
 			transition: color 0.2s ease-in-out;
 			-webkit-tap-highlight-color: transparent;
 			border: 0;
-			color: #999999;
+			color: get( text-light, $colours );
 			cursor: pointer;
 			display: block;
 			height: 3.25rem;
@@ -3976,7 +4004,7 @@
 			}
 
 			#menu .close:hover {
-				color: #000;
+				color: get( text-dark, $colours );
 			}
 
 			@media screen and (max-width: 736px) {
@@ -4008,26 +4036,26 @@
 /* Banner */
 
 	.banner {
-		background-color: #8a4680;
+		background-color: get( special, $colours );
 		color: #e2d1df;
 		padding: 8em 0;
 		position: relative; 
 	}
 
 		.banner input, .banner select, .banner textarea {
-			color: #ffffff;
+			color: get( white, $colours );
 		}
 
 		.banner a {
-			color: #ffffff;
+			color: get( white, $colours );
 		}
 
 		.banner strong, .banner b {
-			color: #ffffff;
+			color: get( white, $colours );
 		}
 
 		.banner h1, .banner h2, .banner h3, .banner h4, .banner h5, .banner h6 {
-			color: #ffffff;
+			color: get( white, $colours );
 		}
 
 		.banner blockquote {
@@ -4064,7 +4092,7 @@
 			-webkit-transition: opacity 1.5s ease-in-out, visibility 1.5s;
 			-ms-transition: opacity 1.5s ease-in-out, visibility 1.5s;
 			transition: opacity 1.5s ease-in-out, visibility 1.5s;
-			background: #000000;
+			background: get( text-dark, $colours )000;
 			content: '';
 			display: block;
 			height: 100%;
@@ -4115,7 +4143,7 @@
 				}
 
 				.banner .indicators li.visible:before {
-					background: #fff;
+					background: get( white, $colours );
 				}
 
 		.banner > article {
@@ -4153,7 +4181,7 @@
 				position: absolute;
 				top: 0;
 				left: 0;
-				background: #000;
+				background: get( text-dark, $colours );
 				opacity: 0.35;
 			}
 
@@ -4171,7 +4199,7 @@
 			.banner > article h2 {
 				font-size: 7rem;
 				margin-bottom: 0;
-				color: #FFF;
+				color: get( white, $colours );
 				font-weight: 300;
 			}
 
@@ -4202,7 +4230,7 @@
 				}
 
 			.banner > article a {
-				color: #FFF;
+				color: get( white, $colours );
 				text-decoration: none;
 			}
 
@@ -4293,7 +4321,7 @@
 
 	#footer {
 		padding: 4rem 0 2rem 0 ;
-		background: #000;
+		background: get( text-dark, $colours );
 		text-align: center;
 	}
 
@@ -4302,7 +4330,7 @@
 		}
 
 			#footer a:hover {
-				color: #FFF;
+				color: get( white, $colours );
 			}
 
 		#footer .copyright {
@@ -4319,4 +4347,12 @@
 				padding: 3rem 0 1rem 0 ;
 			}
 
-		}
+        }
+        
+
+@import "./views-admin/index";
+@import "../components/panel/panel";
+@import "../components/top-nav/top-nav";
+@import "../components/loading/loading";
+@import "../app/app";
+@import "./home/home";

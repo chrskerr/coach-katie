@@ -2,7 +2,7 @@
 // deps
 import React from "react";
 import PropTypes from "prop-types";
-import { Badge, Text, Pane, Heading, Paragraph } from "evergreen-ui";
+import { Badge, Text, Pane, Paragraph } from "evergreen-ui";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -38,7 +38,7 @@ export default function ViewWorkoutVersionPanel ({ props }) {
 	return ( <>
 		<Pane marginBottom={ 32 } display="flex" flexDirection="row" alignItems="center">
 			<Pane marginRight={ 16 }>
-				<Heading size={ 600 }>{ title } - version { version_num }</Heading>
+				<h3>{ title } - version { version_num }</h3>
 			</Pane>
 			<Pane flex={ 1 }>
 				<Badge marginRight={ 8 } color="blue">{ type }</Badge>
@@ -46,16 +46,16 @@ export default function ViewWorkoutVersionPanel ({ props }) {
 			</Pane>
 		</Pane>
 		<Pane background="white" padding={ 32 } marginBottom={ 32 } elevation={ 1 }>
-			<Heading marginBottom={ 16 } size={ 200 }>Description:</Heading>
+			<h4>Description:</h4>
 			{ body && _.map( body.split( "\n" ), ( line, i ) => line ? <Paragraph key={ i }>{ line }</Paragraph> : <br key={ i } /> )}
 		</Pane>
 		<Pane marginBottom={ 32 }>
-			<Heading size={ 200 } marginBottom={ 16 }>Drills:</Heading>
+			<h4>Drills:</h4>
 			{ !_.isEmpty( drills ) ? _.map( drills, drill => {
 				const { id, title } = drill;
 				return ( 
 					<Link to={ `/admin/drills/${ id }` } key={ id } style={{ marginBottom: "24px" }}>
-						<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="white" marginBottom={ 16 }>
+						<Pane display="flex" elevation={ 1 } height={ 48 } alignItems="center" background="tint" marginBottom={ 16 }>
 							<Text marginLeft={ 24 }>{ title }</Text> 
 						</Pane> 
 					</Link>

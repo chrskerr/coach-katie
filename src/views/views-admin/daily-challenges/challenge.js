@@ -6,11 +6,11 @@ import { useQuery } from "@apollo/react-hooks";
 import _ from "lodash";
 
 // app
-import { Button, Pane, Heading, Text, Paragraph } from "evergreen-ui";
+import { Pane, Text, Paragraph } from "evergreen-ui";
 import { Services, Queries, Loading } from "../index";
 
 //
-// Adultletics Admin / Views / Challenges / Challenge
+// Adultletics / Views / Admin / Challenges / Challenge
 //
 
 
@@ -30,10 +30,10 @@ export default function Challenge ( props ) {
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
-				<Button iconBefore="edit" onClick={ () => openPanel({ panel: "daily-challenges/edit", props: { id }})}>Edit</Button>
+				<button className="alt small" iconBefore="edit" onClick={ () => openPanel({ panel: "daily-challenges/edit", props: { id }})}>Edit</button>
 			</Pane>
 			<Pane marginBottom={ 32 } display="flex">
-				<Heading marginRight={ 16 }>{ title }</Heading>
+				<h3>{ title }</h3>
 			</Pane>
 			<Pane display="flex">
 				<Pane flex={ 1 } marginRight={ 32 } >

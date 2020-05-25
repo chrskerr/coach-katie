@@ -24,10 +24,10 @@ export default function Drills () {
 	return (
 		<>
 			<Pane display="flex" justifyContent="flex-end">
-				<Button iconBefore="plus" onClick={ () => openPanel({ panel: "drills/add" })}>Add</Button>
+				<button className="alt small" iconBefore="plus" onClick={ () => openPanel({ panel: "drills/add" })}>Add</button>
 			</Pane>
 			<Pane marginBottom={ 16 }>
-				<Heading>All Drills:</Heading>
+				<h3>All Drills:</h3>
 			</Pane>
 			<Pane>
 				{ drills && _.map( drills, drill => {

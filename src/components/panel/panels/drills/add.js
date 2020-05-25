@@ -1,7 +1,7 @@
 
 // deps
 import React, { useContext, useState } from "react";
-import { Pane, Heading, TextInputField, Button, Text, Textarea, FormField } from "evergreen-ui";
+import { Pane, TextInputField, Textarea, FormField } from "evergreen-ui";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 import _ from "lodash";
@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import { Services, Queries } from "../index";
 
 //
-// Adultletics Admin / Views / Panel / Panels / Drills / Add
+// Adultletics / Views / Panel / Panels / Drills / Add
 //
 
 
@@ -23,7 +23,7 @@ export default function AddDrillPanel () {
 
 	return ( <>
 		<Pane marginBottom={ 56 }>
-			<Heading size={ 600 }>Adding a new drill</Heading>
+			<h2 size={ 600 }>Adding a new drill</h2>
 		</Pane>
 		<Formik
 			initialValues={{ description: "" }}
@@ -42,34 +42,39 @@ export default function AddDrillPanel () {
 		>{
 				({ values, dirty, handleChange, handleSubmit, isSubmitting }) => {
 					return (
-						<>
-							<form>
-								<TextInputField
-									label="Title"
-									name="title"
-									onChange={ handleChange }
-									autoFocus
-								/>
-								<TextInputField
-									label="Url"
-									name="url"
-									value={ values.url }
-									placeholder="https://youtu.be/nPMB8PZE9F8"
-									onChange={ handleChange }
-								/>
-								<FormField label="Workout Description" marginBottom={ 16 }>
+						<form>
+							<div className="row uniform">
+								<div className="12u$">
+									<TextInputField
+										label="Title"
+										name="title"
+										onChange={ handleChange }
+										autoFocus
+									/>
+								</div>								
+								<div className="12u$">
+									<TextInputField
+										label="Url"
+										name="url"
+										value={ values.url }
+										placeholder="https://youtu.be/nPMB8PZE9F8"
+										onChange={ handleChange }
+									/>
+								</div>
+								<div className="12u$">
+									<label label="Workout Description" />
 									<Textarea
 										name="description"
 										onChange={ handleChange }
+										rows={ 8 }
 									/>
-								</FormField>
-								<Button iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.url } onClick={ handleSubmit }>Add</Button>
-								{ errors && <p>{ errors }</p>}
-							</form> 
-							<Pane marginTop={ 24 }>
-								<Text>To find embed URL: go to the YouTube page, click on Share just below the video display, click on Embed in the pop-up, then select "Enable privacy-enhanced mode" and finally copy the quoted part of the text following "src=" in the text to the right, should look something like "https://www.youtube-nocookie.com/embed/nPMB8PZE9F8"</Text>
-							</Pane>
-						</>
+								</div>
+								<div className="12u$">
+									<button className="special" iconBefore={ isSubmitting ? "" : "tick"} isLoading={ isSubmitting } disabled={ !dirty || !values.title || !values.url } onClick={ handleSubmit }>Add</button>
+								</div>
+								{ errors && <p>{ errors }</p> }
+							</div>
+						</form> 
 					);
 				}}
 		</Formik>
