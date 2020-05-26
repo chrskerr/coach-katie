@@ -6,7 +6,7 @@ import ReactGA from 'react-ga';
 
 // app
 const HomeIndex = lazy(() => import( "../views/home" ));
-const AuthContainer = lazy(() => import( "./react-app" ));
+const AuthContainer = lazy(() => import( "./auth" ));
 
 //
 // Adultletics / App / App

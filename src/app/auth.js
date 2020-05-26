@@ -8,13 +8,11 @@ import _ from "lodash";
 import FirebaseProvider from "./firebase";
 import ApolloProvider from "./apollo";
 import Services from "./services"
-import Panel from "../components/panel/panel"
-import { Pane } from "evergreen-ui";
 
-const Admin = lazy(() => import('../views/views-admin'))
+// const Admin = lazy(() => import('../views/views-admin'))
 
 //
-// Adultletics / App / React App
+// Adultletics / App / Auth
 //
 
 
@@ -57,10 +55,9 @@ function UiContainer () {
 
 	return (
         <UI.Provider value={ ui }>
-            <Panel />
             <div className="v-router">
                 <Switch>
-                    <Route path="/admin" component={ Admin } />
+                    {/* <Route path="/admin" component={ Admin } /> */}
                 </Switch>
             </div>
         </UI.Provider>

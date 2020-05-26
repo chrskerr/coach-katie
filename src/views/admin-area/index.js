@@ -2,7 +2,6 @@
 // deps
 import React, { useContext } from "react";
 import { Switch, Route } from "react-router-dom";
-// import { toaster } from "evergreen-ui";
 
 //app
 import Dashboard from "./dashboard/dashboard";
